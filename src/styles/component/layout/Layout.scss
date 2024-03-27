@@ -1,0 +1,27 @@
+.wrapper {
+display: flex;
+    flex-direction: column;
+}
+
+.headerWrapper {
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+    height: 5.5%;
+}
+.content {
+    height: calc(var(--vh, 1vh) * 100);
+    padding-left: 3.5%;
+        padding-right: 3.5%;
+}
+.footer {
+        
+        bottom: 0%;
+        position: fixed;
+        justify-content: space-between;
+        align-items: center;
+}
+.mainLogoWrapper {
+    margin: 4%;
+}
+

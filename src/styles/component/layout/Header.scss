@@ -1,0 +1,24 @@
+.header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: #dde0ea;
+}
+
+.headerWrapper {
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+}
+.contents {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3%;
+}
+
+.mainLogoWrapper {
+  display: flex;
+}
