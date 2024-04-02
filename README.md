@@ -1,4 +1,4 @@
-# YOLO_BE
+# YOLO_FE
 
 type 종류
 
