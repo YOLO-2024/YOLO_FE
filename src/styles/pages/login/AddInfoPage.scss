@@ -1,0 +1,57 @@
+.wrapper {
+  height: calc(var(--vh, 1vh) * 100);
+  background: #fafafa;
+  flex-direction: column;
+}
+
+.styledText {
+  color: #171930;
+  font-family: Inter;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  padding: 5%;
+}
+
+.profileWrapper {
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
+}
+
+.profileImg {
+  width: 150px;
+  height: 150px;
+  flex-shrink: 0;
+  border-radius: 45px;
+  border: 1px solid #c2c2c2;
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+  margin: 5%;
+}
+
+.profileImgSubmit {
+  display: flex;
+  width: 20%;
+  border-radius: 8px;
+  opacity: 0.7671;
+  background: linear-gradient(131deg, #266ed7 100%, #4d8aeb 100%);
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  padding: 3%;
+}
+
+.text {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px;
+  opacity: 0.3991;
+  padding-top: 3%;
+}
