@@ -23,6 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-src/utils
-
+src/utils/
 .env
