@@ -4,6 +4,7 @@ import MainPage from '../pages/MainPage';
 import PostPage from '../pages/PostPage';
 import ChatPage from '../pages/ChatPage';
 import MyChatPage from '../pages/MyChatPage';
+import NewPost from '../pages/Post/NewPost';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: '/post-page/new', element: <NewPost /> },
 ]);
 
 export default router;
