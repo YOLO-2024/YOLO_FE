@@ -1,0 +1,28 @@
+.modal {
+    position: fixed; 
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background-color:rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.minimodal-content, .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 23px; 
+    width: 65vw;
+}
+
+.modal-content{
+    height: calc(var(--vh, 1vh)*40);
+}
+
+.minimodal-content{
+
+    height: calc(var(--vh, 1vh)*22);
+}

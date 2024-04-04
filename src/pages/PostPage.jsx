@@ -7,9 +7,12 @@ export default function PostPage() {
   const onClick = () => {
     navigate('/post-page/new');
   };
+  const onCheck = () => {
+    navigate('/post-page/check');
+  };
   return (
     <div className="wrapper">
-      <div>포스트 페이지</div>
+      <div onClick={onCheck}>포스트 확인</div>
       <div className="new" onClick={onClick}>
         <AddIcon />
       </div>

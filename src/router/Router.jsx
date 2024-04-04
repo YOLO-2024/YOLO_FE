@@ -5,6 +5,7 @@ import PostPage from '../pages/PostPage';
 import ChatPage from '../pages/ChatPage';
 import MyChatPage from '../pages/MyChatPage';
 import NewPost from '../pages/Post/NewPost';
+import CheckPost from '../pages/Post/CheckPost';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: '/post-page/new', element: <NewPost /> },
+  { path: '/post-page/check', element: <CheckPost /> },
 ]);
 
 export default router;
