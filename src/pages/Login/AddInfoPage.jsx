@@ -1,21 +1,139 @@
-import '../../styles/pages/login/AddInfoPage.scss';
-// import test from '../../assets/svgs/test.svg';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import SelectLocation from '../../components/common/SelectLocation';
+import { locations } from '../../data/location';
 import basicProfile from '../../assets/images/basicProfile.jpg';
+import '../../styles/pages/login/AddInfoPage.scss';
+import '../../styles/component/common/SelectLocation.scss';
 
 export default function AddInfoPage() {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({ mode: 'all' });
+  const [locationData, setLocationData] = useState('');
+  const [file, setFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(basicProfile);
+  const [isLocationValid, setIsLocationValid] = useState(false);
+
+  useEffect(() => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(basicProfile);
+    }
+  }, [file]);
+
+  useEffect(() => {
+    setIsLocationValid(!!locationData);
+  }, [locationData]);
+
+  const handleImageChange = (e) => {
+    const newFile = e.target.files[0];
+    if (newFile && newFile.type.substr(0, 5) === 'image') {
+      setFile(newFile);
+    } else {
+      setFile(null);
+    }
+  };
+
+  const addInfoHandler = async (data) => {
+    // API 호출 등의 로직을 구현합니다.
+    navigate('/addinfo/interest');
+  };
+
+  const changeHandler = (value, name) => {
+    setLocationData(value);
+  };
+
   return (
-    <div className="wrapper">
+    <div className="mainWrapper">
       <div className="styledText">추가정보 입력</div>
       <div className="profileWrapper">
         <div className="profileImg">
           <img
-            src={basicProfile}
-            style={{ width: '100%', borderRadius: '45px' }}
+            src={imagePreview}
+            style={{
+              borderRadius: '30%',
+              width: 'calc(var(--vh, 1vh) * 15)',
+              height: 'calc(var(--vh, 1vh) * 15)',
+            }}
           />
         </div>
-        <div className="profileImgSubmit">프로필 등록</div>
+        <input
+          id="photoURLInput"
+          className="profileImgSubmit"
+          style={{ display: 'none' }}
+          name="photoURL"
+          type="file"
+          {...register('photoURL')}
+          onChange={handleImageChange}
+        />
+        <label htmlFor="photoURLInput" className="profileImgSubmit">
+          프로필 등록
+        </label>
       </div>
-      <div className="text">거주지</div>
+
+      <div className="infoContainer">
+        <form onSubmit={handleSubmit(addInfoHandler)}>
+          <div className="container">
+            <div className="text">거주지</div>
+            <SelectLocation
+              searchPlaceholder="Search"
+              data={locations}
+              value={locationData}
+              onChange={changeHandler}
+              error={errors.locationOne?.message}
+              name="locationOne"
+            />
+            {!isLocationValid && (
+              <div className="errorMessage">거주지를 입력해주세요.</div>
+            )}
+          </div>
+          <div className="container">
+            <div className="text">닉네임</div>
+            <input
+              className={`inputWrapper ${errors.nickname ? 'inputError' : ''}`}
+              type="text"
+              {...register('nickname', { required: '닉네임을 입력해주세요.' })}
+            ></input>
+            {errors.nickname && (
+              <div className="errorMessage">{errors.nickname.message}</div>
+            )}
+          </div>
+          <div className="container">
+            <div className="text">한 줄 소개</div>
+            <input
+              className={`inputWrapper ${errors.contents ? 'inputError' : ''}`}
+              type="text"
+              {...register('contents', {
+                required: '한 줄 소개를 입력해주세요.',
+              })}
+            ></input>
+            {errors.contents && (
+              <div className="errorMessage">{errors.contents.message}</div>
+            )}
+          </div>
+          <div
+            className="container"
+            style={{ marginTop: 'calc(var(--vh, 1vh) * 3)' }}
+          >
+            <input
+              type="submit"
+              value="다음"
+              className={`submitButton ${isValid && isLocationValid ? 'active' : ''}`}
+              disabled={!isValid || !isLocationValid}
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
