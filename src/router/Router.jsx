@@ -6,6 +6,8 @@ import ChatPage from '../pages/ChatPage';
 import MyChatPage from '../pages/MyChatPage';
 import LoginPage from '../pages/Login/LoginPage';
 import AddInfoPage from '../pages/Login/AddInfoPage';
+import TestPage from '../pages/Login/\bTestPage';
+import InterestPage from '../pages/Login/InterestPage';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +17,14 @@ const router = createBrowserRouter([
   {
     path: '/addinfo',
     element: <AddInfoPage />,
+  },
+  {
+    path: '/addinfo/interest',
+    element: <InterestPage />,
+  },
+  {
+    path: '/testpage',
+    element: <TestPage />,
   },
   {
     path: '/',

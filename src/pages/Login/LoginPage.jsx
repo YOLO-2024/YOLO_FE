@@ -8,7 +8,7 @@ import {
   naverHandleLogin,
   kakaoHandleLogin,
   googleHandleLogin,
-} from '../../utils/socialLogin';
+} from '../../utils/SocialLogin';
 
 export default function LoginPage() {
   var params = new URL(document.URL).searchParams;
