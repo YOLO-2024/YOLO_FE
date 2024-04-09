@@ -21,6 +21,7 @@ export default function NewPost() {
       formData.main.trim() !== '';
     setIsValid(isFormDataValid);
   }, [formData]);
+
   const onClick = () => {
     navigate('/post-page');
   };
@@ -32,7 +33,6 @@ export default function NewPost() {
       ...prevFormData,
       [name]: value,
     }));
-    console.log(formData);
   };
 
   const handleCategorySelect = (selectedCategories) => {
@@ -40,18 +40,17 @@ export default function NewPost() {
       ...prevFormData,
       category: selectedCategories,
     }));
-    console.log(formData);
   };
 
   const onPost = () => {
-    if (isValid) console.log('게시');
-    else console.log('cannot');
+    if (isValid) console.log(formData);
+    else console.log('비활성화');
   };
   //className="wrapper"
   return (
-    <div className="wrapper">
+    <div className="postWrapper">
       <div className="first-container">
-        <div onClick={onClick}>
+        <div className="westIcon" onClick={onClick}>
           <WestIcon />
         </div>
         <div

@@ -3,13 +3,18 @@ import { NotificationIcon } from '../../assets/svgs/NotificationIcon';
 import { WestIcon } from '../../assets/svgs/WestIcon';
 import { DeleteIcon } from '../../assets/svgs/DeleteIcon';
 import '../../styles/pages/Post/CheckPost.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import NotificationModal from '../../components/Modal/NotificationModal';
 import DeleteModal from '../../components/Modal/DeleteModal';
+import PostData from './PostData';
+import CommentList from './CommentList';
 
+//포스트 상세페이지
 export default function CheckPost() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const userInfo = { ...location.state };
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   //   const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -29,9 +34,9 @@ export default function CheckPost() {
   //   };
 
   return (
-    <div className="wrapper">
-      <div className="first-container">
-        <div onClick={handleBack}>
+    <div>
+      <div className="Firstcontainer">
+        <div className="westIcon" onClick={handleBack}>
           <WestIcon />
         </div>
         <div className="options">
@@ -56,16 +61,16 @@ export default function CheckPost() {
         toggleModal={toggleDeleteModal}
         type="포스트를"
       />
-      {/* <div className="last-container">
-        <div className="last">
-          <div
-            className="comment-input"
-            contentEditable="true"
-            placeholder="댓글을 입력해주세요."
-          />
-          <div className="check">확인</div>
-        </div>
-      </div> */}
+      <PostData userInfo={userInfo} />
+      <CommentList postId={userInfo.postId} postWriter={userInfo.writerName} />
+      <div className="last-container">
+        <div
+          className="comment-input"
+          contentEditable="true"
+          placeholder="댓글을 입력해주세요."
+        />
+        <div className="check">확인</div>
+      </div>
     </div>
   );
 }

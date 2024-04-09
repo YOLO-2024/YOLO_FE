@@ -2,26 +2,25 @@ import { useState } from 'react';
 import '../../styles/pages/Post/Category.scss';
 
 const Categories = [
-  { id: 'movie', value: '영화' },
-  { id: 'art', value: '예술' },
-  { id: 'exercise', value: '운동' },
-  { id: 'life', value: '라이프스타일' },
-  { id: 'health', value: '건강' },
-  { id: 'tech', value: '기술' },
+  { id: '영화', value: '영화' },
+  { id: '예술', value: '예술' },
+  { id: '운동', value: '운동' },
+  { id: '라이프스타일', value: '라이프스타일' },
+  { id: '건강', value: '건강' },
+  { id: '기술', value: '기술' },
 ];
 
 export default function Category({ onCategorySelect }) {
   const category = Categories;
   const [selected, setSelected] = useState([]);
 
-  const handleSelected = (id) => {
+  const handleSelected = (key) => {
     setSelected((prevSelected) => {
-      const newSelected = prevSelected.includes(id)
-        ? prevSelected.filter((selectedId) => selectedId !== id)
-        : [...prevSelected, id];
-
+      const newSelected = prevSelected.includes(key)
+        ? prevSelected.filter((selectedId) => selectedId !== key)
+        : [...prevSelected, key];
       onCategorySelect(newSelected);
-      // console.log(newSelected);
+
       return newSelected;
     });
   };

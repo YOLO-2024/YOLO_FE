@@ -3,7 +3,7 @@ import '../../styles/component/Modal/DeleteModal.scss';
 
 function DeleteModal({ isOpen, toggleModal, type }) {
   return (
-    <div className="wrapper">
+    <div>
       <Modal isOpen={isOpen} toggleModal={toggleModal} size="mini">
         <p className="question">{type} 삭제 하시겠습니까?</p>
         <p className="info">

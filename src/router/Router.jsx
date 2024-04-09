@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: '/post-page/new', element: <NewPost /> },
-  { path: '/post-page/check', element: <CheckPost /> },
+  { path: '/post-page/check/:postId', element: <CheckPost /> },
 ]);
 
 export default router;
