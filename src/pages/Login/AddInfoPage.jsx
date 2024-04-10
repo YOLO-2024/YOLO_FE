@@ -6,6 +6,10 @@ import { locations } from '../../data/location';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 import '../../styles/pages/login/AddInfoPage.scss';
 import '../../styles/component/common/SelectLocation.scss';
+// import { api } from '../../utils/customAxios';
+import { accessTokenState } from '../../state/AuthState';
+import axios from 'axios';
+import { useRecoilValue } from 'recoil';
 
 export default function AddInfoPage() {
   const navigate = useNavigate();
@@ -15,9 +19,11 @@ export default function AddInfoPage() {
     formState: { errors, isValid },
   } = useForm({ mode: 'all' });
   const [locationData, setLocationData] = useState('');
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState('');
   const [imagePreview, setImagePreview] = useState(basicProfile);
   const [isLocationValid, setIsLocationValid] = useState(false);
+  const user = useRecoilValue(accessTokenState);
+  const CLIENT_URL = import.meta.env.VITE_CLIENT_URL;
 
   useEffect(() => {
     if (file) {
@@ -29,6 +35,7 @@ export default function AddInfoPage() {
     } else {
       setImagePreview(basicProfile);
     }
+    console.log(file);
   }, [file]);
 
   useEffect(() => {
@@ -40,13 +47,42 @@ export default function AddInfoPage() {
     if (newFile && newFile.type.substr(0, 5) === 'image') {
       setFile(newFile);
     } else {
-      setFile(null);
+      setFile('');
     }
   };
 
   const addInfoHandler = async (data) => {
-    // API 호출 등의 로직을 구현합니다.
-    navigate('/addinfo/interest');
+    const formData = new FormData();
+    if (file) {
+      formData.append('file', file);
+    }
+    const json = JSON.stringify({
+      nickname: data.nickname,
+      location: locationData,
+      content: data.contents,
+    });
+
+    const blob = new Blob([json], { type: 'application/json' });
+    formData.append('updateProfileRequestDto', blob);
+
+    console.log(json);
+    console.log(locationData);
+    console.log(formData);
+    try {
+      const res = await axios.post(
+        `${CLIENT_URL}/api/v1/member/update-profile`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ` + user }, // 토큰 넣어주기
+          'Content-Type': 'multipart/form-data',
+        },
+      );
+      console.log(accessTokenState);
+      console.log(res);
+      navigate('/addinfo/interest');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const changeHandler = (value, name) => {
@@ -71,9 +107,9 @@ export default function AddInfoPage() {
           id="photoURLInput"
           className="profileImgSubmit"
           style={{ display: 'none' }}
-          name="photoURL"
+          name="file"
           type="file"
-          {...register('photoURL')}
+          {...register('file')}
           onChange={handleImageChange}
         />
         <label htmlFor="photoURLInput" className="profileImgSubmit">

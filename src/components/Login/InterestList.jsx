@@ -44,6 +44,7 @@ export default function InterestList({ onInterestChange }) {
         width: '90%',
         display: 'flex',
         flexFlow: 'wrap',
+        margin: 'auto',
       }}
     >
       {categorylist.map((category) => (
