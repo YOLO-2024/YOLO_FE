@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { AddIcon } from '../assets/svgs/AddIcon';
 import '../styles/pages/PostPage.scss';
-import DummyList from './Post/DummyList';
+import PostList from './Post/PostList';
 
 export default function PostPage() {
   const navigate = useNavigate();
@@ -10,11 +10,11 @@ export default function PostPage() {
   };
 
   return (
-    <div>
-      <DummyList />
+    <>
+      <PostList />
       <div className="new" onClick={onClick}>
         <AddIcon />
       </div>
-    </div>
+    </>
   );
 }

@@ -28,14 +28,25 @@ export default function PostData({ userInfo }) {
 
       <div className="postTitle-container">
         <div className="postTitle">{userInfo.title}</div>
-        <div className="postCategory">#{userInfo.category}</div>
+
+        <div className="postCategory">
+          {userInfo.category.split(',').map((category, index) => (
+            <span key={index}>#{category.trim()} </span>
+          ))}
+        </div>
       </div>
 
       <div className="postContent">{userInfo.content}</div>
       <div className="postImage-container">
-        <img className="postImage" src={postIcon} alt="PostImage" />
-        <img className="postImage" src={postIcon} alt="PostImage" />
-        <img className="postImage" src={postIcon} alt="PostImage" />
+        {/* {userInfo.images.map((image, index) => (
+          <img
+            className="postImage"
+            key={index}
+            src={image.imageUrl}
+            alt={`Image${index}`}
+          />
+        ))} */}
+        <img className="postImage" src={postIcon} alt="postImage" />
       </div>
       <div className="countContainer">
         <div className="likeIcon">

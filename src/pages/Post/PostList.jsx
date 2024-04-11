@@ -1,5 +1,5 @@
 import Dummy from './Dummy.json';
-import '../../styles/pages/Post/DummyList.scss';
+import '../../styles/pages/Post/PostList.scss';
 import postIcon from '../../assets/svgs/post.png';
 import { CommentIcon } from '../../assets/svgs/CommentIcon';
 import { LikeIcon } from '../../assets/svgs/LikeIcon';
@@ -7,7 +7,7 @@ import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import { useNavigate } from 'react-router-dom';
 
 //포스트 페이지 나열 컴포넌트
-export default function DummyList() {
+export default function PostList() {
   const navigate = useNavigate();
 
   const onCheck = ({ item }) => {
@@ -21,11 +21,12 @@ export default function DummyList() {
         content: `${item.content}`,
         likeCount: `${item.likeCount}`,
         reviewCount: `${item.reviewCount}`,
+        images: `${item.images}`,
       },
     });
   };
   return (
-    <div className="dummyList">
+    <div className="PostList">
       {Dummy.data.map((item) => (
         <div
           className="postId"

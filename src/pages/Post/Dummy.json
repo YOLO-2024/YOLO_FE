@@ -3,7 +3,7 @@
     "data" : [
        { 
             "postId": 1,
-            "title": "나혼영 : 스타워즈 후기",
+            "title": "나혼영 : 스타워즈 후기후기후기후기후기",
             "categories" : [
                 "영화", "라이프스타일"
             ],
@@ -11,9 +11,12 @@
             "createdAt": "2024.03.14",
             "images": [
                 {
-                  "imageUrl": "string",
+                  "imageUrl": "string1",
                   "imageType": "Profile"
-                }],
+                },{
+                    "imageUrl": "string2",
+                    "imageType": "Profile"
+                  }],
             "likeCount": 12,
             "reviewCount": 30,
             "writer":{

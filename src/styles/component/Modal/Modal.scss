@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center; 
     align-items: center;
+    z-index: 10;
 }
 
 .minimodal-content, .modal-content {
@@ -17,10 +18,11 @@
 }
 
 .modal-content{
-    height: calc(var(--vh, 1vh)*40);
+    height: 250px;
+    // height: calc(var(--vh, 1vh)*35);
 }
 
 .minimodal-content{
-
-    height: calc(var(--vh, 1vh)*22);
+height: 130px;
+    // height: calc(var(--vh, 1vh)*20);
 }

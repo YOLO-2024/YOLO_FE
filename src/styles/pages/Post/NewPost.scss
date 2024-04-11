@@ -72,11 +72,11 @@
 
 .image-container{
     display: flex;
-    position: relative;
+    position: fixed;
     bottom: 0;
     padding: 3%;
     box-sizing: border-box;
-    width: 100%;
+    width: 450px;
     height: 8%;
     background: #FFF;
     box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.10);
@@ -92,10 +92,11 @@
     }
 }
 
-.main-input{
-    height: calc(var(--vh,1vh)*55);
+.mainInput{
+    // height: calc(var(--vh,1vh)*55);
     outline: none;
     padding: 3%;
+    padding-bottom: 20%;
     color: #686A8A;
     font-family: Inter;
     font-size: 15px;
@@ -117,5 +118,7 @@
     width: 34px;
     height: 34px;
     flex-shrink: 0;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

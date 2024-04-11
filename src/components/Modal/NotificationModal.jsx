@@ -5,8 +5,8 @@ function NotificationModal({ isOpen, toggleModal, type }) {
   return (
     <div>
       <Modal isOpen={isOpen} toggleModal={toggleModal}>
-        <p className="question">{type} 신고하시겠습니까?</p>
-        <p className="info">신고 접수 확인 후, 조치하겠습니다.</p>
+        <p className="notificationQuestion">{type} 신고하시겠습니까?</p>
+        <p className="notificationInfo">신고 접수 확인 후, 조치하겠습니다.</p>
         <div
           className="reason"
           contentEditable="true"

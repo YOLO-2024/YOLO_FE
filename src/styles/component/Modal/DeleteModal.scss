@@ -1,18 +1,25 @@
-.question{
-    width:105%;
-    height: 5%;
-}
-.info{
+.removeQuestion, .removeInfo{
     color: #686A8A;
     font-family: Inter;
-    font-size: 15px;
     font-style: normal;
-    font-weight: 400;
     line-height: normal;
-    margin-bottom: 5%;
+    margin-left:5%;
 }
+.removeQuestion{
+    width:105%;
+    height: 5%;
+    margin-bottom: 10%;
+    text-align: justify;
+    font-size: 20px;
+    font-weight: 700;
+}
+.removeInfo{
+    font-size: 15px;
+    font-weight: 400;
+}
+
 .cancle, .remove{
-    width: 116px;
+    width: 110px;
     height: 45px;
     flex-shrink: 0;
     border-radius: 23px;

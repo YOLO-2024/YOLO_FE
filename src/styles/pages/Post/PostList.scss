@@ -1,7 +1,11 @@
-.dummyList{
-    padding-bottom: 15%;
+.PostList{
+    padding: 0% 0% 15% 0%;
+    width: 100%;
+    
 }
 .postId{
+    // width: calc(var(--vh, 1vh)*53);
+    // width: 345.75px;
     width: 100%;
     height: 57px;
     display: flex;
@@ -17,11 +21,13 @@
 }
 
 .firstContainer{
-    width: 295px;
+    // width: calc(var(--vh, 1vh)*40);
+    // width: 294px;
     display: flex;
     justify-content: space-between;
 }
 .postTitle{
+    width: 154px;
     color: #303030;
     font-family: Inter;
     font-size: 16px;
@@ -29,6 +35,9 @@
     font-weight: 700;
     line-height: 22px; /* 137.5% */
     letter-spacing: 0.448px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .postContents, .postCreatedAt{

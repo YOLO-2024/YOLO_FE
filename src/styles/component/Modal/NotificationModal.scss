@@ -1,4 +1,4 @@
-.question, .info{
+.notificationQuestion, .notificationInfo{
     width: 105%;
     flex-shrink: 0;
     color: #686A8A;
@@ -6,15 +6,16 @@
     font-family: Inter;
     font-style: normal;
     line-height: normal;
+    margin-left: 7%;
 }
 
-.question{
+.notificationQuestion{
     height: 5%;
     font-size: 20px;
     font-weight: 700;
 }
 
-.info{
+.notificationInfo{
     height: 3%;
     font-size: 15px;
     font-weight: 400;
@@ -26,7 +27,7 @@
     flex-shrink: 0;
     border-radius: 20px;
     background: #F4F4F4;
-    padding: 2%;
+    padding: 4%;
     outline:none;
     &:empty{
         &:before, 
@@ -40,25 +41,30 @@
             line-height: normal;
         }
     }
+    margin-top: 8%;
 }
 
 .buttonOption{
     display: flex;
+    width:260px;
     justify-content: space-between;
     gap:3%;
+    margin-top: 3%;
 }
 .cancle, .remove{
     flex-shrink: 0;
     border-radius: 23px;
     background: #266ED7;
     color: white;
-    text-align: center;
     font-family: Inter;
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: 22px; /* 137.5% */
     letter-spacing: 0.448px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .remove{

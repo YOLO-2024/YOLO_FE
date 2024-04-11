@@ -9,6 +9,7 @@ import NotificationModal from '../../components/Modal/NotificationModal';
 import DeleteModal from '../../components/Modal/DeleteModal';
 import PostData from './PostData';
 import CommentList from './CommentList';
+import TextInput from '../../components/TextInput';
 
 //포스트 상세페이지
 export default function CheckPost() {
@@ -17,10 +18,20 @@ export default function CheckPost() {
   const userInfo = { ...location.state };
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  //   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const handleBack = () => {
     navigate(-1);
+  };
+
+  const onEditPost = () => {
+    navigate(`/post-page/edit/${userInfo.postId}`, {
+      state: {
+        postId: `${userInfo.postId}`,
+        title: `${userInfo.title}`,
+        category: `${userInfo.category}`,
+        content: `${userInfo.content}`,
+      },
+    });
   };
 
   const toggleNotificaionModal = () => {
@@ -29,9 +40,6 @@ export default function CheckPost() {
   const toggleDeleteModal = () => {
     setDeleteModalOpen(!isDeleteModalOpen);
   };
-  //   const toggleEditModal = () => {
-  //     setEditModalOpen(!isEditModalOpen);
-  //   };
 
   return (
     <div>
@@ -40,7 +48,7 @@ export default function CheckPost() {
           <WestIcon />
         </div>
         <div className="options">
-          <div>
+          <div onClick={onEditPost}>
             <ModeEditIcon />
           </div>
           <div onClick={toggleNotificaionModal}>
@@ -61,16 +69,9 @@ export default function CheckPost() {
         toggleModal={toggleDeleteModal}
         type="포스트를"
       />
+      <TextInput />
       <PostData userInfo={userInfo} />
       <CommentList postId={userInfo.postId} postWriter={userInfo.writerName} />
-      <div className="last-container">
-        <div
-          className="comment-input"
-          contentEditable="true"
-          placeholder="댓글을 입력해주세요."
-        />
-        <div className="check">확인</div>
-      </div>
     </div>
   );
 }
