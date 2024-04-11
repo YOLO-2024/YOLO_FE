@@ -28,7 +28,7 @@ export default function InterestPage() {
       try {
         await axios.post(
           `${import.meta.env.VITE_CLIENT_URL}/api/v1/member/update-interest`,
-          interestList,
+          { interestList: interestList },
           {
             headers: { Authorization: `Bearer ` + user }, // 토큰 넣어주기
             'Content-Type': 'application/json',

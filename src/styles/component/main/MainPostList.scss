@@ -1,0 +1,54 @@
+.mainPost_Container {
+  display: flex;
+  overflow: scroll;
+  max-width: 800px;
+  height: 185px;
+  gap: 18px;
+  background: #fafafa;
+  padding: 5%;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+}
+
+.mainPost_Container::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 오페라, 엣지 */
+}
+
+.mainPostItem_Container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 147px;
+  height: 180px;
+  border-radius: 15px;
+  gap: 5px;
+}
+
+.mainPostImage_Container {
+  width: 150px;
+  height: 108px;
+  flex-shrink: 0;
+  border-radius: 15px;
+}
+
+.mainPostTitle_Container {
+  color: #303030;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.mainPostTag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  width: 60.479px;
+  height: 22px;
+  flex-shrink: 0;
+  background: #efecfe;
+  color: #686a8a;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+}
