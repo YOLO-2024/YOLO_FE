@@ -2,5 +2,21 @@
     display: flex;
     flex-direction: column;
     padding-left: 3.5%;
-        padding-right: 3.5%;
+    padding-right: 3.5%;
+}
+
+.new{   
+width: 60px;
+height: 60px;
+border-radius: 70%;
+background: #2176FF;
+position: sticky;
+bottom: 12%;
+left: 80%;
+filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+svg{
+    width: 42.353px;
+    height: 42.353px;
+    margin: 13%;
+}
 }

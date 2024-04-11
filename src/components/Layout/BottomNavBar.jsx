@@ -24,23 +24,18 @@ export default function BottomNavBar() {
   };
 
   return (
-    <div className="wrapper">
-      <div className="bottomNavBarWrapper">
-        <div className="bottomIconBox" onClick={() => handleClick('main-page')}>
-          <MainIcon fill={active === 'main-page' ? '#266ED7' : '#D3D1D8'} />
-        </div>
-        <div className="bottomIconBox" onClick={() => handleClick('post-page')}>
-          <PostIcon fill={active === 'post-page' ? '#266ED7' : '#D3D1D8'} />
-        </div>
-        <div className="bottomIconBox" onClick={() => handleClick('chat-page')}>
-          <ChatIcon fill={active === 'chat-page' ? '#266ED7' : '#D3D1D8'} />
-        </div>
-        <div
-          className="bottomIconBox"
-          onClick={() => handleClick('mychat-page')}
-        >
-          <MyChatIcon fill={active === 'mychat-page' ? '#266ED7' : '#D3D1D8'} />
-        </div>
+    <div className="bottomNavBarWrapper">
+      <div className="bottomIconBox" onClick={() => handleClick('main-page')}>
+        <MainIcon fill={active === 'main-page' ? '#266ED7' : '#D3D1D8'} />
+      </div>
+      <div className="bottomIconBox" onClick={() => handleClick('post-page')}>
+        <PostIcon fill={active === 'post-page' ? '#266ED7' : '#D3D1D8'} />
+      </div>
+      <div className="bottomIconBox" onClick={() => handleClick('chat-page')}>
+        <ChatIcon fill={active === 'chat-page' ? '#266ED7' : '#D3D1D8'} />
+      </div>
+      <div className="bottomIconBox" onClick={() => handleClick('mychat-page')}>
+        <MyChatIcon fill={active === 'mychat-page' ? '#266ED7' : '#D3D1D8'} />
       </div>
     </div>
   );

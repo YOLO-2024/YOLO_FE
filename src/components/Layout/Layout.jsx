@@ -5,18 +5,16 @@ import Header from './Header';
 
 export default function Layout() {
   return (
-    <>
-      <div className="wrapper">
-        <div className="headerWrapper">
-          <Header />
-        </div>
-        <div className="content">
-          <Outlet />
-        </div>
+    <div className="Layout_Container">
+      <div className="header_Container">
+        <Header />
       </div>
-      <div className="footer">
+      <div className="content_Container">
+        <Outlet />
+      </div>
+      <div className="footer_Container">
         <BottomNavBar />
       </div>
-    </>
+    </div>
   );
 }

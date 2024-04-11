@@ -4,10 +4,14 @@ import MainPage from '../pages/MainPage';
 import PostPage from '../pages/PostPage';
 import ChatPage from '../pages/ChatPage';
 import MyChatPage from '../pages/MyChatPage';
+import NewPost from '../pages/Post/NewPost';
+import CheckPost from '../pages/Post/CheckPost';
+import EditPost from '../pages/Post/EditPost';
 import LoginPage from '../pages/Login/LoginPage';
 import AddInfoPage from '../pages/Login/AddInfoPage';
 import TestPage from '../pages/Login/\bTestPage';
 import InterestPage from '../pages/Login/InterestPage';
+import SearchPage from '../pages/Search/SearchPage';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: '/addinfo/interest',
     element: <InterestPage />,
+  },
+  {
+    path: '/searchpage',
+    element: <SearchPage />,
   },
   {
     path: '/testpage',
@@ -48,6 +56,9 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: '/post-page/new', element: <NewPost /> },
+  { path: '/post-page/check/:postId', element: <CheckPost /> },
+  { path: '/post-page/edit/:postId', element: <EditPost /> },
 ]);
 
 export default router;

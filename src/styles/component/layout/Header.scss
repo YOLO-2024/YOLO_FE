@@ -1,24 +1,27 @@
-.header {
-  position: fixed;
-  left: 0;
-  top: 0;
+.header_Container {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  background-color: #dde0ea;
-}
+  max-width: 550px;
+  height: 60px;
 
-.headerWrapper {
-  background-color: white;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-}
-.contents {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 3%;
+
+  background-color: #fff;
 }
 
-.mainLogoWrapper {
+.header_Logo {
+  margin-left: 23px;
+  margin-right: auto;
+}
+
+.header_Icon_List {
   display: flex;
+  margin-left: auto;
+  margin-right: 23px;
+  gap: 8px;
+}
+
+.header_Icon {
 }
