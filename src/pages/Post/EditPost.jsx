@@ -67,7 +67,11 @@ export default function EditPost() {
         >
           {postInfo.title}
         </div>
-        <div>
+        <div
+          style={{
+            height: 'auto',
+          }}
+        >
           <div className="category">카테고리</div>
           <div className="categories">
             <Category
