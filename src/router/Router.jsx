@@ -7,8 +7,33 @@ import MyChatPage from '../pages/MyChatPage';
 import NewPost from '../pages/Post/NewPost';
 import CheckPost from '../pages/Post/CheckPost';
 import EditPost from '../pages/Post/EditPost';
+import LoginPage from '../pages/Login/LoginPage';
+import AddInfoPage from '../pages/Login/AddInfoPage';
+import TestPage from '../pages/Login/\bTestPage';
+import InterestPage from '../pages/Login/InterestPage';
+import SearchPage from '../pages/Search/SearchPage';
 
 const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/addinfo',
+    element: <AddInfoPage />,
+  },
+  {
+    path: '/addinfo/interest',
+    element: <InterestPage />,
+  },
+  {
+    path: '/searchpage',
+    element: <SearchPage />,
+  },
+  {
+    path: '/testpage',
+    element: <TestPage />,
+  },
   {
     path: '/',
     element: <Layout />,

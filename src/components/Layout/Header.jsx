@@ -9,16 +9,32 @@ import SearchIcon from '../../assets/svgs/SearchIcon';
 export default function Header() {
   const navigate = useNavigate();
 
+  const onClickToHome = () => {
+    navigate('/main-page');
+  };
+
+  const handleSearchIcon = (event) => {
+    event.stopPropagation();
+    navigate('/searchpage');
+  };
+
   return (
-    <div>
-      <div className="headerWrapper">
-        <div className="mainLogoWrapper" onClick={() => navigate('/main-page')}>
-          <YoloLogo />
-          <div className="contents">
-            <AlertIcon />
-            <ProfileIcon />
-            <SearchIcon />
-          </div>
+    <div className="header_Container">
+      <div className="header_Logo" onClick={onClickToHome}>
+        <YoloLogo />
+      </div>
+      <div className="header_Icon_List">
+        <div className="header_Icon">
+          <AlertIcon />
+        </div>
+        <div className="header_Icon">
+          <ProfileIcon />
+        </div>
+        <div
+          className="header_Icon"
+          onClick={(event) => handleSearchIcon(event)}
+        >
+          <SearchIcon />
         </div>
       </div>
     </div>

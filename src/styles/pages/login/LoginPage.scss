@@ -1,0 +1,35 @@
+.login_wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5%;
+  padding: auto;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+.styledText {
+  color: #171930;
+  font-family: Inter;
+  font-size: 27px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  padding-top: 3%;
+}
+
+.person {
+  flex-shrink: 0;
+  height: calc(var(--vh, 1vh) * 50);
+  padding-left: 35%;
+}
+
+.loginWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: auto;
+  align-items: center;
+  margin: auto;
+}
+
+.loginBox {
+  margin-bottom: 2.5%;
+}

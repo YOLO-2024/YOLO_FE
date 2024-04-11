@@ -1,0 +1,118 @@
+.mainWrapper {
+  height: calc(var(--vh, 1vh) * 100);
+  background: #fafafa;
+  flex-direction: column;
+  padding: 3%;
+}
+
+.styledText {
+  color: #171930;
+  font-family: Inter;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  padding: 5%;
+}
+
+.profileWrapper {
+  height: 27%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileImg {
+  width: calc(var(--vh, 1vh) * 15);
+  height: calc(var(--vh, 1vh) * 15);
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 45px;
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+
+  text-align: center;
+}
+
+.profileImgSubmit {
+  width: 22%;
+  height: 8%;
+  border-radius: 8px;
+  opacity: 0.7671;
+  background: linear-gradient(131deg, #266ed7 100%, #4d8aeb 100%);
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  text-align: center;
+  padding: 3%;
+  margin-top: calc(var(--vh, 1vh) * 2);
+}
+
+.text {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px;
+  opacity: 0.3991;
+  padding-left: 3%;
+}
+
+.form {
+  &__group {
+    margin-bottom: 20px;
+    width: 100%;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
+.container {
+  display: flex;
+  width: -webkit-fill-available;
+  flex-direction: column;
+  padding-top: 3%;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputWrapper {
+  height: calc(var(--vh, 1vh) * 6);
+  margin: 3%;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid #c2c2c2;
+  background: #fff;
+  font-size: 15px;
+}
+
+.submitButton {
+  border-radius: 8px;
+  opacity: 0.7671;
+  background: #c2c2c2;
+  width: 95%;
+  height: calc(var(--vh, 1vh) * 6);
+  flex-shrink: 0;
+  text-align: center;
+  align-content: center;
+  margin: 3%;
+  border: none;
+}
+
+.submitButton.active {
+  background: linear-gradient(
+    131deg,
+    #266ed7 6.68%,
+    #4d8aeb 99.25%
+  ); /* 활성화 상태일 때의 색상 */
+  color: white;
+}
+
+.errorMessage {
+  color: red;
+  margin-left: 3%;
+}
