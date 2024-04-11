@@ -46,7 +46,7 @@ export default function NewPost() {
     if (isValid) console.log(formData);
     else console.log('비활성화');
   };
-  //className="wrapper"
+
   return (
     <div className="postWrapper">
       <div className="first-container">
@@ -62,7 +62,6 @@ export default function NewPost() {
       </div>
       <div className="title-container">
         <div className="title">제목</div>
-
         <div
           className="title-input"
           contentEditable="true"
@@ -72,19 +71,25 @@ export default function NewPost() {
         ></div>
       </div>
 
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+        }}
+      >
         <div className="category">카테고리</div>
         <div className="categories">
           <Category onCategorySelect={handleCategorySelect} />
         </div>
       </div>
-      <div
+      <textarea
         className="main-input"
         contentEditable="true"
         placeholder="내용을 입력해주세요."
         data-name="main"
         onInput={handleChange}
-      ></div>
+      ></textarea>
       <div className="image-container">
         <AddPhoto />
         <div>이미지 추가</div>
