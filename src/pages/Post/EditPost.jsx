@@ -9,7 +9,7 @@ export default function EditPost() {
   const location = useLocation();
   const postInfo = { ...location.state };
   const [isValid, setIsValid] = useState(false);
-
+  console.log(postInfo.category);
   const [formData, setFormData] = useState({
     title: postInfo.title || '',
     category: postInfo.category || '',
@@ -44,7 +44,7 @@ export default function EditPost() {
 
   return (
     <div>
-      <div className="first-container">
+      <div className="first-container" style={{ paddingTop: '1%' }}>
         <div className="westIcon" onClick={onClick}>
           <WestIcon />
         </div>
@@ -71,8 +71,10 @@ export default function EditPost() {
           <div className="category">카테고리</div>
           <div className="categories">
             <Category
-            // onCategorySelect={handleCategorySelect}
-            // selectedCategories={selectedCategories}
+              onCategorySelect={(selected) =>
+                setFormData({ ...formData, category: selected })
+              }
+              selectedCategories={formData.category}
             />
           </div>
         </div>

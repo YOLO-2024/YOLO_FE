@@ -22,9 +22,9 @@
 
 .firstContainer{
     // width: calc(var(--vh, 1vh)*40);
-    // width: 294px;
+    width: 294px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .postTitle{
     width: 154px;
@@ -65,7 +65,8 @@
 
 .lastContainer{
     display: flex;
-    justify-content: end;
+    width: 100%;
+    // justify-content: end;
     margin-top: 2%;
     gap: 3%;
 }

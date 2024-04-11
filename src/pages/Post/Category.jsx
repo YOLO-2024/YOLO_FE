@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../styles/pages/Post/Category.scss';
 
 const Categories = [
@@ -10,9 +10,13 @@ const Categories = [
   { id: '기술', value: '기술' },
 ];
 
-export default function Category({ onCategorySelect }) {
-  const category = Categories;
+export default function Category({ onCategorySelect, selectedCategories }) {
   const [selected, setSelected] = useState([]);
+  const initalSelected = selectedCategories;
+
+  useEffect(() => {
+    setSelected(initalSelected);
+  }, [initalSelected]);
 
   const handleSelected = (key) => {
     setSelected((prevSelected) => {
@@ -27,7 +31,7 @@ export default function Category({ onCategorySelect }) {
 
   return (
     <div className="element">
-      {category.map((item) => (
+      {Categories.map((item) => (
         <div
           key={item.id}
           onClick={() => handleSelected(item.id)}
