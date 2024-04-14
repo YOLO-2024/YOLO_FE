@@ -68,6 +68,7 @@ export default function AddInfoPage() {
     console.log(json);
     console.log(locationData);
     console.log(formData);
+    console.log(user);
     try {
       const res = await axios.post(
         `${CLIENT_URL}/api/v1/member/update-profile`,
@@ -147,15 +148,10 @@ export default function AddInfoPage() {
           <div className="container">
             <div className="text">한 줄 소개</div>
             <input
-              className={`inputWrapper ${errors.contents ? 'inputError' : ''}`}
+              className="inputWrapper"
               type="text"
-              {...register('contents', {
-                required: '한 줄 소개를 입력해주세요.',
-              })}
+              {...register('contents')}
             ></input>
-            {errors.contents && (
-              <div className="errorMessage">{errors.contents.message}</div>
-            )}
           </div>
           <div
             className="container"

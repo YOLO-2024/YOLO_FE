@@ -1,8 +1,5 @@
 .main_Container {
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  height: calc(var(--vh, 1vh) * 100);
   max-width: 550px;
   background: #fafafa;
 }
@@ -11,8 +8,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 252.426px;
-  margin-top: 20px;
+  height: 250px;
+  margin-top: 16px;
 }
 
 .main_styledText {
