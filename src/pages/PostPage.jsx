@@ -12,8 +12,10 @@ export default function PostPage() {
   return (
     <>
       <PostList />
-      <div className="new" onClick={onClick}>
-        <AddIcon />
+      <div className="buttonContainer">
+        <div className="new" onClick={onClick}>
+          <AddIcon />
+        </div>
       </div>
     </>
   );

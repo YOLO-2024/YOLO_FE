@@ -38,7 +38,9 @@ export default function CommentList({ postId, postWriter }) {
                   />
                 </div>
                 <div className="commentWriterInfo">
-                  {item.commentWriterDto.writer}
+                  <div className="comment_userName_Container">
+                    {item.commentWriterDto.writer}
+                  </div>
                   {
                     <div>
                       <img className="UserIcon" src={UserIcon} alt="userIcon" />
@@ -51,7 +53,6 @@ export default function CommentList({ postId, postWriter }) {
             ) : (
               <div className="commentWriter">
                 <div className="commentWriterInfo">
-                  {item.commentWriterDto.writer}
                   {
                     <div>
                       <img className="UserIcon" src={UserIcon} alt="userIcon" />
@@ -59,6 +60,7 @@ export default function CommentList({ postId, postWriter }) {
 
                     /* <div>{item.commentWriterDto.image.imageUrl}</div> */
                   }
+                  {item.commentWriterDto.writer}
                 </div>
                 <div
                   className="NotificationIcon"

@@ -8,16 +8,14 @@
     padding-bottom: 8%;
     padding-left: 8%;
     padding-right: 5%;
-    
 }
 
 .commentWriter{
     display: flex;
     height: 10px;
     justify-content: space-between;
-    padding: 5%;
-    
-    padding-bottom: 3%;
+    padding: 5% 0% 3% 0%;
+   
     color: #686A8A;
     font-family: Inter;
     font-size: 12px;
@@ -46,8 +44,8 @@
 
 .commentWriterInfo{
     display: flex;
-    // gap: 3%;
-  
+    gap: 5px;
+  width: 70px;
    align-items: center;
 }
 .UserIcon{
@@ -55,5 +53,9 @@
 height: 21px;
 flex-shrink: 0;
 border-radius: 40%;
+
+}
+
+.comment_userName_Container{
 
 }

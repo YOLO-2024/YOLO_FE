@@ -1,0 +1,33 @@
+.onEditContainer{
+    display: flex;
+    justify-content: space-between;
+    margin: 5%;
+}
+
+
+.content-input{
+    padding-left:5%;
+    padding-right: 4%;
+  resize: none;
+  padding-bottom: 30%;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+  color: #686A8A;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.EditButton{
+  width: 60.371px;
+height: 37px;
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 8px;
+}

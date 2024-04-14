@@ -35,13 +35,13 @@ export default function PostList() {
         >
           {/* <div className="postIcon">{item.images.imageUrl}</div> */}
           <img className="postIcon" src={postIcon} alt="post image" />
-          <div>
-            <div className="firstContainer">
+          <div className="Post-container">
+            <div className="Titlecontainer">
               <div className="postTitle">{item.title}</div>
               <div className="postCreatedAt">{item.createdAt}</div>
             </div>
             <div className="postContents">{item.content}</div>
-            <div className="lastContainer">
+            <div className="CountContainer">
               <div>
                 <LikeIcon />
                 {item.likeCount}

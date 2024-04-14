@@ -1,18 +1,22 @@
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    padding-left: 3.5%;
-    padding-right: 3.5%;
+.buttonContainer{
+    max-width: 550px;
+    width: 100%;
+    position: fixed;
+    bottom: 13%;
+    // right: 15%;
+    // border: 1px solid red;
 }
-
 .new{   
 width: 60px;
 height: 60px;
-border-radius: 70%;
+border-radius: 100px;
 background: #2176FF;
-position: sticky;
-bottom: 12%;
-left: 80%;
+display: flex;
+margin-left: 83%;
+// position: fixed;
+// bottom: 15%;
+// right: calc(var(--vh, 1vh)*20);
+// right: 20%;
 filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
 svg{
     width: 42.353px;

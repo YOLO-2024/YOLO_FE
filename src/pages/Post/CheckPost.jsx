@@ -1,6 +1,5 @@
 import { ModeEditIcon } from '../../assets/svgs/ModeEditIcon';
 import { NotificationIcon } from '../../assets/svgs/NotificationIcon';
-import { WestIcon } from '../../assets/svgs/WestIcon';
 import { DeleteIcon } from '../../assets/svgs/DeleteIcon';
 import '../../styles/pages/Post/CheckPost.scss';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -10,6 +9,7 @@ import DeleteModal from '../../components/Modal/DeleteModal';
 import PostData from './PostData';
 import CommentList from './CommentList';
 import TextInput from '../../components/TextInput';
+import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 
 //포스트 상세페이지
 export default function CheckPost() {
@@ -44,8 +44,8 @@ export default function CheckPost() {
   return (
     <div>
       <div className="Firstcontainer">
-        <div className="westIcon" onClick={handleBack}>
-          <WestIcon />
+        <div className="previousIcon" onClick={handleBack}>
+          <PreviousIcon />
         </div>
         <div className="options">
           <div onClick={onEditPost}>

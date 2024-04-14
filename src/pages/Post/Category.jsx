@@ -13,8 +13,11 @@ const Categories = [
   { key: '기술', value: '기술' },
 ];
 
-export default function Category() {
-  const [interest, setInterest] = useState([]);
+export default function Category({
+  setSelectedCategories,
+  selectedCategories,
+}) {
+  const [interest, setInterest] = useState(selectedCategories || []);
 
   const handleSelect = (value) => {
     let updatedInterest = [];
@@ -24,11 +27,12 @@ export default function Category() {
       updatedInterest = [...interest, value];
     }
     setInterest(updatedInterest);
+    setSelectedCategories(updatedInterest);
   };
 
-  console.log(interest);
+  // console.log(interest);
   return (
-    <>
+    <div className="Categories">
       {Categories.map((item) => (
         <div
           key={item.key}
@@ -41,6 +45,6 @@ export default function Category() {
           {item.value}
         </div>
       ))}
-    </>
+    </div>
   );
 }

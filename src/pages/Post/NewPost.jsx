@@ -1,99 +1,106 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { WestIcon } from '../../assets/svgs/WestIcon';
-import '../../styles/pages/Post/NewPost.scss';
 import Category from './Category';
-import { useEffect, useState } from 'react';
+import '../../styles/pages/Post/NewPost.scss';
+import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { AddPhoto } from '../../assets/svgs/AddPhoto';
 
 export default function NewPost() {
   const navigate = useNavigate();
-  const [isValid, setIsValid] = useState(false);
-  const [formData, setFormData] = useState({
+  const initialState = {
     title: '',
-    category: [],
-    main: '',
-  });
+    content: '',
+    selectedCategories: [],
+  };
+  const [formState, setFormState] = useState(initialState);
 
-  useEffect(() => {
-    const isFormDataValid =
-      formData.title.trim() !== '' &&
-      formData.category.length > 0 &&
-      formData.main.trim() !== '';
-    setIsValid(isFormDataValid);
-  }, [formData]);
-
-  const onClick = () => {
-    navigate('/post-page');
+  const handleBack = () => {
+    navigate(-1);
   };
 
   const handleChange = (e) => {
-    const name = e.currentTarget.getAttribute('data-name');
-    const value = e.currentTarget.textContent;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
       [name]: value,
-    }));
+    });
   };
 
-  const handleCategorySelect = (selectedCategories) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      category: selectedCategories,
-    }));
+  const isValidForm = () => {
+    return (
+      formState.title &&
+      formState.content &&
+      formState.selectedCategories.length > 0
+    );
   };
 
-  const onPost = () => {
-    if (isValid) console.log(formData);
-    else console.log('비활성화');
+  const setSelectedCategories = (categories) => {
+    setFormState({
+      ...formState,
+      selectedCategories: categories,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formState);
+    setFormState(initialState);
   };
 
   return (
-    <div className="postWrapper">
-      <div className="first-container">
-        <div className="westIcon" onClick={onClick}>
-          <WestIcon />
+    <form onSubmit={handleSubmit}>
+      <div className="onPostContainer">
+        <div className="previousIcon" onClick={handleBack}>
+          <PreviousIcon />
         </div>
         <div
-          className={`onPost ${!isValid ? 'disabled' : ''}`}
-          onClick={onPost}
+          type="submit"
+          className={`{onPost ${!isValidForm() ? 'disabled' : ''}}`}
+          onClick={handleSubmit}
+          style={{
+            background: isValidForm() ? ' #266ED7 6.68%' : '  #C2C2C2',
+            width: ' 60.371px',
+            height: '37px',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '8px',
+          }}
         >
           게시
         </div>
       </div>
-      <div className="title-container">
-        <div className="title">제목</div>
-        <div
-          className="title-input"
-          contentEditable="true"
-          placeholder="제목을 입력해주세요."
-          data-name="title"
-          onInput={handleChange}
-        ></div>
-      </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-        }}
-      >
-        <div className="category">카테고리</div>
-        <div className="categories">
-          <Category onCategorySelect={handleCategorySelect} />
-        </div>
+      <div className="Title-container">
+        <div className="Title-label">제목</div>
+        <input
+          name="title"
+          className="Title-input"
+          placeholder="제목을 입력해주세요."
+          value={formState.title}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="Category-container">
+        <div className="Category-label">카테고리</div>
+        <Category setSelectedCategories={setSelectedCategories} />
       </div>
       <textarea
-        className="main-input"
-        contentEditable="true"
-        placeholder="내용을 입력해주세요."
-        data-name="main"
-        onInput={handleChange}
-      ></textarea>
-      <div className="image-container">
-        <AddPhoto />
-        <div>이미지 추가</div>
+        name="content"
+        className="Content-input"
+        placeholder="내용을 입력하세요."
+        value={formState.content}
+        onChange={handleChange}
+      />
+      <div>
+        <div className="addImage-container">
+          <div className="AddPhoto">
+            <AddPhoto />
+          </div>
+          <div>이미지 추가</div>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }

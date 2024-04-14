@@ -1,101 +1,103 @@
-import { useEffect, useState } from 'react';
-import { WestIcon } from '../../assets/svgs/WestIcon';
+import { useState } from 'react';
+import '../../styles/pages/Post/EditPost.scss';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Category from './Category';
 import { AddPhoto } from '../../assets/svgs/AddPhoto';
+import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 
 export default function EditPost() {
   const navigate = useNavigate();
   const location = useLocation();
   const postInfo = { ...location.state };
-  const [isValid, setIsValid] = useState(false);
-  console.log(postInfo.category);
-  const [formData, setFormData] = useState({
-    title: postInfo.title || '',
-    category: postInfo.category || '',
-    content: postInfo.content || '',
-  });
-
-  const onEdit = () => {
-    if (isValid) console.log(formData);
-    else console.log('비활성화');
+  const categoriesArray = postInfo.category.split(',');
+  const editState = {
+    title: postInfo.title,
+    content: postInfo.content,
+    selectedCategories: categoriesArray,
   };
-
-  useEffect(() => {
-    const isFormDataValid =
-      formData.title.trim() !== '' &&
-      formData.category.length > 0 &&
-      formData.content.trim() !== '';
-    setIsValid(isFormDataValid);
-  }, [formData]);
-
-  const handleChange = (e) => {
-    const name = e.currentTarget.getAttribute('data-name');
-    const value = e.currentTarget.textContent;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
-  const onClick = () => {
+  const [formState, setFormState] = useState(editState);
+  const handleBack = () => {
     navigate(-1);
   };
 
+  const isValidForm = () => {
+    return (
+      formState.title &&
+      formState.content &&
+      formState.selectedCategories.length > 0
+    );
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const setSelectedCategories = (categories) => {
+    setFormState({
+      ...formState,
+      selectedCategories: categories,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValidForm) console.log(formState);
+    else console.log('비활성화');
+  };
+
   return (
-    <div>
-      <div className="first-container" style={{ paddingTop: '1%' }}>
-        <div className="westIcon" onClick={onClick}>
-          <WestIcon />
+    <form onSubmit={handleSubmit}>
+      <div className="onEditContainer">
+        <div className="previousIcon" onClick={handleBack}>
+          <PreviousIcon />
         </div>
         <div
-          className={`onPost ${!isValid ? 'disabled' : ''}`}
-          onClick={onEdit}
+          className="EditButton"
+          type="submit"
+          onClick={handleSubmit}
+          style={{
+            background: isValidForm() ? ' #266ED7 6.68%' : ' #4D8AEB 99.25%',
+          }}
         >
           수정
         </div>
       </div>
-      <div className="title-container">
-        <div className="title">제목</div>
-
-        <div
-          className="title-input"
-          contentEditable="true"
+      <div className="Title-container">
+        <div className="Title-label">제목</div>
+        <input
+          name="title"
+          className="Title-input"
           placeholder="제목을 입력해주세요."
-          data-name="title"
-          onInput={handleChange}
-        >
-          {postInfo.title}
-        </div>
-        <div
-          style={{
-            height: 'auto',
-          }}
-        >
-          <div className="category">카테고리</div>
-          <div className="categories">
-            <Category
-              onCategorySelect={(selected) =>
-                setFormData({ ...formData, category: selected })
-              }
-              selectedCategories={formData.category}
-            />
-          </div>
-        </div>
-        <div
-          className="mainInput"
-          contentEditable="true"
-          placeholder="내용을 입력해주세요."
-          data-name="content"
-          onInput={handleChange}
-        >
-          {postInfo.content}
-        </div>
-        <div className="image-container">
-          <AddPhoto />
-          <div>이미지 추가</div>
-        </div>
+          value={formState.title}
+          onChange={handleChange}
+        />
       </div>
-    </div>
+      <div className="Category-container">
+        <div className="Category-label">카테고리</div>
+        <Category
+          setSelectedCategories={setSelectedCategories}
+          selectedCategories={formState.selectedCategories}
+        />
+      </div>
+
+      <textarea
+        name="content"
+        className="content-input"
+        placeholder="내용을 입력하세요."
+        value={formState.content}
+        onChange={handleChange}
+      />
+
+      <div className="addImage-container">
+        <div className="AddPhoto">
+          <AddPhoto />
+        </div>
+        <div>이미지 추가</div>
+      </div>
+    </form>
   );
 }

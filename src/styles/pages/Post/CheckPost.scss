@@ -12,11 +12,13 @@
     padding-bottom: 2%;
 }
 
-
-// .last{
-//     display: flex;
-//     margin: 4.5%;
-//     gap: 3.5%;
-// }
-
-
+.previousIcon{
+    width: 34px;
+height: 34px;
+flex-shrink: 0;
+border-radius: 24px;
+background: #F6F5FF;
+display: flex;
+justify-content: center;
+align-items: center;
+}
