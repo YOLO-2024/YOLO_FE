@@ -5,17 +5,15 @@ import { useState, useEffect, useRef } from 'react';
 
 const RecommendChatItem = ({ content, isActive }) => {
   return (
-    <>
-      <div className={`recommendItem_Container ${isActive ? 'active' : ''}`}>
-        <div className="chatIcon_Box">
-          <GroupIcon />
-        </div>
-        <div className="recommendTitle_Container" style={{ color: '#2176FF' }}>
-          추천 단체 채팅
-        </div>
-        <div className="recommendTitle_Container">{content}</div>
+    <div className={`recommendItem_Container ${isActive ? 'active' : ''}`}>
+      <div className="chatIcon_Box">
+        <GroupIcon />
       </div>
-    </>
+      <div className="recommendTitle_Container" style={{ color: '#2176FF' }}>
+        추천 단체 채팅
+      </div>
+      <div className="recommendTitle_Container">{content}</div>
+    </div>
   );
 };
 

@@ -1,11 +1,11 @@
 import '../../styles/component/chat/ChatList.scss';
 import postIcon from '../../assets/svgs/post.png';
 import chattingPerson from '../../assets/svgs/chattingPerson.svg';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const ChatItem = ({ chatTitle, chatContents, chatNum }) => {
+const ChatItem = ({ chatTitle, chatContents, chatNum, onChatItemClick }) => {
   return (
-    <div className="chatItem_Container">
+    <div className="chatItem_Container" onClick={onChatItemClick}>
       <div className="chatItem_ProfileImg">
         <img
           src={postIcon}
@@ -25,7 +25,7 @@ const ChatItem = ({ chatTitle, chatContents, chatNum }) => {
 };
 
 const ChatList = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const [chatData, setChatData] = useState();
   const chatdummyList = [
     {
@@ -54,14 +54,18 @@ const ChatList = () => {
     },
   ];
 
+  const onClickedChat = (chatRoomId) => {
+    navigate(`/chat-page/join/${chatRoomId}`);
+  };
   return (
     <div className="chatList_Container">
-      {chatdummyList.map((chatroom) => (
+      {chatdummyList.map((chat) => (
         <ChatItem
-          key={chatroom.chatroomId}
-          chatTitle={chatroom.chatTitle}
-          chatContents={chatroom.chatContents}
-          chatNum={chatroom.chatNum}
+          key={chat.chatRoomId}
+          chatTitle={chat.chatTitle}
+          chatContents={chat.chatContents}
+          chatNum={chat.chatNum}
+          onChatItemClick={() => onClickedChat(chat.chatRoomId)}
         />
       ))}
     </div>

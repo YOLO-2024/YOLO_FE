@@ -13,6 +13,7 @@ import TestPage from '../pages/Login/\bTestPage';
 import InterestPage from '../pages/Login/InterestPage';
 import SearchPage from '../pages/Search/SearchPage';
 import CreateChat from '../pages/Chat/CreateChat';
+import JoinChatPage from '../pages/Chat/JoinChatPage';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: '/chat-page/new',
     element: <CreateChat />,
+  },
+  {
+    path: '/chat-page/join/:chatroomId',
+    element: <JoinChatPage />,
   },
   {
     path: '/',

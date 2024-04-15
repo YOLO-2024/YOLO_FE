@@ -1,10 +1,10 @@
 import '../styles/pages/ChatPage.scss';
-import { api } from '../utils/customAxios';
 import { accessTokenState } from '../state/AuthState';
 import { useRecoilValue } from 'recoil';
 import ChatList from './Chat/ChatList';
 import { AddIcon } from '../assets/svgs/AddIcon';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function ChatPage() {
   const userToken = useRecoilValue(accessTokenState);
@@ -12,7 +12,7 @@ export default function ChatPage() {
 
   const onClickApi = async () => {
     try {
-      const dataChatRoom = await api.get(
+      const dataChatRoom = await axios.get(
         `${import.meta.env.VITE_CLIENT_URL}/api/v1/chat/read`,
         {
           headers: { Authorization: `Bearer ` + userToken }, // 토큰 넣어주기

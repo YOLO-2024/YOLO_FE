@@ -1,0 +1,55 @@
+.joinchat_Wrapper {
+  display: flex;
+  height: calc(var(--vh, 1vh) * 100);
+  background: #fafafa;
+  flex-direction: column;
+  margin: auto;
+}
+
+.joinchat_Header {
+  width: 353px;
+  height: 34px;
+  flex-shrink: 0;
+  margin: 10px 8px;
+}
+
+.joinchat_profileWrapper {
+  height: 27%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.joinchat_profileImg {
+  width: calc(var(--vh, 1vh) * 15);
+  height: calc(var(--vh, 1vh) * 15);
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 45px;
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+
+  text-align: center;
+}
+
+.joinchat_infoContainer {
+  display: flex;
+  width: -webkit-fill-available;
+  flex-direction: column;
+  padding-top: 3%;
+}
+
+.joinchat_inputContainer {
+  display: flex;
+  height: calc(var(--vh, 1vh) * 6);
+  margin: 3%;
+  padding-left: 10px;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid #c2c2c2;
+  background: #fff;
+  font-size: 15px;
+}

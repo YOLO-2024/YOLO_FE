@@ -19,11 +19,11 @@
   display: flex;
   flex-direction: column;
   margin: auto;
-  width: 147px;
+  width: fit-content;
   height: 180px;
   border-radius: 15px;
   gap: 5px;
-  scroll-snap-align: start; /* 스크롤 위치 맞춤 */
+  scroll-snap-align: center; /* 스크롤 위치 맞춤 */
 }
 
 .mainPostImage_Container {

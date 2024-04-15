@@ -1,13 +1,12 @@
 .main_Container {
   width: 100%;
-  max-width: 550px;
   background: #fafafa;
+  overflow: hidden;
 }
 
 .main_Post_Container {
   display: flex;
   flex-direction: column;
-  width: 100%;
   height: 250px;
   margin-top: 16px;
 }
