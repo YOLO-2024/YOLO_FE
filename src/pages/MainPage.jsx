@@ -36,7 +36,8 @@ export default function MainPage() {
           <div className="main_styledText">추천 게시물</div>
           <RecommendPost />
         </div>
-        <button onClick={onLogoutClick}>로그아웃</button>
+        <button>로그아웃</button>
+        <button onClick={onLogoutClick}>회원탈퇴</button>
       </div>
     </>
   );

@@ -23,7 +23,7 @@ export default function AddInfoPage() {
   const [imagePreview, setImagePreview] = useState(basicProfile);
   const [isLocationValid, setIsLocationValid] = useState(false);
   const user = useRecoilValue(accessTokenState);
-  const CLIENT_URL = import.meta.env.VITE_CLIENT_URL;
+  const CLI_URL = import.meta.env.VITE_CLIENT_URL;
 
   useEffect(() => {
     if (file) {
@@ -71,7 +71,7 @@ export default function AddInfoPage() {
     console.log(user);
     try {
       const res = await axios.post(
-        `${CLIENT_URL}/api/v1/member/update-profile`,
+        `${CLI_URL}/api/v1/member/update-profile`,
         formData,
         {
           headers: { Authorization: `Bearer ` + user }, // 토큰 넣어주기

@@ -1,18 +1,25 @@
 .joinchat_Wrapper {
   display: flex;
-  height: calc(var(--vh, 1vh) * 100);
   background: #fafafa;
   flex-direction: column;
   margin: auto;
+  height: calc(100vh - 74px);
 }
 
 .joinchat_Header {
   width: 353px;
   height: 34px;
   flex-shrink: 0;
-  margin: 10px 8px;
+  margin: auto;
 }
-
+.joinchat_contentContainer {
+  display: flex;
+  width: 100%;
+  height: 724px;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
 .joinchat_profileWrapper {
   height: 27%;
   display: flex;
@@ -20,22 +27,21 @@
   align-items: center;
   justify-content: center;
   gap: 15px;
+  margin: auto;
 }
 
 .joinchat_profileImg {
-  width: calc(var(--vh, 1vh) * 15);
   height: calc(var(--vh, 1vh) * 15);
   flex-shrink: 0;
   object-fit: cover;
   border-radius: 45px;
   filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
-
   text-align: center;
 }
 
 .joinchat_infoContainer {
   display: flex;
-  width: -webkit-fill-available;
+  width: 349px;
   flex-direction: column;
   padding-top: 3%;
 }

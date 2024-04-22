@@ -1,17 +1,19 @@
-.Categories{
+.Categories {
+  display: flex;
+  align-items: center;
   width: 100%;
   height: 55px;
-  white-space:nowrap;
+  white-space: nowrap;
   overflow-x: auto;
-  background: #FFF;
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.10);
+  background: #fff;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
   margin-bottom: 5%;
-  &::-webkit-scrollbar{
+  &::-webkit-scrollbar {
     display: none;
   }
 }
 
-.category_element{
-  display:inline-block;
+.category_element {
+  display: inline-block;
   margin: 3%;
 }

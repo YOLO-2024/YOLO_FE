@@ -1,8 +1,8 @@
 import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { accessTokenState, refreshTokenState } from '../state/AuthState';
+import { api } from '../utils/customAxios';
 
 export const useSocialLogin = ({ socialType }) => {
   const setAccessToken = useSetRecoilState(accessTokenState);
@@ -15,8 +15,8 @@ export const useSocialLogin = ({ socialType }) => {
     const state = params.get('state');
 
     if (code !== null) {
-      axios
-        .post(`${import.meta.env.VITE_CLIENT_URL}/api/v1/auth/${socialType}`, {
+      api
+        .post(`/api/v1/auth/${socialType}`, {
           authorizationCode: code,
           ...(socialType === 'naver' && { state: state }), // 네이버의 경우 state를 추가
         })
@@ -25,14 +25,11 @@ export const useSocialLogin = ({ socialType }) => {
           setAccessToken(accessToken); // Recoil 상태 업데이트
           setRefreshToken(refreshToken); // Recoil 상태 업데이트
           // 프로필 정보 확인
-          return axios.get(
-            `${import.meta.env.VITE_CLIENT_URL}/api/v1/member/profile`,
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
+          return api.get('/api/v1/member/profile', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
             },
-          );
+          });
         })
         .then((profileResponse) => {
           console.log('프로필 정보:', profileResponse.data);
