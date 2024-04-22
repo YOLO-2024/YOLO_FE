@@ -1,0 +1,85 @@
+.chatList_Container {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 15px 0px 15px;
+}
+
+.chatItem_Container {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬을 위해 추가 */
+  height: 57px;
+  margin-bottom: 30px;
+}
+
+.chatItem_ProfileImg {
+  width: 53px;
+  height: 53px;
+  border-radius: 25px;
+}
+
+.chatInfo_Container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 9px;
+  flex-grow: 1; /* 여기에 추가 */
+}
+
+.chatInfo_Title {
+  color: #303030;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: 0.448px;
+}
+
+.chatInfo_Contents {
+  color: #686a8a;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.chatStats_Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 22px;
+  color: #686a8a;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.newChat_Container {
+  max-width: 550px;
+  width: 100%;
+  position: fixed;
+  bottom: 13%;
+  // right: 15%;
+  // border: 1px solid red;
+}
+
+.newChat_Button {
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  background: #2176ff;
+  display: flex;
+  margin-left: 83%;
+  // position: fixed;
+  // bottom: 15%;
+  // right: calc(var(--vh, 1vh)*20);
+  // right: 20%;
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+  svg {
+    width: 42.353px;
+    height: 42.353px;
+    margin: 13%;
+  }
+}

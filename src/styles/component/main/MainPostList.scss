@@ -5,9 +5,10 @@
   height: 185px;
   gap: 18px;
   background: #fafafa;
-  padding: 5%;
+  margin-left: 16px;
   -ms-overflow-style: none; /* 인터넷 익스플로러 */
   scrollbar-width: none; /* 파이어폭스 */
+  scroll-snap-type: x proximity;
 }
 
 .mainPost_Container::-webkit-scrollbar {
@@ -18,10 +19,11 @@
   display: flex;
   flex-direction: column;
   margin: auto;
-  width: 147px;
+  width: fit-content;
   height: 180px;
   border-radius: 15px;
   gap: 5px;
+  scroll-snap-align: center; /* 스크롤 위치 맞춤 */
 }
 
 .mainPostImage_Container {

@@ -1,0 +1,31 @@
+.search_Wrapper {
+  display: flex;
+  height: calc(var(--vh, 1vh) * 90);
+  background: #fafafa;
+  flex-direction: column;
+  margin: auto;
+}
+
+.searchTarget_Container {
+  display: flex;
+  margin: 20px;
+  gap: 10px;
+}
+
+.searchTarget_Text {
+  color: #303030;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px; /* 110% */
+  letter-spacing: 0.56px;
+}
+.searchTarget_Text.selected {
+  color: #266ed7;
+}
+
+.searchResult_Container {
+  display: flex;
+  margin: auto;
+}

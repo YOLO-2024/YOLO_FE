@@ -10,7 +10,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="searchWrapper">
+    <div className="searchBar_Wrapper">
       <div className="gobackButton" onClick={handleClick}>
         <BackIcon />
       </div>

@@ -15,11 +15,11 @@ const PopularPostItem = ({ title, tag }) => {
 
 export default function PopularPostList() {
   const postdummyList = [
-    { postId: 1, title: '내돈내산 후기: 가습기', tag: '기술' },
-    { postId: 2, title: '내가 산 자취 꿀탬', tag: '라이프스타일' },
-    { postId: 3, title: '산책 같이 갈사람', tag: '운동' },
-    { postId: 4, title: '오늘의 메뉴 추천', tag: '음식' },
-    { postroomId: 5, title: '요즘 빠진 게임', tag: '게임' },
+    { postId: 1, popularTitle: '내돈내산 후기: 가습기', tags: '기술' },
+    { postId: 2, popularTitle: '내가 산 자취 꿀탬', tags: '라이프스타일' },
+    { postId: 3, popularTitle: '산책 같이 갈사람', tags: '운동' },
+    { postId: 4, popularTitle: '오늘의 메뉴 추천', tags: '음식' },
+    { postId: 5, popularTitle: '요즘 빠진 게임', tags: '게임' },
   ];
 
   return (
@@ -27,8 +27,8 @@ export default function PopularPostList() {
       {postdummyList.map((dumPost) => (
         <PopularPostItem
           key={dumPost.postId}
-          title={dumPost.title}
-          tag={dumPost.tag}
+          title={dumPost.popularTitle}
+          tag={dumPost.tags}
         />
       ))}
     </div>
