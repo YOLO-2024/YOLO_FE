@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChatRoomPage = () => {
+const EditPostPage = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const ChatRoomPage = () => {
     );
 };
 
-export default ChatRoomPage;
+export default EditPostPage;

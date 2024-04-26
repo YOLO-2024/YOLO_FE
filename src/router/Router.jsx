@@ -1,4 +1,23 @@
 import { createBrowserRouter } from 'react-router-dom';
+import Layout from '../pages/Layout'
+
+import AddInfoPage from '../pages/login/AddInfoPage';
+import AddInterestPage from '../pages/login/AddInterestPage';
+import LoginPage from '../pages/login/LoginPage';
+
+import MainPage from '../pages/main/MainPage';
+
+import PostListPage from '../pages/post/PostListPage';
+import CreatePostPage from '../pages/post/CreatePostPage';
+import PostPage from '../pages/post/PostPage';
+import EditPostPage from '../pages/post/EditPostPage';
+
+import SearchPage from '../pages/search/SearchPage';
+
+import ChatPage from '../pages/chat/ChatPage';
+import ChatRoomListPage from '../pages/chat/ChatRoomListPage';
+import MyChatRoomListPage from '../pages/chat/MyChatRoomListPage';
+
 
 const router = createBrowserRouter([
   {
@@ -11,7 +30,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/addInterest',
-    element: <InterestPage />,
+    element: <AddInterestPage />,
   },
   {
     path: '/search',
@@ -27,22 +46,22 @@ const router = createBrowserRouter([
       },
       {
         path: '/postList',
-        element: <PostPage />,
+        element: <PostListPage />,
       },
       {
         path: '/chatroom',
-        element: <ChatPage />,
+        element: <ChatRoomListPage />,
       },
       {
         path: '/myChatroom',
-        element: <MyChatPage />,
+        element: <MyChatRoomListPage />,
       },
     ],
   },
-  { path: '/post/create', element: <NewPost /> },
-  { path: '/post/:postId', element: <CheckPost /> },
-  { path: '/post/edit/:postId', element: <EditPost /> },
-  { path: '/chatroom/:roomId', element: <EditPost /> },
+  { path: '/post/create', element: <CreatePostPage /> },
+  { path: '/post/:postId', element: <PostPage /> },
+  { path: '/post/edit/:postId', element: <EditPostPage /> },
+  { path: '/chatroom/:roomId', element: <ChatPage /> },
 ]);
 
 export default router;
