@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 import Apis from '../../apis/axios';
 import { tokenState } from '../../utils/recoilState';
 import '../../styles/login/LoginPage.scss';
@@ -9,10 +8,11 @@ import Character from '../../assets/Login/Character.png';
 import Kakao from '../../assets/Login/Kakao.svg';
 import Google from '../../assets/Login/Google.svg';
 import Naver from '../../assets/Login/Naver.svg';
+import { useSetRecoilState } from 'recoil';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [token, setToken] = useRecoilState(tokenState);
+  const setToken = useSetRecoilState(tokenState);
 
   useEffect(() => {
     const handleSocialLogin = async () => {
@@ -28,7 +28,11 @@ const LoginPage = () => {
             state: state || undefined,
           });
           setToken(response.data.data.token);
-          navigate('/');
+          if(response.data.data.profile.profileInfo.nickname == null) {
+            navigate('/addInfo');
+          } else {
+            navigate('/');
+          }
         } catch (error) {
           console.error('Error:', error);
         }
@@ -37,7 +41,6 @@ const LoginPage = () => {
     handleSocialLogin();
   }, [setToken, navigate]);
 
-  console.log(token)
   const handleLogin = (socialType, authUrl) => {
     sessionStorage.setItem('socialType', socialType);
     window.location.href = authUrl;

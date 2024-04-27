@@ -1,0 +1,119 @@
+.AddInfo_Container,
+.AddInfo_Wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
+}
+
+.AddInfo_TopText {
+    margin-left : 13px;
+    margin-top : 47px;
+    font-size: 27px;
+    font-family: 'Inter';
+    font-weight: 700;
+}
+
+.AddInfo_ImageWraaper {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-top : 47px;
+}
+
+.AddInfo_Image {
+    width: 150px;
+    height: 150px;
+    border-radius: 45px;
+    border: 1px solid #000;
+}
+
+.AddInfo_ImageBtn {
+    display: flex;
+    flex-direction: column;
+    width: 89px;
+    height: auto;
+    min-height: 36px;
+    border-radius: 8px;
+    opacity: 0.7671;
+    background: linear-gradient(#266ED7, #4D8AEB);
+
+    text-align: center;
+
+    // 프로필 등록
+    color: white;
+    font-size: 12px;
+    font-family: Inter;
+    font-weight: 700;
+    line-height: 19px;
+    word-wrap: break-word;
+
+    margin-top : 15px;
+}
+
+.AddInfo_ImageBtn_Text {
+    margin-top : 9px;
+}
+
+.AddInfo_Dropdown_Wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    
+    align-items: center;
+    justify-content: center;
+}
+
+.AddInfo_Dropdown_Text {
+    color: #171930;
+    font-size: 12px;
+    font-family: Inter;
+    font-weight: 700;
+    line-height: 19px;
+    word-wrap: break-word;
+    margin-right : auto;
+    margin-left : 31px;
+}
+
+.AddInfo_Dropdown_Box {
+    display: flex;
+    width: 349px;
+    height: 52px;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.10);
+    border-radius: 8px;
+    cursor: pointer;
+
+    color: #171930;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 700;
+    line-height: 19px;
+    word-wrap: break-word;
+    
+    justify-content: left;
+    align-items: center;
+    padding-left : 4px;
+}
+
+.AddInfo_SelectWrapper {
+    position: relative;
+    width: 349px;
+    height: 293px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.AddInfo_SelectOptions {
+    width: 100%;
+    padding: 10px;
+    background: var(--white);
+    line-height: 15px;
+    cursor: pointer;
+    :hover {
+        background: var(--white-second);
+    }
+}
