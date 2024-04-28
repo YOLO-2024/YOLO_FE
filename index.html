@@ -25,6 +25,11 @@
         height: calc(var(--vh, 1vh) * 100);
         touch-action: pan-y pan-x;
         -webkit-tap-highlight-color:transparent;
+        ::-webkit-scrollbar {
+          display: none;
+        }
+        -ms-overflow-style: none; /* 인터넷 익스플로러 */
+        scrollbar-width: none; /* 파이어폭스 */
       }
     </style>
     <script>

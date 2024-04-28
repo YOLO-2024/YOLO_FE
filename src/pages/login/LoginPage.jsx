@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Apis from '../../apis/axios';
-import { tokenState } from '../../utils/recoilState';
 import '../../styles/login/LoginPage.scss';
 import AppLogo from '../../assets/Header/AppLogo.svg';
 import Character from '../../assets/Login/Character.png';
 import Kakao from '../../assets/Login/Kakao.svg';
 import Google from '../../assets/Login/Google.svg';
 import Naver from '../../assets/Login/Naver.svg';
-import { useSetRecoilState } from 'recoil';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const setToken = useSetRecoilState(tokenState);
+  sessionStorage.removeItem("accessToken")
+  sessionStorage.removeItem('refreshToken');
 
   useEffect(() => {
     const handleSocialLogin = async () => {
@@ -27,7 +26,11 @@ const LoginPage = () => {
             authorizationCode: code,
             state: state || undefined,
           });
-          setToken(response.data.data.token);
+          sessionStorage.setItem("accessToken", response.data.data.token.accessToken);
+          sessionStorage.setItem(
+            'refreshToken',
+            response.data.data.token.refreshToken,
+          );
           if(response.data.data.profile.profileInfo.nickname == null) {
             navigate('/addInfo');
           } else {
@@ -39,7 +42,7 @@ const LoginPage = () => {
       }
     };
     handleSocialLogin();
-  }, [setToken, navigate]);
+  }, [navigate]);
 
   const handleLogin = (socialType, authUrl) => {
     sessionStorage.setItem('socialType', socialType);

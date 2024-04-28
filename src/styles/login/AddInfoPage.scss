@@ -4,11 +4,15 @@
     flex-direction: column;
     width: 100%;
     max-width: 450px;
+
+    gap: 15px;
 }
 
+// 이미지 등록
 .AddInfo_TopText {
-    margin-left : 13px;
+    margin-left : 20px;
     margin-top : 47px;
+
     font-size: 27px;
     font-family: 'Inter';
     font-weight: 700;
@@ -28,7 +32,8 @@
     width: 150px;
     height: 150px;
     border-radius: 45px;
-    border: 1px solid #000;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.10);
+    border: none;
 }
 
 .AddInfo_ImageBtn {
@@ -58,62 +63,47 @@
     margin-top : 9px;
 }
 
-.AddInfo_Dropdown_Wrapper {
+.AddInfo_LoginInput_Wrapper {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: auto;
-    
-    align-items: center;
-    justify-content: center;
+
+    width: 349px;
+    margin: 0 auto;
 }
 
-.AddInfo_Dropdown_Text {
-    color: #171930;
-    font-size: 12px;
-    font-family: Inter;
-    font-weight: 700;
-    line-height: 19px;
-    word-wrap: break-word;
-    margin-right : auto;
-    margin-left : 31px;
+.AddInfo_LoginInput_Text {
+    color : darkgray;
+    margin-left: 8px;
 }
 
-.AddInfo_Dropdown_Box {
+.AddInfo_LoginInput_InputBox {
     display: flex;
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 8px;
+
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+.addInfo_SubmitButton {
+    display: flex;
+
     width: 349px;
     height: 52px;
-    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.10);
-    border-radius: 8px;
-    cursor: pointer;
 
-    color: #171930;
-    font-size: 20px;
-    font-family: Inter;
-    font-weight: 700;
-    line-height: 19px;
-    word-wrap: break-word;
-    
-    justify-content: left;
+    margin: 45px auto 80px auto;
+
     align-items: center;
-    padding-left : 4px;
-}
+    justify-content: center;
 
-.AddInfo_SelectWrapper {
-    position: relative;
-    width: 349px;
-    height: 293px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
+    border-radius: 8px;
+    border: none;
+    opacity: 0.7671;
+    background: linear-gradient(#266ED7, #4D8AEB);
 
-.AddInfo_SelectOptions {
-    width: 100%;
-    padding: 10px;
-    background: var(--white);
-    line-height: 15px;
-    cursor: pointer;
-    :hover {
-        background: var(--white-second);
-    }
+    color: white;
+    font-size: 12px;
+    font-family: Inter;
+    line-height: 19px;
 }
