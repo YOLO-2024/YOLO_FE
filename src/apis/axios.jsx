@@ -25,14 +25,15 @@ Apis.interceptors.response.use(
   },
   async function (err) {
     const originalConfig = err.config;
-
+    let refreshTokenReqDto = {
+      refreshToken: sessionStorage.getItem('refreshToken').toString()
+    };
     if (err.response) {
       try {
+        console.log(err.response);
         const response = await axios.post(
           import.meta.env.VITE_ENDPOINT + '/api/v1/auth/access',
-          {
-            refreshToken: 'Bearer ' + sessionStorage.getItem('refreshToken'),
-          },
+          refreshTokenReqDto
         );
         if (response) {
           sessionStorage.setItem('accessToken', response.data.data.accessToken);
@@ -40,11 +41,11 @@ Apis.interceptors.response.use(
             'refreshToken',
             response.data.data.refreshToken,
           );
+
           return await Apis.request(originalConfig);
         }
       } catch (err) {
         console.error(err);
-        console.log('토큰 갱신 에러');
         redirectToLogin(); // 토큰 재발급 실패 시 로그인 화면으로 이동
       }
       return Promise.reject(err);
@@ -54,7 +55,7 @@ Apis.interceptors.response.use(
 );
 
 function redirectToLogin() {
-  // window.location.href = '/login';
+  window.location.href = '/login';
 }
 
 export default Apis;

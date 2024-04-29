@@ -70,7 +70,9 @@ const PostListPage = () => {
               <div className="PostList_Post_Image_Box">
                 <img
                   src={
-                    (post.postImage.length !== 0) ? post.postImage[0].imageUrl : NoImage
+                    post.postImage.length !== 0
+                      ? post.postImage[0].imageUrl
+                      : NoImage
                   }
                   className="PostList_Post_Image"
                 />
@@ -112,12 +114,12 @@ const PostListPage = () => {
           <div>등록된 포스트가 없습니다.</div>
         )}
         <div id="observer" style={{ height: '10px', border: 'none' }}></div>
-        <div
-          className="PostList_CreateButton"
-          onClick={() => navigate('/post/create')}
-        >
-          <img src={add} className="PostList_CreateButton_Icon" />
-        </div>
+      </div>
+      <div
+        className="PostList_CreateButton"
+        onClick={() => navigate('/post/create')}
+      >
+        <img src={add} className="PostList_CreateButton_Icon" />
       </div>
     </div>
   );
