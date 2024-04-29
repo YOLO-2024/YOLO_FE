@@ -12,6 +12,7 @@
   font-style: normal;
   font-weight: 700;
   padding: 5%;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }
 
 .profileWrapper {
@@ -46,9 +47,25 @@
   text-align: center;
   padding: 3%;
   margin-top: calc(var(--vh, 1vh) * 2);
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
+}
+
+.resetDefaultImg_Button {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #fafafa;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  border: none;
 }
 
 .text {
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 700;
@@ -115,4 +132,5 @@
 .errorMessage {
   color: red;
   margin-left: 3%;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }

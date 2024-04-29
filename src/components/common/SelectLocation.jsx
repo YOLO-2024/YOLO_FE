@@ -1,98 +1,60 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import Dropdown from './Dropdown';
+import { useState } from 'react';
+import '../../styles/component/common/SelectLocation.scss';
+import arrow_down from '../../assets/svgs/arrow_down.svg';
+import arrow_up from '../../assets/svgs/arrow_up.svg'; // arrow_up 이미지 import
+import { locations } from '../../data/location';
 
-const SelectLocation = ({
-  label,
-  data,
-  value,
-  name,
-  onChange,
-  error,
-  defaultOptionLabel,
-  searchPlaceholder,
-}) => {
-  const [selectedValue, setSelectedValue] = useState(value);
-  const [selectedIndex, setSelectedIndex] = useState(
-    value !== '' ? data.indexOf(value) : null,
-  );
-  const [search, setSearch] = useState('');
-  const [options, setOptions] = useState(data);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownEl = useRef();
+const SelectLocation = (props) => {
+  // props 추가
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
 
-  // Hide dropdown if clicked outside of dropdown
-  const handleClickOutside = useCallback(
-    (e) => {
-      if (
-        showDropdown &&
-        e.target.closest('.dropdown') !== dropdownEl.current
-      ) {
-        setShowDropdown(false);
-        setSearch('');
-        setOptions(data);
-      }
-    },
-    [showDropdown, setShowDropdown, dropdownEl, data],
-  );
-
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [handleClickOutside]);
-
-  const changeSelectedHandler = (item, name, index) => {
-    setSelectedValue(item);
-    setSelectedIndex(index);
-    setShowDropdown(false);
-    onChange(item, name);
+  const toggleDropdown = () => {
+    setIsExpanded(!isExpanded);
   };
 
-  const searchChangeHandler = (e) => {
-    setSearch(e.target.value);
-    const filteredOptions = data.filter((opt) => {
-      return opt.toLowerCase().includes(e.target.value.trim().toLowerCase());
-    });
-    setOptions(filteredOptions);
+  const filteredLocations = locations.filter((location) =>
+    location.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const handleLocationClick = (location) => {
+    setSelectedLocation(location);
+    setIsExpanded(false); // 사용자가 위치를 선택하면 드롭다운을 닫습니다.
+    props.onChange(location); // 부모 컴포넌트에 선택된 위치 정보 전달
   };
 
   return (
-    <div className="form__group">
-      <label>{label}</label>
-      <div className="dropdown" ref={dropdownEl}>
-        <input
-          type="hidden"
-          name={name}
-          value={value}
-          onChange={() => onChange(value, name)}
-        />
-        <div
-          className="dropdown__selected"
-          onClick={() => setShowDropdown(!showDropdown)}
-        >
-          {selectedValue
-            ? selectedValue
-            : defaultOptionLabel
-              ? defaultOptionLabel
-              : '거주지를 입력해주세요.'}
-        </div>
-        {showDropdown && (
-          <Dropdown
-            searchPlaceholder={searchPlaceholder}
-            search={search}
-            searchChangeHandler={searchChangeHandler}
-            options={options}
-            selectedValue={selectedValue}
-            selectedIndex={selectedIndex}
-            changeSelectedHandler={changeSelectedHandler}
-            name={name}
-            data={data}
-          />
-        )}
+    <div
+      className="location_Wrapper"
+      style={{ height: isExpanded ? '293px' : 'calc(var(--vh, 1vh) * 6)' }}
+    >
+      <div className="location_Selected_Wrapper" onClick={toggleDropdown}>
+        <span>{selectedLocation}</span>{' '}
+        <img src={isExpanded ? arrow_up : arrow_down} alt="dropdown arrow" />
       </div>
-      {error && <div className="error">{error}</div>}
+      {isExpanded && (
+        <>
+          <input
+            type="text"
+            placeholder="거주지를 검색하세요."
+            className="location_Search_Wrapper"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+
+          <div>
+            {filteredLocations.map((location, index) => (
+              <li
+                key={index}
+                className={`location_Item_Wrapper ${selectedLocation === location ? 'selected' : ''}`}
+                onClick={() => handleLocationClick(location)}
+              >
+                {location}
+              </li>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

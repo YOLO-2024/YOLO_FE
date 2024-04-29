@@ -41,8 +41,8 @@ export default function InterestList({ onInterestChange }) {
   return (
     <div
       style={{
-        width: '90%',
         display: 'flex',
+        justifyContent: 'center',
         flexFlow: 'wrap',
         margin: 'auto',
       }}
@@ -50,14 +50,29 @@ export default function InterestList({ onInterestChange }) {
       {categorylist.map((category) => (
         <div
           key={category.key}
-          className="interestBox"
-          onClick={() => handleSelect(category.key)}
           style={{
-            background: interest.includes(category.key) ? '#93BBF6' : '#F6F5FF', // 선택된 항목의 배경색 변경
+            display: 'flex',
+            width: '30%',
+            flexDirection: 'column',
+            textAlign: 'center',
+            marginBottom: '5%',
           }}
         >
-          {category.value}
-          <div className="interestTitle">{category.key}</div>
+          {' '}
+          {/* 상위 컨테이너 추가 */}
+          <div
+            className="interestBox"
+            onClick={() => handleSelect(category.key)}
+            style={{
+              background: interest.includes(category.key)
+                ? '#93BBF6'
+                : '#F6F5FF', // 선택된 항목의 배경색 변경
+            }}
+          >
+            {category.value}
+          </div>
+          <div className="interestTitle">{category.key}</div>{' '}
+          {/* 제목을 Box 바깥으로 이동 */}
         </div>
       ))}
     </div>

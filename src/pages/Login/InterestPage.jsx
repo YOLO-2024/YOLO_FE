@@ -50,7 +50,7 @@ export default function InterestPage() {
 
   // import.meta.env.VITE_CLIENT_URL
   return (
-    <div className="headWrapper">
+    <div className="interest_headWrapper">
       <div className="title_Container">
         <div className="gobackButton" onClick={handleClick}>
           <BackIcon />
@@ -63,7 +63,7 @@ export default function InterestPage() {
       {showWarning && (
         <div className="warningText">관심사를 2개 이상 선택해주세요.</div>
       )}
-      <div className={'startButton'} onClick={handleStart}>
+      <div className="startButton" onClick={handleStart}>
         시작해보기
       </div>
     </div>

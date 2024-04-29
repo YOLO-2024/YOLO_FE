@@ -5,15 +5,17 @@ import { useState, useEffect, useRef } from 'react';
 
 const RecommendChatItem = ({ content, isActive }) => {
   return (
-    <div className={`recommendItem_Container ${isActive ? 'active' : ''}`}>
-      <div className="chatIcon_Box">
-        <GroupIcon />
+    <>
+      <div className={`recommendItem_Container ${isActive ? 'active' : ''}`}>
+        <div className="chatIcon_Box">
+          <GroupIcon />
+        </div>
+        <div className="recommendTitle_Container" style={{ color: '#2176FF' }}>
+          추천 단체 채팅
+        </div>
+        <div className="recommendTitle_Container">{content}</div>
       </div>
-      <div className="recommendTitle_Container" style={{ color: '#2176FF' }}>
-        추천 단체 채팅
-      </div>
-      <div className="recommendTitle_Container">{content}</div>
-    </div>
+    </>
   );
 };
 
@@ -52,7 +54,7 @@ export default function RecommendChatting() {
   }, []);
 
   return (
-    <div className="recommendHeader_Container">
+    <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
       <div ref={containerRef} className="recommendChat_Container">
         {chatdummyList.map((dummy) => (
           <RecommendChatItem key={dummy.chatroomId} content={dummy.content} />
