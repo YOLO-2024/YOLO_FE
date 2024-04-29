@@ -1,11 +1,17 @@
-.onPostContainer{
+.newChat_Wrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+.onPostContainer {
   display: flex;
   justify-content: space-between;
   margin: 5%;
 }
 
-
-.Title-label, .Category-label{
+.Title-label,
+.Category-label {
   color: #171930;
   font-family: Inter;
   font-size: 14px;
@@ -18,12 +24,14 @@
   margin-top: 3%;
 }
 
-.Title-input, .Content-input, .addImage-container{
+.Title-input,
+.Content-input,
+.addImage-container {
   border: none;
   outline: none;
   box-sizing: border-box;
   width: 100%;
-  color: #686A8A;
+  color: #686a8a;
   font-family: Inter;
   font-size: 15px;
   font-style: normal;
@@ -31,33 +39,49 @@
   line-height: normal;
 }
 
-
-.Title-input{
+.Title-input {
   height: 50px;
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
   padding: 5%;
 }
 
-.Content-input{
+.Content-input {
   padding-left: 5%;
   resize: none;
   height: 600px;
   padding-bottom: 30%;
 }
 
-.addImage-container{
+.ChatContent-input {
   display: flex;
-  position: fixed;
+  margin: auto;
+  width: 90%;
+  min-height: calc(var(--vh, 1vh) * 50);
+  border: none;
+}
+
+.addImage-container {
+  display: flex;
+  position: relative;
   max-width: 550px;
   width: 100%;
   bottom: 0;
   gap: 2%;
-  background: #FFF;
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.10);
+  background: #fff;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
   height: 52px;
   align-items: center;
 }
 
-.AddPhoto{
+.AddPhoto {
   margin-left: 2%;
+}
+
+.previewChatImg_container {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #000;
+  background: #c2c2c2;
 }
