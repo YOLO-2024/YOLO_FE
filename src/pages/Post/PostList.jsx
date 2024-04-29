@@ -1,57 +1,96 @@
-import Dummy from './Dummy.json';
 import '../../styles/pages/Post/PostList.scss';
-import postIcon from '../../assets/svgs/post.png';
 import { CommentIcon } from '../../assets/svgs/CommentIcon';
 import { LikeIcon } from '../../assets/svgs/LikeIcon';
 import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import { useNavigate } from 'react-router-dom';
-
+import { useRecoilValue } from 'recoil';
+import { accessTokenState } from '../../state/AuthState';
+// import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { api } from '../../utils/customAxios';
 //포스트 페이지 나열 컴포넌트
 export default function PostList() {
   const navigate = useNavigate();
+  const user = useRecoilValue(accessTokenState);
+  const CLIENT_URL = import.meta.env.VITE_CLIENT_URL;
+  const [postsData, setPostsData] = useState([]);
 
-  const onCheck = ({ item }) => {
-    navigate(`/post-page/check/${item.postId}`, {
+  const onCheck = ({ post }) => {
+    console.log(post.postImage);
+    navigate(`/post-page/check/${post.postInfo.postId}`, {
       state: {
-        postId: `${item.postId}`,
-        writerName: `${item.writer.writer}`,
-        title: `${item.title}`,
-        createdAt: `${item.createdAt}`,
-        category: `${item.categories}`,
-        content: `${item.content}`,
-        likeCount: `${item.likeCount}`,
-        reviewCount: `${item.reviewCount}`,
-        images: `${item.images}`,
+        postId: `${post.postInfo.postId}`,
+        writerName: `${post.writerInfo.nickname}`,
+        title: `${post.postInfo.title}`,
+        createdAt: `${post.postInfo.createdAt.split('T')[0]}`,
+        category: `${post.postInfo.categories}`,
+        content: `${post.postInfo.content}`,
+        likeCount: `${post.postInfo.likeCount}`,
+        reviewCount: `${post.postInfo.reviewCount}`,
+        postImages: post.postImage,
+        profileImage: `${post.writerInfo.profileImage.imageUrl}`,
       },
     });
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`${CLIENT_URL}/api/v1/post/check`, {
+          headers: { Authorization: `Bearer ${user}` },
+        });
+        setPostsData(response.data);
+        console.log('post 불러오기');
+      } catch (error) {
+        console.error('api error: ', error);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    console.log(postsData);
+  }, [postsData]);
+
+  if (!postsData.data || !postsData.data) {
+    return <div>데이터를 불러오는 중이거나 데이터가 없습니다.</div>;
+  }
+
   return (
     <div className="PostList">
-      {Dummy.data.map((item) => (
+      {postsData.data.map((post) => (
         <div
           className="postId"
-          key={item.postId}
-          onClick={() => onCheck({ item })}
+          key={post.postInfo.postId}
+          onClick={() => onCheck({ post })}
         >
-          {/* <div className="postIcon">{item.images.imageUrl}</div> */}
-          <img className="postIcon" src={postIcon} alt="post image" />
+          <div className="postIcon">
+            <img
+              className="postIcon"
+              src={post.postImage[0].imageUrl}
+              alt="게시물 사진"
+            />
+          </div>
+
           <div className="Post-container">
             <div className="Titlecontainer">
-              <div className="postTitle">{item.title}</div>
-              <div className="postCreatedAt">{item.createdAt}</div>
+              <div className="postTitle">{post.postInfo.title}</div>
+              <div className="postCreatedAt">
+                {post.postInfo.createdAt.split('T')[0]}
+              </div>
             </div>
-            <div className="postContents">{item.content}</div>
+            <div className="postContents">{post.postInfo.content}</div>
             <div className="CountContainer">
               <div>
                 <LikeIcon />
-                {item.likeCount}
+                {post.postInfo.likeCount}
               </div>
               <div>
                 <CommentIcon />
               </div>
               <div>
                 <ReviewIcon />
-                {item.reviewCount}
+                {post.postInfo.reviewCount}
               </div>
             </div>
           </div>

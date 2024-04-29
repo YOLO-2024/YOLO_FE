@@ -10,6 +10,7 @@ export default function EditPost() {
   const location = useLocation();
   const postInfo = { ...location.state };
   const categoriesArray = postInfo.category.split(',');
+
   const editState = {
     title: postInfo.title,
     content: postInfo.content,
