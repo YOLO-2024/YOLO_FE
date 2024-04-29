@@ -2,20 +2,29 @@ import { CommentIcon } from '../../assets/svgs/CommentIcon';
 import { LikeIcon } from '../../assets/svgs/LikeIcon';
 import LikeWhiteIcon from '../../assets/svgs/LikeWhiteIcon';
 import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
-import postIcon from '../../assets/svgs/post.png';
+
 import '../../styles/pages/Post/PostData.scss';
 
 //포스트 상세페이지 내부의 포스트 정보
 export default function PostData({ userInfo }) {
+  console.log(userInfo.postImages);
+
+  // console.log(profileImage);
   return (
     <div>
       <div className="postUser-container">
-        <img
-          className="userIcon"
-          src={postIcon}
-          alt="post image"
-          style={{ borderRadius: '25%' }}
-        />
+        {userInfo.profileImage !== null &&
+        userInfo.profileImage !== undefined ? (
+          <img
+            className="userIcon"
+            src={userInfo.profileImage}
+            alt="none"
+            style={{ borderRadius: '25%' }}
+          />
+        ) : (
+          <div>none</div>
+        )}
+
         <div>
           <div className="postUser">{userInfo.writerName}</div>
           <div className="postCreatedAt">{userInfo.createdAt}</div>
@@ -38,16 +47,12 @@ export default function PostData({ userInfo }) {
 
       <div className="postContent">{userInfo.content}</div>
       <div className="postImage-container">
-        {/* {userInfo.images.map((image, index) => (
-          <img
-            className="postImage"
-            key={index}
-            src={image.imageUrl}
-            alt={`Image${index}`}
-          />
-        ))} */}
-        <img className="postImage" src={postIcon} alt="postImage" />
+        {userInfo.postImages &&
+          userInfo.postImages.map((img, index) => (
+            <img key={index} className="postImage" src={img.imageUrl} />
+          ))}
       </div>
+
       <div className="countContainer">
         <div className="likeIcon">
           <LikeIcon />
