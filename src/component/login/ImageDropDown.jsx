@@ -5,18 +5,21 @@ import { useRef, useState } from 'react';
 
 const ImageDropDown = ({imageUrl, setImageUrl}) => {
     const [view, setView] = useState(false);
+    const [preview, setPreview] = useState(null);
     const imgRef = useRef();
 
-    const onChangeImage = () => {
+    const onChangeImage = (e) => {
+      const file = e.target.files[0]; // 첫 번째 파일만 선택
+      if (!file) return;
+
       const reader = new FileReader();
-      const file = imgRef.current.files[0];
-      console.log(file);
+      setImageUrl(file);
+      reader.onloadend = () => {
+        // 이미지를 미리보기로 설정
+        setPreview(reader.result);
+      };
 
       reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setImageUrl(reader.result);
-        console.log('이미지주소', reader.result);
-      };
     };
 
     const onClickFileBtn = () => {
@@ -25,14 +28,16 @@ const ImageDropDown = ({imageUrl, setImageUrl}) => {
 
     const onClickDefaultImage = () => {
       setImageUrl(null);
+      setPreview(null);
     };
+
     return (
       <>
         <div className="AddInfo_TopText">추가 정보 입력</div>
         {/* 프로필 이미지 등록 및 해제  - 컴포넌트 분리 필요*/}
         <div className="AddInfo_ImageWraaper">
           <img
-            src={imageUrl ? imageUrl : NoProfile}
+            src={preview ? preview : NoProfile}
             className="AddInfo_Image"
           />
           <input
