@@ -1,12 +1,21 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Category from './Category';
 import '../../styles/pages/Post/NewPost.scss';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { AddPhoto } from '../../assets/svgs/AddPhoto';
+import { accessTokenState } from '../../state/AuthState';
+import { useRecoilValue } from 'recoil';
+import axios from 'axios';
+import { CancleIcon } from '../../assets/svgs/CancleIcon';
 
 export default function NewPost() {
   const navigate = useNavigate();
+  const user = useRecoilValue(accessTokenState);
+  const [file, setFile] = useState([]);
+  const [imagePreview, setImagePreview] = useState([]);
+  const fileInputRef = useRef(null);
+  const CLIENT_URL = import.meta.env.VITE_CLIENT_URL;
   const initialState = {
     title: '',
     content: '',
@@ -26,6 +35,24 @@ export default function NewPost() {
     });
   };
 
+  const handleImageChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.every((file) => file.type.startsWith('image'))) {
+      setFile(selectedFiles); // 파일 상태 업데이트
+      const newImagePreviews = selectedFiles.map((file) =>
+        URL.createObjectURL(file),
+      );
+      setImagePreview(newImagePreviews); // 이미지 미리보기 상태 업데이트
+    } else {
+      setFile([]);
+      setImagePreview([]);
+    }
+  };
+
+  const handleDeleteImage = (src) => {
+    setImagePreview(imagePreview.filter((imageSrc) => imageSrc !== src));
+  };
+
   const isValidForm = () => {
     return (
       formState.title &&
@@ -41,10 +68,38 @@ export default function NewPost() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formState);
-    setFormState(initialState);
+    // console.log(formState);
+    // setFormState(initialState);
+    const formData = new FormData();
+    file.forEach((file) => {
+      formData.append('files', file); // 여러 파일을 formData에 추가
+    });
+    const json = JSON.stringify({
+      title: formState.title,
+      content: formState.content,
+      categories: formState.selectedCategories,
+    });
+    const blob = new Blob([json], { type: 'application/json' });
+    formData.append('postCreateRequestDto', blob);
+
+    console.log(json);
+    console.log(formData);
+    try {
+      const response = await axios.post(
+        `${CLIENT_URL}/api/v1/post/create`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ` + user },
+          'Content-Type': 'multipart/form-data',
+        },
+      );
+      console.log('server response: ', response.data);
+      navigate('/post-page');
+    } catch (error) {
+      console.error('newpost API error: ', error);
+    }
   };
 
   return (
@@ -93,14 +148,41 @@ export default function NewPost() {
         value={formState.content}
         onChange={handleChange}
       />
-      <div>
-        <div className="addImage-container">
-          <div className="AddPhoto">
-            <AddPhoto />
-          </div>
-          <div>이미지 추가</div>
+
+      <div
+        className="addImage-container"
+        onClick={() => fileInputRef.current.click()}
+      >
+        <div className="AddPhoto">
+          <AddPhoto />
         </div>
+        <div>이미지 추가</div>
       </div>
+      <input
+        id="photoURLInput"
+        className="AddPhoto"
+        style={{ display: 'none' }}
+        name="file"
+        type="file"
+        onChange={handleImageChange}
+        ref={fileInputRef}
+        multiple
+      />
+      {imagePreview.length >= 0 && (
+        <div className="image-previewContainer">
+          {imagePreview.map((src) => (
+            <div key={src} className="image-preview">
+              <img src={src} alt="미리보기" />
+              <div
+                className="deleteImage"
+                onClick={() => handleDeleteImage(src)}
+              >
+                <CancleIcon />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </form>
   );
 }
