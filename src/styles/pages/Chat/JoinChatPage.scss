@@ -58,4 +58,18 @@
   border: 1px solid #c2c2c2;
   background: #fff;
   font-size: 15px;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
+}
+
+.joinchat_joinButton {
+  border-radius: 8px;
+  opacity: 0.7671;
+  background: #c2c2c2;
+  width: 335px;
+  height: calc(var(--vh, 1vh) * 6);
+  flex-shrink: 0;
+  text-align: center;
+  align-content: center;
+  margin: 3%;
+  border: none;
 }

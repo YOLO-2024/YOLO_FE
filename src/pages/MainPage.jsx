@@ -6,6 +6,7 @@ import RecommendPost from '../components/Main/RecommendPost';
 import { useRecoilValue } from 'recoil';
 import { accessTokenState, refreshTokenState } from '../state/AuthState';
 import axios from 'axios';
+import LogoutButton from '../components/Login/LogoutButton';
 
 export default function MainPage() {
   const respon = useRecoilValue(accessTokenState);
@@ -36,7 +37,7 @@ export default function MainPage() {
           <div className="main_styledText">추천 게시물</div>
           <RecommendPost />
         </div>
-        <button>로그아웃</button>
+        <LogoutButton />
         <button onClick={onLogoutClick}>회원탈퇴</button>
       </div>
     </>

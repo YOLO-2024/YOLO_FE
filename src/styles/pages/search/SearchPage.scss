@@ -20,6 +20,7 @@
   font-weight: 700;
   line-height: 22px; /* 110% */
   letter-spacing: 0.56px;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }
 .searchTarget_Text.selected {
   color: #266ed7;
@@ -28,4 +29,5 @@
 .searchResult_Container {
   display: flex;
   margin: auto;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }

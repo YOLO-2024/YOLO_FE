@@ -1,4 +1,4 @@
-.headWrapper {
+.interest_headWrapper {
   display: flex;
   height: calc(var(--vh, 1vh) * 100);
   background: #fff;
@@ -21,6 +21,7 @@
   font-style: normal;
   font-weight: 700;
   padding: 3%;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }
 
 .interestContainer {
@@ -30,9 +31,9 @@
 }
 
 .interestBox {
-  width: 30%;
-  height: 13%;
-  margin: auto;
+  width: auto;
+  height: calc(var(--vh, 1vh) * 10);
+  margin: 5px;
   display: flex;
   padding-top: 3%;
   flex-direction: column;
@@ -51,14 +52,14 @@
   font-weight: 700;
   line-height: 30px;
   letter-spacing: 0.392px;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }
 
 .startButton {
   display: flex;
-  position: fixed;
-  bottom: 5%;
   width: 90%;
   height: 52px;
+  margin: auto;
   flex-shrink: 0;
   border-radius: 8px;
   opacity: 0.7671;
@@ -69,6 +70,7 @@
   font-style: normal;
   font-weight: 500;
   background: linear-gradient(131deg, #266ed7 6.68%, #4d8aeb 99.25%);
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }
 
 .gobackButton {
@@ -82,5 +84,4 @@
   color: red;
   display: flex;
   justify-content: center;
-  height: calc(var(--vh, 1vh) * 10);
 }

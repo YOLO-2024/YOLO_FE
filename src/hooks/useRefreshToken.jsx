@@ -1,38 +1,39 @@
-/*
+import { useSetRecoilState } from 'recoil';
 import axios from 'axios';
-import { accessTokenState, refreshTokenState } from '../state/AuthState'; // 상태 관리 로직은 적절히 조정하세요
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { accessTokenState, refreshTokenState } from '../state/AuthState';
 
-export default function useRefreshToken() {
+export const useAuthInterceptor = () => {
+  const setAccessToken = useSetRecoilState(accessTokenState);
+  const setRefreshToken = useSetRecoilState(refreshTokenState);
+
+  const setupInterceptors = () => {
     axios.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
         if (error.response.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
-          const refreshTokens = useRecoilValue(refreshTokenState); // Recoil에서 리프레시 토큰 가져오기
-          const response = await axios.post(
-            `${import.meta.env.VITE_CLIENT_URL}/api/v1/auth/access`,
-            {
-              refreshToken: refreshTokens,
-            },
-          );
-
-          const { accessToken } = response.data.data.token;
-          const setAccessToken = useSetRecoilState(accessTokenState);
-          setAccessToken(accessToken); // 새 액세스 토큰으로 상태 업데이트
-
-          // 요청 헤더에 새 액세스 토큰 설정
-          axios.defaults.headers.common['Authorization'] =
-            `Bearer ${accessToken}`;
-          originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-
-          // 원래 요청을 새 액세스 토큰으로 재시도
-          return axios(originalRequest);
+          try {
+            const { data } = await axios.post(
+              `${import.meta.env.VITE_CLIENT_URL}/api/v1/auth/access`,
+              {
+                refreshToken: localStorage.getItem('refreshToken'), // 여기를 Recoil 상태로 대체하고 싶다면, 초기 로딩 시 로컬 스토리지에서 상태로 동기화하는 로직이 필요합니다.
+              },
+            );
+            setAccessToken(data.accessToken);
+            setRefreshToken(data.refreshToken);
+            axios.defaults.headers.common['Authorization'] =
+              `Bearer ${data.accessToken}`;
+            return axios(originalRequest);
+          } catch (_error) {
+            // 토큰 재발급 실패 처리
+            console.log('토큰 재발급 실패');
+          }
         }
         return Promise.reject(error);
       },
     );
-  return;
-}
-*/
+  };
+
+  return setupInterceptors;
+};

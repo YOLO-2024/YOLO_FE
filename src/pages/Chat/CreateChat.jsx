@@ -4,6 +4,7 @@ import Category from '../Post/Category';
 import '../../styles/pages/Post/NewPost.scss';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { AddPhoto } from '../../assets/svgs/AddPhoto';
+import { useForm } from 'react-hook-form';
 
 export default function CreateChat() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function CreateChat() {
     content: '',
     selectedCategories: [],
   };
+  const { register, handleSubmit } = useForm();
   const [formState, setFormState] = useState(initialState);
 
   const handleBack = () => {
@@ -41,20 +43,26 @@ export default function CreateChat() {
     });
   };
 
+  /*
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formState);
     setFormState(initialState);
   };
+*/
+  const handleAddImg = () => {
+    console.log('clicked');
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <div className="onPostContainer">
         <div className="previousIcon" onClick={handleBack}>
           <PreviousIcon />
         </div>
-        <div
+        <input
           type="submit"
+          value="등록"
           className={`{onPost ${!isValidForm() ? 'disabled' : ''}}`}
           onClick={handleSubmit}
           style={{
@@ -66,41 +74,40 @@ export default function CreateChat() {
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: '8px',
+            border: 'none',
           }}
-        >
-          등록
-        </div>
+        />
       </div>
 
       <div className="Title-container">
         <div className="Title-label">채팅방 제목</div>
         <input
-          name="title"
           className="Title-input"
+          type="text"
           placeholder="제목을 입력해주세요."
-          value={formState.title}
           onChange={handleChange}
+          {...register('title')}
         />
       </div>
       <div className="Category-container">
         <div className="Category-label">카테고리</div>
         <Category setSelectedCategories={setSelectedCategories} />
       </div>
-      <textarea
+      <input
         name="content"
         className="Content-input"
         placeholder="채팅방에 대한 소개를 작성해주세요."
-        value={formState.content}
         onChange={handleChange}
+        {...register('content')}
       />
       <div>
-        <div className="addImage-container">
+        <div className="addImage-container" onClick={handleAddImg}>
           <div className="AddPhoto">
             <AddPhoto />
           </div>
           <div>채팅방 커버 이미지 추가</div>
         </div>
       </div>
-    </form>
+    </>
   );
 }

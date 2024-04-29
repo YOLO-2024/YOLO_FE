@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import SelectLocation from '../../components/common/SelectLocation';
-import { locations } from '../../data/location';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 import '../../styles/pages/login/AddInfoPage.scss';
 import '../../styles/component/common/SelectLocation.scss';
@@ -10,6 +9,8 @@ import '../../styles/component/common/SelectLocation.scss';
 import { accessTokenState } from '../../state/AuthState';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
+import { useAuthInterceptor } from '../../hooks/useRefreshToken';
+import close from '../../assets/svgs/close.svg';
 
 export default function AddInfoPage() {
   const navigate = useNavigate();
@@ -24,6 +25,11 @@ export default function AddInfoPage() {
   const [isLocationValid, setIsLocationValid] = useState(false);
   const user = useRecoilValue(accessTokenState);
   const CLI_URL = import.meta.env.VITE_CLIENT_URL;
+  const setupInterceptors = useAuthInterceptor();
+
+  useEffect(() => {
+    setupInterceptors();
+  }, [setupInterceptors]);
 
   useEffect(() => {
     if (file) {
@@ -49,6 +55,11 @@ export default function AddInfoPage() {
     } else {
       setFile('');
     }
+  };
+
+  const resetToDefaultImage = () => {
+    setImagePreview(basicProfile); // 기본 이미지로 리셋
+    setFile(''); // 선택된 파일 상태도 리셋
   };
 
   const addInfoHandler = async (data) => {
@@ -103,6 +114,14 @@ export default function AddInfoPage() {
               height: 'calc(var(--vh, 1vh) * 15)',
             }}
           />
+          {file && (
+            <button
+              onClick={resetToDefaultImage}
+              className="resetDefaultImg_Button"
+            >
+              <img src={close} />
+            </button>
+          )}
         </div>
         <input
           id="photoURLInput"
@@ -122,14 +141,7 @@ export default function AddInfoPage() {
         <form onSubmit={handleSubmit(addInfoHandler)}>
           <div className="container">
             <div className="text">거주지</div>
-            <SelectLocation
-              searchPlaceholder="Search"
-              data={locations}
-              value={locationData}
-              onChange={changeHandler}
-              error={errors.locationOne?.message}
-              name="locationOne"
-            />
+            <SelectLocation onChange={changeHandler} />
             {!isLocationValid && (
               <div className="errorMessage">거주지를 입력해주세요.</div>
             )}

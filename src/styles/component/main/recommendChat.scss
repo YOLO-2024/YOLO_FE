@@ -31,7 +31,7 @@
   background: #fff;
   gap: 5px;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
-  scroll-snap-align: center;
+  scroll-snap-align: start;
 }
 
 .recommendTitle_Container {
@@ -40,6 +40,7 @@
   font-style: normal;
   font-weight: 800;
   margin-left: 3%;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }
 
 .chatIcon_Box {
@@ -70,8 +71,8 @@
   position: relative;
   display: flex;
   gap: 6px;
-  left: 6.5%;
-  bottom: 20px;
+  left: 7%;
+  bottom: 15%;
 }
 
 .carousel_circle {

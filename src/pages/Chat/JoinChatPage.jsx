@@ -55,7 +55,7 @@ export default function JoinChatPage() {
             <div className="joinchat_inputContainer">서울 강남</div>
           </div>
           <div
-            className="submitButton"
+            className="joinchat_joinButton"
             style={{ background: '#2176FF', color: '#FFFFFF' }}
           >
             채팅방 입장하기
