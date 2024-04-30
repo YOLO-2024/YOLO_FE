@@ -4,7 +4,7 @@ import ChatList from './Chat/ChatList';
 import { AddIcon } from '../assets/svgs/AddIcon';
 import { useNavigate } from 'react-router-dom';
 
-import { api } from '../utils/customAxios';
+// import api from '../utils/api';
 
 export default function ChatPage() {
   // const userToken = sessionStorage.getItem('accessToken');

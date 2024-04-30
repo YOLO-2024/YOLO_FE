@@ -5,7 +5,7 @@ import SelectLocation from '../../components/common/SelectLocation';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 import '../../styles/pages/login/AddInfoPage.scss';
 import '../../styles/component/common/SelectLocation.scss';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 import close from '../../assets/svgs/close.svg';
 
 export default function AddInfoPage() {
@@ -66,21 +66,23 @@ export default function AddInfoPage() {
     const blob = new Blob([json], { type: 'application/json' });
     formData.append('updateProfileRequestDto', blob);
 
+    console.log('before' + userTok);
     console.log(json);
     console.log(locationData);
     console.log(formData);
     await api
       .post('/api/v1/member/update-profile', formData, {
         headers: {
-          Authorization: `Bearer ${userTok}`,
           'Content-Type': 'multipart/form-data',
         },
       })
       .then((response) => {
+        console.log('after' + userTok);
         console.log(response);
         navigate('/addinfo/interest');
       })
       .catch((error) => {
+        console.log('after' + userTok);
         console.error(error);
       });
   };

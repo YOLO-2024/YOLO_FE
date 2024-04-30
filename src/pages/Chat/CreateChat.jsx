@@ -5,7 +5,7 @@ import '../../styles/pages/Chat/CreateChat.scss';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { useForm } from 'react-hook-form';
 import addChatPhoto from '../../assets/svgs/addChatPhoto.svg';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 
 export default function CreateChat() {
   const user = sessionStorage.getItem('accessToken');
@@ -69,7 +69,6 @@ export default function CreateChat() {
     await api
       .post('/api/v1/chat/create', chatFormData, {
         headers: {
-          Authorization: `Bearer ${user}`,
           'Content-Type': 'multipart/form-data',
         },
       })

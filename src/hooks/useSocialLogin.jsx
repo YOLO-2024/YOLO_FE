@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../utils/customAxios';
+import api from '../utils/api';
 
 export const useSocialLogin = ({ socialType }) => {
   const navigate = useNavigate();
@@ -26,9 +26,7 @@ export const useSocialLogin = ({ socialType }) => {
 
           // 프로필 정보 확인
           return api.get('/api/v1/member/profile', {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+            headers: {},
           });
         })
         .then((profileResponse) => {

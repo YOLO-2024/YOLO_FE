@@ -2,16 +2,12 @@ import '../styles/pages/MainPage.scss';
 import RecommendChatting from '../components/Main/RecommendChatting';
 import PopularPostList from '../components/Main/PopularPostList';
 import RecommendPost from '../components/Main/RecommendPost';
-import { api } from '../utils/customAxios';
-// import { useRecoilValue } from 'recoil';
-// import { accessTokenState, refreshTokenState } from '../state/AuthState';
-import axios from 'axios';
+import api from '../utils/api';
 import LogoutButton from '../components/Login/LogoutButton';
 import { useNavigate } from 'react-router-dom'; // React Router v6 사용 시
 
 export default function MainPage() {
   const navigate = useNavigate();
-  const userToken = sessionStorage.getItem('accessToken');
   // const userRefreshToken = sessionStorage.getItem('refreshToken');
 
   const onResignClick = async () => {
@@ -19,9 +15,7 @@ export default function MainPage() {
 
     if (confirmLogout) {
       await api.delete('/api/v1/auth/resign', {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
+        headers: {},
         'Content-Type': 'application/json',
       });
 

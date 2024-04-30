@@ -4,12 +4,11 @@ import Category from './Category';
 import '../../styles/pages/Post/NewPost.scss';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { AddPhoto } from '../../assets/svgs/AddPhoto';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 import { CancleIcon } from '../../assets/svgs/CancleIcon';
 
 export default function NewPost() {
   const navigate = useNavigate();
-  const user = sessionStorage.getItem('accessToken');
   const [file, setFile] = useState([]);
   const [imagePreview, setImagePreview] = useState([]);
   const fileInputRef = useRef(null);
@@ -98,7 +97,6 @@ export default function NewPost() {
     await api
       .post('/api/v1/post/create', formData, {
         headers: {
-          Authorization: `Bearer ${user}`,
           'Content-Type': 'multipart/form-data',
         },
       })
