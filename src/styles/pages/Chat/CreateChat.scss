@@ -1,0 +1,115 @@
+.onPostContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 5%;
+}
+
+.submitChat_Button {
+  background: #c2c2c2;
+  width: 60.371px;
+  height: 37px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: none;
+}
+
+.submitChat_Button.active {
+  background: linear-gradient(
+    131deg,
+    #266ed7 6.68%,
+    #4d8aeb 99.25%
+  ); /* 활성화 상태일 때의 색상 */
+  color: white;
+}
+
+.Title-label,
+.Category-label {
+  color: #171930;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px; /* 135.714% */
+  opacity: 0.3991;
+  margin-left: 5%;
+  margin-bottom: 2%;
+  margin-top: 3%;
+}
+
+.Title-input,
+.Content-input,
+.addImage-container {
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+  color: #686a8a;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.Title-input {
+  height: 50px;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+  padding: 5%;
+}
+
+.Content-input {
+  padding-left: 5%;
+  resize: none;
+  // height: 600px;
+  padding-bottom: 30%;
+}
+
+.ChatContent-input {
+  display: flex;
+  margin: auto;
+  width: 90%;
+  min-height: calc(var(--vh, 1vh) * 50);
+  border: none;
+}
+
+.addImage-container {
+  display: flex;
+  position: fixed;
+  max-width: 550px;
+  width: 100%;
+  bottom: 0;
+  gap: 4%;
+  background: #fff;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+  height: 52px;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.AddPhoto {
+  margin-left: 2%;
+}
+
+.deleteImage {
+  position: absolute;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border-radius: 24px;
+  background: #f6f5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewChatImg_Container {
+  margin: 0% 4% 0% 4%;
+  display: flex;
+  gap: 4%;
+  max-width: 550px;
+  position: fixed; /* 위치 지정 */
+  bottom: 60;
+}

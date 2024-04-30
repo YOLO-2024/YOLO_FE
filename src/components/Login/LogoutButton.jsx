@@ -1,12 +1,7 @@
-import { useResetRecoilState } from 'recoil';
-
 import { useNavigate } from 'react-router-dom'; // React Router v6 사용 시
-import { accessTokenState, refreshTokenState } from '../../state/AuthState';
+// import { accessTokenState, refreshTokenState } from '../../state/AuthState';
 
 const LogoutButton = () => {
-  const resetAccessToken = useResetRecoilState(accessTokenState);
-  const resetRefreshToken = useResetRecoilState(refreshTokenState);
-
   const navigate = useNavigate(); // React Router v6 사용 시
 
   const handleLogout = () => {
@@ -14,8 +9,8 @@ const LogoutButton = () => {
 
     if (confirmLogout) {
       // 토큰 상태를 초기화
-      resetAccessToken();
-      resetRefreshToken();
+      sessionStorage.setItem('accessToken', null);
+      // resetRefreshToken();
 
       // 로그인 페이지로 리다이렉트
 

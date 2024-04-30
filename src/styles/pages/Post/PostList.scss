@@ -1,10 +1,10 @@
 .PostList {
-  flex-direction: column-reverse;
+  flex-direction: column;
   display: flex;
-  /* padding-top: 20%; */
-  padding: 15% 2% 0% 2%;
+  padding: 0% 2% 15% 2%;
   max-width: 550px;
   width: 100%;
+  height: -webkit-fill-available;
 }
 .postId {
   // width: calc(var(--vh, 1vh)*53);

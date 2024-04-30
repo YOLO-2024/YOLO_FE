@@ -2,7 +2,6 @@ import { RouterProvider } from 'react-router-dom';
 import router from './router/Router';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RecoilRoot } from 'recoil';
 
 function App() {
   const queryClient = new QueryClient();
@@ -16,12 +15,10 @@ function App() {
   });
   return (
     <>
-      <RecoilRoot>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-          {/* <ReactQueryDevtools /> */}
-        </QueryClientProvider>
-      </RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        {/* <ReactQueryDevtools /> */}
+      </QueryClientProvider>
     </>
   );
 }

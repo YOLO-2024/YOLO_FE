@@ -3,16 +3,16 @@ import BackIcon from '../../assets/svgs/BackIcon';
 import InterestList from '../../components/Login/InterestList';
 import { useEffect, useState } from 'react';
 import '../../styles/pages/login/InterestPage.scss';
-import { accessTokenState } from '../../state/AuthState';
-// import { api } from '../../utils/customAxios';
-import axios from 'axios';
-import { useRecoilValue } from 'recoil';
+//import { accessTokenState } from '../../state/AuthState';
+import { api } from '../../utils/customAxios';
+//import axios from 'axios';
+//import { useRecoilValue } from 'recoil';
 
 export default function InterestPage() {
   const navigate = useNavigate();
   const [interestList, setInterestList] = useState([]);
   const [showWarning, setShowWarning] = useState(false);
-  const user = useRecoilValue(accessTokenState);
+  const userToken = sessionStorage.getItem('accessToken');
 
   const handleClick = () => {
     navigate(-1);
@@ -26,11 +26,11 @@ export default function InterestPage() {
       setShowWarning(false);
 
       try {
-        await axios.post(
-          `${import.meta.env.VITE_CLIENT_URL}/api/v1/member/update-interest`,
+        await api.post(
+          '/api/v1/member/update-interest',
           { interestList: interestList },
           {
-            headers: { Authorization: `Bearer ` + user }, // 토큰 넣어주기
+            headers: { Authorization: `Bearer ${userToken}` }, // 토큰 넣어주기
             'Content-Type': 'application/json',
           },
         );
