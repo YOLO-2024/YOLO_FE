@@ -1,19 +1,26 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../components/Layout/Layout';
+
+import SearchPage from '../pages/Search/SearchPage';
+
+import LoginPage from '../pages/Login/LoginPage';
+import AddInfoPage from '../pages/Login/AddInfoPage';
+import InterestPage from '../pages/Login/InterestPage';
+
 import MainPage from '../pages/MainPage';
+
 import PostPage from '../pages/PostPage';
-import ChatPage from '../pages/ChatPage';
-import MyChatPage from '../pages/MyChatPage';
 import NewPost from '../pages/Post/NewPost';
 import CheckPost from '../pages/Post/CheckPost';
 import EditPost from '../pages/Post/EditPost';
-import LoginPage from '../pages/Login/LoginPage';
-import AddInfoPage from '../pages/Login/AddInfoPage';
-import TestPage from '../pages/Login/\bTestPage';
-import InterestPage from '../pages/Login/InterestPage';
-import SearchPage from '../pages/Search/SearchPage';
+
+import ChatPage from '../pages/ChatPage';
 import CreateChat from '../pages/Chat/CreateChat';
 import JoinChatPage from '../pages/Chat/JoinChatPage';
+
+import MyChatPage from '../pages/MyChatPage';
+
+import TestPage from '../pages/Login/\bTestPage';
 
 const router = createBrowserRouter([
   {

@@ -1,10 +1,19 @@
 import '../styles/pages/MainPage.scss';
-import RecommendChatting from '../components/Main/RecommendChatting';
-import PopularPostList from '../components/Main/PopularPostList';
-import RecommendPost from '../components/Main/RecommendPost';
+// import RecommendChatting from '../components/Main/RecommendChatting';
+// import PopularPostList from '../components/Main/PopularPostList';
+// import RecommendPost from '../components/Main/RecommendPost';
 import api from '../utils/api';
 import LogoutButton from '../components/Login/LogoutButton';
-import { useNavigate } from 'react-router-dom'; // React Router v6 사용 시
+import { useNavigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+
+const RecommendChatting = lazy(
+  () => import('../components/Main/RecommendChatting'),
+);
+const RecommendPost = lazy(() => import('../components/Main/RecommendPost'));
+const PopularPostList = lazy(
+  () => import('../components/Main/PopularPostList'),
+);
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -24,19 +33,21 @@ export default function MainPage() {
   };
   return (
     <>
-      <div className="main_Container">
-        <RecommendChatting />
-        <div className="main_Post_Container">
-          <div className="main_styledText">인기 있는 게시물</div>
-          <PopularPostList />
+      <Suspense fallback={<div>loading...</div>}>
+        <div className="main_Container">
+          <RecommendChatting />
+          <div className="main_Post_Container">
+            <div className="main_styledText">인기 있는 게시물</div>
+            <PopularPostList />
+          </div>
+          <div className="main_Post_Container">
+            <div className="main_styledText">추천 게시물</div>
+            <RecommendPost />
+          </div>
+          <LogoutButton />
+          <button onClick={onResignClick}>회원탈퇴</button>
         </div>
-        <div className="main_Post_Container">
-          <div className="main_styledText">추천 게시물</div>
-          <RecommendPost />
-        </div>
-        <LogoutButton />
-        <button onClick={onResignClick}>회원탈퇴</button>
-      </div>
+      </Suspense>
     </>
   );
 }

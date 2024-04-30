@@ -8,16 +8,17 @@ import addChatPhoto from '../../assets/svgs/addChatPhoto.svg';
 import api from '../../utils/api';
 
 export default function CreateChat() {
-  const user = sessionStorage.getItem('accessToken');
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm({ mode: 'all' });
+  const { register, handleSubmit, watch } = useForm({ mode: 'all' });
   const [chatImg, setChatImg] = useState('');
   const [previewChatImg, setPreviewChatImg] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const watchedTitle = watch('title');
+  const watchedContent = watch('content');
+
+  const isFormValid =
+    watchedTitle && watchedContent && selectedCategories.length > 0;
 
   const handleBack = () => {
     navigate(-1);
@@ -59,7 +60,7 @@ export default function CreateChat() {
     const jsonChat = JSON.stringify({
       title: data.title,
       content: data.content,
-      categories: selectedCategories, // 이 부분에 selectedCategories를 추가합니다.
+      interests: selectedCategories, // 이 부분에 selectedCategories를 추가합니다.
     });
 
     const blob = new Blob([jsonChat], { type: 'application/json' });
@@ -91,8 +92,8 @@ export default function CreateChat() {
           <input
             type="submit"
             value="등록"
-            className={`submitChat_Button ${isValid ? 'active' : ''}`}
-            disabled={!isValid}
+            className={`submitChat_Button ${isFormValid ? 'active' : ''}`}
+            disabled={!isFormValid}
           />
         </div>
 
