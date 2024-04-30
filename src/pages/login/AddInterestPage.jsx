@@ -114,7 +114,17 @@ const AddInterestPage = () => {
               </div>
             ))}
           </div>
-          <button className="AddInterest_SubmitButton" onClick={handleSumbit}>시작해보기</button>
+          <button
+            className={
+              list.length > 0
+                ? 'AddInterest_SubmitButton'
+                : 'AddInterest_DisableButton'
+            }
+            onClick={handleSumbit}
+            disabled={list.length > 0 ? false : true}
+          >
+            시작해보기
+          </button>
         </div>
       </div>
     );

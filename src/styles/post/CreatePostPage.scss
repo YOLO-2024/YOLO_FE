@@ -35,6 +35,25 @@
         line-height: 19px;
         word-wrap: break-word
     }
+
+    .CreatePostPage_TopBar_DisablePost {
+        width : 60px;
+        height: 37px;
+        margin-left : auto;
+        margin-right : 23px;
+
+        opacity: 0.77;
+        background: gray;
+        border: none;
+        border-radius: 8px;
+
+        color: black;
+        font-size: 12px;
+        font-family: Inter;
+        font-weight: 700;
+        line-height: 19px;
+        word-wrap: break-word
+    }
 }
 
 .CreatePostPage_SmallText {

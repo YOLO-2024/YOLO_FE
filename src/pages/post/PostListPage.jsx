@@ -43,8 +43,6 @@ const PostListPage = () => {
       });
   }, [page]);
 
-  console.log(postList);
-
   const handleObserver = (entries) => {
     const target = entries[0];
     if (target.isIntersecting && !isLoading) {
@@ -65,7 +63,7 @@ const PostListPage = () => {
       <div className="PostList_Wrapper">
         {postList ? (
           postList.map((post, index) => (
-            <div key={index} className="PostList_Post_Wrapper">
+            <div key={index} className="PostList_Post_Wrapper" onClick={()=>navigate('/post/'+post.postInfo.postId)}>
               {/* 이미지 */}
               <div className="PostList_Post_Image_Box">
                 <img

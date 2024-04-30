@@ -107,3 +107,25 @@
     font-family: Inter;
     line-height: 19px;
 }
+
+.addInfo_DisableButton {
+    display: flex;
+
+    width: 349px;
+    height: 52px;
+
+    margin: 45px auto 80px auto;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+    border: none;
+    opacity: 0.7671;
+    background-color: gray;
+
+    color: black;
+    font-size: 12px;
+    font-family: Inter;
+    line-height: 19px;
+}

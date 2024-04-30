@@ -39,8 +39,8 @@ const interestList = [
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
-    const [title, setTitle] = useState('');
-    const [contents, setContents] = useState('');
+    const [title, setTitle] = useState(null);
+    const [contents, setContents] = useState(null);
     const [list, setlist] = useState([]);
 
     const onChangeTitle = (e) => {
@@ -61,13 +61,15 @@ const CreatePostPage = () => {
       setlist(updatedInterest);
     };
 
-    const [imageUrl, setImageUrl] = useState([]);
+    const [imageUrl, setImageUrl] = useState([null]);
     const [preview, setPreview] = useState([]);
     const imgRef = useRef();
 
     const onChangeImage = (e) => {
       const file = e.target.files[0]; // 첫 번째 파일만 선택
-      if (!file) return;
+      if (!file) {
+        return;
+      }
 
       const reader = new FileReader();
       setImageUrl([...imageUrl, file]);
@@ -84,43 +86,44 @@ const CreatePostPage = () => {
     };
 
     const onDeleteImage = (index) => {
-      console.log(index)
       const updatedImages = imageUrl.filter((image, i) => i !== index);
       const updatedPreviewImages = preview.filter((image, i) => i !== index);
       setImageUrl(updatedImages);
       setPreview(updatedPreviewImages);
     };
 
-    console.log(imageUrl)
-
-
-    const onSubmit = () => {
+const onSubmit = async () => {
+  // async 키워드 추가하여 비동기 함수로 선언
+  try {
     const formData = new FormData();
-    const dto = {
-        title: title,
-        content: contents,
-        categories: list,
-    };
-  
-    imageUrl.forEach((file) => {
-      formData.append('files', file);
-    });
+    if(imageUrl.length > 0){
+      imageUrl.forEach((file) => {
+        formData.append('files', file);
+      });
+    } else {
+      formData.append('files', null);
+    }
+
     formData.append(
       'postCreateRequestDto',
-      new Blob([JSON.stringify(dto)], { type: 'application/json' }),
+      new Blob(
+        [
+          JSON.stringify({
+            title: title,
+            content: contents,
+            categories: list,
+          }),
+        ],
+        { type: 'application/json' },
+      ),
     );
+    await Apis.post(`/api/v1/post/create`, formData); // await 키워드를 사용하여 비동기적으로 처리
+    navigate('/postList');
+  } catch (error) {
+    console.error('API 요청 중 오류가 발생했습니다:', error);
+  }
+};
 
-
-    Apis.post(`/api/v1/post/create`, formData)
-        .then((response) => {
-        // 성공적으로 요청을 보낸 후의 작업 수행
-        navigate('/postList');
-        })
-        .catch((error) => {
-        // 요청 실패 시 에러 처리
-        console.error('Error creating post:', error);
-        });
-    }
 
     return (
       <div className="CreatePostPage_Container">
@@ -131,7 +134,11 @@ const CreatePostPage = () => {
               onClick={() => navigate(-1)}
               className="CreatePostPage_TopBar_Back"
             />
-            <button className="CreatePostPage_TopBar_Post" onClick={onSubmit}>게시</button>
+            <button
+              className={(!title || !contents || (list.length === 0) ) ? "CreatePostPage_TopBar_DisablePost" : "CreatePostPage_TopBar_Post" }
+              onClick={onSubmit}
+              disabled={(!title || !contents || (list.length === 0) ) ? true : false}
+              >게시</button>
           </div>
           {/* 제목 */}
           <div className="CreatePostPage_SmallText">제목</div>
