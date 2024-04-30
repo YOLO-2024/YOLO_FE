@@ -5,13 +5,12 @@ import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 
 //포스트 페이지 나열 컴포넌트
 export default function PostList() {
   const navigate = useNavigate();
-  const user = sessionStorage.getItem('accessToken');
   const [postsData, setPostsData] = useState([]);
 
   const onCheck = ({ post }) => {
@@ -35,9 +34,7 @@ export default function PostList() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get('/api/v1/post/check', {
-          headers: { Authorization: `Bearer ${user}` },
-        });
+        const response = await api.get('/api/v1/post/check', {});
         setPostsData(response.data);
         console.log('post 불러오기');
       } catch (error) {

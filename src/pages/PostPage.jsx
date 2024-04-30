@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { AddIcon } from '../assets/svgs/AddIcon';
 import '../styles/pages/PostPage.scss';
-import PostList from './Post/PostList';
+// import PostList from './Post/PostList';
+import { lazy, Suspense } from 'react';
+
+const PostList = lazy(() => import('./Post/PostList'));
 
 export default function PostPage() {
   const navigate = useNavigate();
@@ -11,12 +14,14 @@ export default function PostPage() {
 
   return (
     <>
-      <PostList />
-      <div className="buttonContainer">
-        <div className="new" onClick={onClick}>
-          <AddIcon />
+      <Suspense fallback={<div>loading...</div>}>
+        <PostList />
+        <div className="buttonContainer">
+          <div className="new" onClick={onClick}>
+            <AddIcon />
+          </div>
         </div>
-      </div>
+      </Suspense>
     </>
   );
 }

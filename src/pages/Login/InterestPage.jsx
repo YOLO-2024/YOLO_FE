@@ -1,18 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import BackIcon from '../../assets/svgs/BackIcon';
-import InterestList from '../../components/Login/InterestList';
-import { useEffect, useState } from 'react';
+// import InterestList from '../../components/Login/InterestList';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import '../../styles/pages/login/InterestPage.scss';
 //import { accessTokenState } from '../../state/AuthState';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 //import axios from 'axios';
 //import { useRecoilValue } from 'recoil';
+
+const InterestList = lazy(() => import('../../components/Login/InterestList'));
 
 export default function InterestPage() {
   const navigate = useNavigate();
   const [interestList, setInterestList] = useState([]);
   const [showWarning, setShowWarning] = useState(false);
-  const userToken = sessionStorage.getItem('accessToken');
 
   const handleClick = () => {
     navigate(-1);
@@ -30,7 +31,6 @@ export default function InterestPage() {
           '/api/v1/member/update-interest',
           { interestList: interestList },
           {
-            headers: { Authorization: `Bearer ${userToken}` }, // 토큰 넣어주기
             'Content-Type': 'application/json',
           },
         );
@@ -58,7 +58,9 @@ export default function InterestPage() {
         <div className="styledText">관심사를 선택해주세요.</div>
       </div>
       <div className="interestContainer">
-        <InterestList onInterestChange={setInterestList} />
+        <Suspense fallback={<div>loading...</div>}>
+          <InterestList onInterestChange={setInterestList} />
+        </Suspense>
       </div>
       {showWarning && (
         <div className="warningText">관심사를 2개 이상 선택해주세요.</div>

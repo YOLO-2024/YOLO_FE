@@ -1,73 +1,66 @@
 import '../../styles/component/chat/ChatList.scss';
-import postIcon from '../../assets/svgs/post.png';
 import chattingPerson from '../../assets/svgs/chattingPerson.svg';
 import { useNavigate } from 'react-router-dom';
-
-const ChatItem = ({ chatTitle, chatContents, chatNum, onChatItemClick }) => {
-  return (
-    <div className="chatItem_Container" onClick={onChatItemClick}>
-      <div className="chatItem_ProfileImg">
-        <img
-          src={postIcon}
-          style={{ width: '53px', height: '53px', borderRadius: '10px' }}
-        />
-      </div>
-      <div className="chatInfo_Container">
-        <div className="chatInfo_Title">{chatTitle}</div>
-        <div className="chatInfo_Contents">{chatContents}</div>
-      </div>
-      <div className="chatStats_Container">
-        <img src={chattingPerson} />
-        {chatNum} 명
-      </div>
-    </div>
-  );
-};
+import api from '../../utils/api';
+import { useEffect, useState } from 'react';
+import basicProfile from '../../assets/images/basicProfile.jpg';
 
 const ChatList = () => {
   const navigate = useNavigate();
-  // const [chatData, setChatData] = useState();
-  const chatdummyList = [
-    {
-      chatRoomId: 1,
-      chatTitle: '게임할 사람 구함',
-      chatContents: '게임 같이 하는 방',
-      chatNum: 20,
-    },
-    {
-      chatRoomId: 2,
-      chatTitle: '배달비 n분의 1 모임',
-      chatContents: '배달비 나눔 하는 방',
-      chatNum: 30,
-    },
-    {
-      chatRoomId: 3,
-      chatTitle: '동네 산책방',
-      chatContents: '산책 메이트 구하는 방',
-      chatNum: 10,
-    },
-    {
-      chatRoomId: 4,
-      chatTitle: '오늘의 메뉴 추천 방',
-      chatContents: '메뉴 추천 방',
-      chatNum: 5,
-    },
-  ];
+  const [chatListData, setChatListData] = useState([]);
 
-  const onClickedChat = (chatRoomId) => {
-    navigate(`/chat-page/join/${chatRoomId}`);
+  useEffect(() => {
+    const getChatListData = async () => {
+      try {
+        const res = await api.get('/api/v1/chat/read');
+        setChatListData(res.data);
+        console.log(chatListData.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getChatListData();
+  }, []);
+
+  useEffect(() => {
+    console.log(chatListData.data);
+  }, [chatListData]);
+
+  const onClickedChat = (chatRoomId, chatRoomData) => {
+    console.log(chatRoomData);
+    navigate(`/chat-page/join/${chatRoomId}`, { state: { chatRoomData } });
   };
+
   return (
     <div className="chatList_Container">
-      {chatdummyList.map((chat) => (
-        <ChatItem
-          key={chat.chatRoomId}
-          chatTitle={chat.chatTitle}
-          chatContents={chat.chatContents}
-          chatNum={chat.chatNum}
-          onChatItemClick={() => onClickedChat(chat.chatRoomId)}
-        />
-      ))}
+      {chatListData.data ? (
+        chatListData.data.map((chat, index) => (
+          <div
+            key={index}
+            className="chatItem_Container"
+            onClick={() => onClickedChat(index, chat)}
+          >
+            <div className="chatItem_ProfileImg">
+              <img
+                src={chat.chatRoomImage?.imageUrl || basicProfile}
+                style={{ width: '53px', height: '53px', borderRadius: '10px' }}
+              />
+            </div>
+            <div className="chatInfo_Container">
+              <div className="chatInfo_Title">{chat.chatRoomInfo.title}</div>
+              <div className="chatInfo_Contents">
+                {chat.chatRoomInfo.content}
+              </div>
+            </div>
+            <div className="chatStats_Container">
+              <img src={chattingPerson} />
+              {chat.chatRoomInfo.memberCount} 명
+            </div>
+          </div>
+        ))
+      ) : (
+        <div>채팅방이 존재하지 않습니다.</div>
+      )}
     </div>
   );
 };

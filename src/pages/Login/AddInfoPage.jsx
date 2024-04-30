@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import SelectLocation from '../../components/common/SelectLocation';
+// import SelectLocation from '../../components/common/SelectLocation';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 import '../../styles/pages/login/AddInfoPage.scss';
 import '../../styles/component/common/SelectLocation.scss';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 import close from '../../assets/svgs/close.svg';
+
+const SelectLocation = lazy(
+  () => import('../../components/common/SelectLocation'),
+);
 
 export default function AddInfoPage() {
   const navigate = useNavigate();
@@ -66,21 +70,23 @@ export default function AddInfoPage() {
     const blob = new Blob([json], { type: 'application/json' });
     formData.append('updateProfileRequestDto', blob);
 
+    console.log('before' + userTok);
     console.log(json);
     console.log(locationData);
     console.log(formData);
     await api
       .post('/api/v1/member/update-profile', formData, {
         headers: {
-          Authorization: `Bearer ${userTok}`,
           'Content-Type': 'multipart/form-data',
         },
       })
       .then((response) => {
+        console.log('after' + userTok);
         console.log(response);
         navigate('/addinfo/interest');
       })
       .catch((error) => {
+        console.log('after' + userTok);
         console.error(error);
       });
   };
@@ -129,7 +135,9 @@ export default function AddInfoPage() {
         <form onSubmit={handleSubmit(addInfoHandler)}>
           <div className="container">
             <div className="text">거주지</div>
-            <SelectLocation onChange={changeHandler} />
+            <Suspense fallback={<div>loading...</div>}>
+              <SelectLocation onChange={changeHandler} />
+            </Suspense>
             {!isLocationValid && (
               <div className="errorMessage">거주지를 입력해주세요.</div>
             )}
