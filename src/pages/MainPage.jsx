@@ -2,28 +2,31 @@ import '../styles/pages/MainPage.scss';
 import RecommendChatting from '../components/Main/RecommendChatting';
 import PopularPostList from '../components/Main/PopularPostList';
 import RecommendPost from '../components/Main/RecommendPost';
-// import { api } from '../utils/customAxios';
-import { useRecoilValue } from 'recoil';
-import { accessTokenState, refreshTokenState } from '../state/AuthState';
+import { api } from '../utils/customAxios';
+// import { useRecoilValue } from 'recoil';
+// import { accessTokenState, refreshTokenState } from '../state/AuthState';
 import axios from 'axios';
 import LogoutButton from '../components/Login/LogoutButton';
+import { useNavigate } from 'react-router-dom'; // React Router v6 사용 시
 
 export default function MainPage() {
-  const respon = useRecoilValue(accessTokenState);
-  const reff = useRecoilValue(refreshTokenState);
+  const navigate = useNavigate();
+  const userToken = sessionStorage.getItem('accessToken');
+  // const userRefreshToken = sessionStorage.getItem('refreshToken');
 
-  console.log(respon);
-  console.log(reff);
-  const onLogoutClick = async () => {
-    await axios.delete(
-      `${import.meta.env.VITE_CLIENT_URL}/api/v1/auth/resign`,
-      {
+  const onResignClick = async () => {
+    const confirmLogout = window.confirm('회원탈퇴 하시겠습니까?');
+
+    if (confirmLogout) {
+      await api.delete('/api/v1/auth/resign', {
         headers: {
-          Authorization: 'Bearer ' + respon,
+          Authorization: `Bearer ${userToken}`,
         },
         'Content-Type': 'application/json',
-      },
-    );
+      });
+
+      navigate('/login');
+    }
   };
   return (
     <>
@@ -38,7 +41,7 @@ export default function MainPage() {
           <RecommendPost />
         </div>
         <LogoutButton />
-        <button onClick={onLogoutClick}>회원탈퇴</button>
+        <button onClick={onResignClick}>회원탈퇴</button>
       </div>
     </>
   );

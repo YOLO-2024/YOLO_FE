@@ -1,13 +1,11 @@
-import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { accessTokenState, refreshTokenState } from '../state/AuthState';
 import { api } from '../utils/customAxios';
 
 export const useSocialLogin = ({ socialType }) => {
-  const setAccessToken = useSetRecoilState(accessTokenState);
-  const setRefreshToken = useSetRecoilState(refreshTokenState);
   const navigate = useNavigate();
+  sessionStorage.removeItem('accessToken');
+  sessionStorage.removeItem('refreshToken');
 
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
@@ -21,9 +19,11 @@ export const useSocialLogin = ({ socialType }) => {
           ...(socialType === 'naver' && { state: state }), // 네이버의 경우 state를 추가
         })
         .then((response) => {
+          // accessToken과 refreshToken을 sessionStorage에 저장
           const { accessToken, refreshToken } = response.data.data.token;
-          setAccessToken(accessToken); // Recoil 상태 업데이트
-          setRefreshToken(refreshToken); // Recoil 상태 업데이트
+          sessionStorage.setItem('accessToken', accessToken);
+          sessionStorage.setItem('refreshToken', refreshToken);
+
           // 프로필 정보 확인
           return api.get('/api/v1/member/profile', {
             headers: {
@@ -33,7 +33,7 @@ export const useSocialLogin = ({ socialType }) => {
         })
         .then((profileResponse) => {
           console.log('프로필 정보:', profileResponse.data);
-          // 프로필에 닉네임이 있으면 바로 메인페이지로
+          // 프로필에 닉네임, 위치, 관심사가 모두 있으면 바로 메인페이지로
           if (
             profileResponse.data.data.profileInfo.nickname &&
             profileResponse.data.data.profileInfo.location &&
@@ -49,7 +49,7 @@ export const useSocialLogin = ({ socialType }) => {
           navigate('/addinfo'); // 에러 발생 시, 추가 정보 입력 페이지로 리다이렉트
         });
     }
-  }, [socialType, setAccessToken, setRefreshToken, navigate]);
+  }, [socialType, navigate]); // setAccessToken, setRefreshToken은 실제로 사용되지 않으므로 제거
 
   return null;
 };

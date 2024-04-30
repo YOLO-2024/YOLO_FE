@@ -1,24 +1,22 @@
 import '../styles/pages/ChatPage.scss';
-import { accessTokenState } from '../state/AuthState';
-import { useRecoilValue } from 'recoil';
+
 import ChatList from './Chat/ChatList';
 import { AddIcon } from '../assets/svgs/AddIcon';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
+import { api } from '../utils/customAxios';
 
 export default function ChatPage() {
-  const userToken = useRecoilValue(accessTokenState);
+  // const userToken = sessionStorage.getItem('accessToken');
   const navigate = useNavigate();
 
+  /*
   const onClickApi = async () => {
     try {
-      const dataChatRoom = await axios.get(
-        `${import.meta.env.VITE_CLIENT_URL}/api/v1/chat/read`,
-        {
-          headers: { Authorization: `Bearer ` + userToken }, // 토큰 넣어주기
-          'Content-Type': 'application/json',
-        },
-      );
+      const dataChatRoom = await api.get('/api/v1/chat/read', {
+        headers: { Authorization: `Bearer ${userToken}` }, // 토큰 넣어주기
+        'Content-Type': 'application/json',
+      });
       console.log(dataChatRoom);
       console.log(userToken);
       return dataChatRoom;
@@ -26,15 +24,16 @@ export default function ChatPage() {
       console.log(error);
     }
   };
+  */
 
   const onNewChatClick = () => {
     navigate('/chat-page/new');
   };
 
+  // <button onClick={onClickApi}>버튼</button>
   return (
     <div className="chat_Container">
       <ChatList />
-      <button onClick={onClickApi}>버튼</button>
       <div className="newChat_Container">
         <div className="newChat_Button" onClick={onNewChatClick}>
           <AddIcon />

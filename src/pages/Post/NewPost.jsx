@@ -4,18 +4,15 @@ import Category from './Category';
 import '../../styles/pages/Post/NewPost.scss';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { AddPhoto } from '../../assets/svgs/AddPhoto';
-import { accessTokenState } from '../../state/AuthState';
-import { useRecoilValue } from 'recoil';
-import axios from 'axios';
+import { api } from '../../utils/customAxios';
 import { CancleIcon } from '../../assets/svgs/CancleIcon';
 
 export default function NewPost() {
   const navigate = useNavigate();
-  const user = useRecoilValue(accessTokenState);
+  const user = sessionStorage.getItem('accessToken');
   const [file, setFile] = useState([]);
   const [imagePreview, setImagePreview] = useState([]);
   const fileInputRef = useRef(null);
-  const CLIENT_URL = import.meta.env.VITE_CLIENT_URL;
   const initialState = {
     title: '',
     content: '',
@@ -37,13 +34,25 @@ export default function NewPost() {
 
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    if (selectedFiles.every((file) => file.type.startsWith('image'))) {
-      setFile(selectedFiles); // 파일 상태 업데이트
-      const newImagePreviews = selectedFiles.map((file) =>
-        URL.createObjectURL(file),
-      );
+    const validFiles = selectedFiles.filter((file) =>
+      file.type.startsWith('image'),
+    );
+
+    if (validFiles.length > 0) {
+      setFile(validFiles); // 파일 상태 업데이트
+      const newImagePreviews = validFiles
+        .map((file) => {
+          try {
+            return URL.createObjectURL(file);
+          } catch (error) {
+            console.error('Error creating object URL:', error);
+            return null; // 오류가 발생한 경우 null 반환
+          }
+        })
+        .filter((url) => url !== null); // 유효하지 않은 URL 제거
       setImagePreview(newImagePreviews); // 이미지 미리보기 상태 업데이트
     } else {
+      alert('이미지 파일만 업로드 가능합니다.');
       setFile([]);
       setImagePreview([]);
     }
@@ -86,20 +95,20 @@ export default function NewPost() {
 
     console.log(json);
     console.log(formData);
-    try {
-      const response = await axios.post(
-        `${CLIENT_URL}/api/v1/post/create`,
-        formData,
-        {
-          headers: { Authorization: `Bearer ` + user },
+    await api
+      .post('/api/v1/post/create', formData, {
+        headers: {
+          Authorization: `Bearer ${user}`,
           'Content-Type': 'multipart/form-data',
         },
-      );
-      console.log('server response: ', response.data);
-      navigate('/post-page');
-    } catch (error) {
-      console.error('newpost API error: ', error);
-    }
+      })
+      .then((response) => {
+        console.log(response);
+        navigate('/post-page');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (

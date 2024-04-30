@@ -5,11 +5,7 @@ import SelectLocation from '../../components/common/SelectLocation';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 import '../../styles/pages/login/AddInfoPage.scss';
 import '../../styles/component/common/SelectLocation.scss';
-// import { api } from '../../utils/customAxios';
-import { accessTokenState } from '../../state/AuthState';
-import axios from 'axios';
-import { useRecoilValue } from 'recoil';
-import { useAuthInterceptor } from '../../hooks/useRefreshToken';
+import { api } from '../../utils/customAxios';
 import close from '../../assets/svgs/close.svg';
 
 export default function AddInfoPage() {
@@ -23,13 +19,7 @@ export default function AddInfoPage() {
   const [file, setFile] = useState('');
   const [imagePreview, setImagePreview] = useState(basicProfile);
   const [isLocationValid, setIsLocationValid] = useState(false);
-  const user = useRecoilValue(accessTokenState);
-  const CLI_URL = import.meta.env.VITE_CLIENT_URL;
-  const setupInterceptors = useAuthInterceptor();
-
-  useEffect(() => {
-    setupInterceptors();
-  }, [setupInterceptors]);
+  const userTok = sessionStorage.getItem('accessToken');
 
   useEffect(() => {
     if (file) {
@@ -53,7 +43,7 @@ export default function AddInfoPage() {
     if (newFile && newFile.type.substr(0, 5) === 'image') {
       setFile(newFile);
     } else {
-      setFile('');
+      setFile(null);
     }
   };
 
@@ -79,22 +69,20 @@ export default function AddInfoPage() {
     console.log(json);
     console.log(locationData);
     console.log(formData);
-    console.log(user);
-    try {
-      const res = await axios.post(
-        `${CLI_URL}/api/v1/member/update-profile`,
-        formData,
-        {
-          headers: { Authorization: `Bearer ` + user }, // 토큰 넣어주기
+    await api
+      .post('/api/v1/member/update-profile', formData, {
+        headers: {
+          Authorization: `Bearer ${userTok}`,
           'Content-Type': 'multipart/form-data',
         },
-      );
-      console.log(accessTokenState);
-      console.log(res);
-      navigate('/addinfo/interest');
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .then((response) => {
+        console.log(response);
+        navigate('/addinfo/interest');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const changeHandler = (value, name) => {

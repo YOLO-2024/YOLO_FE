@@ -35,20 +35,20 @@ export default function JoinChatPage() {
             </div>
             <div className="chatStats_Container">
               <img src={chattingPerson} />
-              10 명
+              20 명
             </div>
           </div>
           <div className="joinchat_infoContainer">
             <div className="text">채팅방 제목</div>
-            <div className="joinchat_inputContainer">가가가</div>
+            <div className="joinchat_inputContainer">게임할 사람 구함</div>
           </div>
           <div className="joinchat_infoContainer">
             <div className="text">채팅방 한줄소개</div>
-            <div className="joinchat_inputContainer">가가가</div>
+            <div className="joinchat_inputContainer">게임 같이 하는 방</div>
           </div>
           <div className="joinchat_infoContainer">
             <div className="text">카테고리</div>
-            <div className="joinchat_inputContainer">운동</div>
+            <div className="joinchat_inputContainer">게임</div>
           </div>
           <div className="joinchat_infoContainer">
             <div className="text">지역</div>

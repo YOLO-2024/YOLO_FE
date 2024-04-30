@@ -1,3 +1,4 @@
+/*
 .onPostContainer {
   display: flex;
   justify-content: space-between;
@@ -11,7 +12,7 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
-  line-height: 19px; /* 135.714% */
+  line-height: 19px;
   opacity: 0.3991;
   margin-left: 5%;
   margin-bottom: 2%;
@@ -93,6 +94,109 @@
   border-radius: 24px;
   background: #f6f5ff;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+*/
+
+.onPostContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 5%;
+}
+
+.Title-label,
+.Category-label {
+  color: #171930;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px; /* 135.714% */
+  opacity: 0.3991;
+  margin-left: 5%;
+  margin-bottom: 2%;
+  margin-top: 3%;
+}
+
+.Title-input,
+.Content-input,
+.addImage-container {
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+  color: #686a8a;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.Title-input {
+  height: 50px;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+  padding: 5%;
+}
+
+.Content-input {
+  padding: 0% 5% 10% 5%;
+  resize: none;
+  height: 500px;
+}
+
+.addImage-container {
+  display: flex;
+  position: fixed;
+  max-width: 550px;
+  width: 100%;
+  bottom: 0;
+  gap: 2%;
+  background: #fff;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+  height: 52px;
+  align-items: center;
+  z-index: 1;
+}
+
+.AddPhoto {
+  margin-left: 2%;
+}
+
+.image-previewContainer {
+  margin: 0% 4% 20% 4%;
+  display: flex;
+  gap: 4%;
+  max-width: 550px;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.image-preview {
+  display: flex;
+  position: relative;
+}
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  // background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+  object-fit: cover;
+}
+
+.deleteImage {
+  display: flex;
+  position: absolute;
+  top: 3%;
+  right: 2%;
+  width: 20px;
+  height: 20px;
+  border-radius: 24px;
+  background: #f6f5ff;
   align-items: center;
   justify-content: center;
 }

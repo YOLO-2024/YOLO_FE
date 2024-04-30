@@ -3,16 +3,15 @@ import { CommentIcon } from '../../assets/svgs/CommentIcon';
 import { LikeIcon } from '../../assets/svgs/LikeIcon';
 import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { accessTokenState } from '../../state/AuthState';
 // import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { api } from '../../utils/customAxios';
+import basicProfile from '../../assets/images/basicProfile.jpg';
+
 //포스트 페이지 나열 컴포넌트
 export default function PostList() {
   const navigate = useNavigate();
-  const user = useRecoilValue(accessTokenState);
-  const CLIENT_URL = import.meta.env.VITE_CLIENT_URL;
+  const user = sessionStorage.getItem('accessToken');
   const [postsData, setPostsData] = useState([]);
 
   const onCheck = ({ post }) => {
@@ -28,7 +27,7 @@ export default function PostList() {
         likeCount: `${post.postInfo.likeCount}`,
         reviewCount: `${post.postInfo.reviewCount}`,
         postImages: post.postImage,
-        profileImage: `${post.writerInfo.profileImage.imageUrl}`,
+        profileImage: `${post.writerInfo.profileImage?.imageUrl}`,
       },
     });
   };
@@ -36,7 +35,7 @@ export default function PostList() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`${CLIENT_URL}/api/v1/post/check`, {
+        const response = await api.get('/api/v1/post/check', {
           headers: { Authorization: `Bearer ${user}` },
         });
         setPostsData(response.data);
@@ -67,7 +66,11 @@ export default function PostList() {
           <div className="postIcon">
             <img
               className="postIcon"
-              src={post.postImage[0].imageUrl}
+              src={
+                post.postImage.length !== 0
+                  ? post.postImage[0].imageUrl
+                  : basicProfile
+              }
               alt="게시물 사진"
             />
           </div>

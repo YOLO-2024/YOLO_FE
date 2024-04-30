@@ -4,7 +4,7 @@ import Saly from '../../assets/images/Saly.jpg';
 import Naver from '../../assets/svgs/Naver';
 import Kakao from '../../assets/svgs/Kakao';
 import Google from '../../assets/svgs/Google';
-import { accessTokenState } from '../../state/AuthState';
+// import { accessTokenState } from '../../state/AuthState';
 import { useSocialLogin } from '../../hooks/useSocialLogin';
 
 export default function LoginPage() {
@@ -17,7 +17,6 @@ export default function LoginPage() {
 
   console.log(KAKAO_LOGIN_URL);
   console.log(REDIRECT_URI);
-  console.log(accessTokenState);
   const kakaoHandleLogin = () => {
     sessionStorage.setItem('socialType', 'kakao');
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_LOGIN_URL}&redirect_uri=${REDIRECT_URI}`;
@@ -36,7 +35,7 @@ export default function LoginPage() {
   };
 
   useSocialLogin({ socialType });
-  console.log(accessTokenState);
+  // console.log(accessTokenState);
 
   return (
     <div className="login_wrapper">
