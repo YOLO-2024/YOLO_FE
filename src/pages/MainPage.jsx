@@ -5,7 +5,7 @@ import '../styles/pages/MainPage.scss';
 import api from '../utils/api';
 import LogoutButton from '../components/Login/LogoutButton';
 import { useNavigate } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 
 const RecommendChatting = lazy(
   () => import('../components/Main/RecommendChatting'),
@@ -16,8 +16,10 @@ const PopularPostList = lazy(
 );
 
 export default function MainPage() {
+  const [profileData, setProfileData] = useState([]);
   const navigate = useNavigate();
   // const userRefreshToken = sessionStorage.getItem('refreshToken');
+  const refreshTokens = sessionStorage.getItem('refreshToken');
 
   const onResignClick = async () => {
     const confirmLogout = window.confirm('회원탈퇴 하시겠습니까?');
@@ -31,6 +33,37 @@ export default function MainPage() {
       navigate('/login');
     }
   };
+
+  useEffect(() => {
+    const getProfileData = async () => {
+      try {
+        const res = await api.get('/api/v1/member/profile');
+        setProfileData(res.data.data);
+        console.log(profileData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProfileData();
+  }, []);
+
+  useEffect(() => {
+    console.log(profileData);
+    sessionStorage.setItem('myInfo', JSON.stringify(profileData));
+  }, [profileData]);
+
+  const getNewToken = () => {
+    try {
+      api.post('/api/v1/auth/access', refreshTokens);
+      console.log(profileData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onClickButton = () => {
+    getNewToken();
+  };
+
   return (
     <>
       <Suspense fallback={<div>loading...</div>}>
@@ -46,6 +79,7 @@ export default function MainPage() {
           </div>
           <LogoutButton />
           <button onClick={onResignClick}>회원탈퇴</button>
+          <button onClick={onClickButton}>버튼</button>
         </div>
       </Suspense>
     </>

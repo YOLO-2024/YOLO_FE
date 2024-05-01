@@ -21,6 +21,7 @@ import JoinChatPage from '../pages/Chat/JoinChatPage';
 import MyChatPage from '../pages/MyChatPage';
 
 import TestPage from '../pages/Login/\bTestPage';
+import EditChatRoom from '../pages/Chat/EditChatRoom';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: '/chat-page/new',
     element: <CreateChat />,
+  },
+  {
+    path: '/chat-page/edit/:chatroomId',
+    element: <EditChatRoom />,
   },
   {
     path: '/chat-page/join/:chatroomId',

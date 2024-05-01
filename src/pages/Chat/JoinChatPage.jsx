@@ -5,14 +5,42 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 import chattingPerson from '../../assets/svgs/chattingPerson.svg';
 import BottomNavBar from '../../components/Layout/BottomNavBar';
+import { ModeEditIcon } from '../../assets/svgs/ModeEditIcon';
+import { DeleteIcon } from '../../assets/svgs/DeleteIcon';
+import DeleteModal from '../../components/Modal/DeleteModal';
+import { useEffect, useState } from 'react';
 
 export default function JoinChatPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { chatRoomData } = location.state || {};
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isAble, setIsAble] = useState(false);
+  const myname = JSON.parse(sessionStorage.getItem('myInfo'));
 
+  useEffect(() => {
+    if (myname.profileInfo.nickname === chatRoomData.creatorInfo.nickname) {
+      setIsAble(true);
+    }
+  }, []);
+
+  console.log(myname);
+  console.log(myname.profileInfo.nickname);
+  console.log(chatRoomData.creatorInfo.nickname);
   const onClickGoBack = () => {
     navigate(-1);
+  };
+
+  const onClickDelete = () => {
+    setDeleteModalOpen(!isDeleteModalOpen);
+  };
+
+  const onClickedEdit = () => {
+    console.log(chatRoomData);
+
+    navigate(`/chat-page/edit/${chatRoomData.chatRoomInfo.chatRoomId}`, {
+      state: chatRoomData,
+    });
   };
 
   return (
@@ -22,7 +50,22 @@ export default function JoinChatPage() {
           <div className="previousIcon" onClick={onClickGoBack}>
             <PreviousIcon />
           </div>
+          {isAble ? (
+            <div className="headerIcons_container">
+              <div onClick={() => onClickedEdit()}>
+                <ModeEditIcon />
+              </div>
+              <div onClick={onClickDelete}>
+                <DeleteIcon />
+              </div>
+            </div>
+          ) : null}
         </div>
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          toggleModal={onClickDelete}
+          type={'채팅방을'}
+        />
         <div className="joinchat_contentContainer">
           <div className="joinchat_profileWrapper">
             <div className="joinchat_profileImg">
@@ -76,18 +119,3 @@ export default function JoinChatPage() {
     </>
   );
 }
-
-/*
-import { useLocation } from 'react-router-dom';
-
-const ChatRoomJoinPage = () => {
-  const location = useLocation();
-  const { chatRoomData } = location.state || {};  // 넘겨받은 state가 없는 경우에 대비하여 기본값 설정
-
-  return (
-    <div>
-      
-    </div>
-  );
-};
-*/

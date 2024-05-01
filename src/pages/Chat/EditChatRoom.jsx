@@ -1,80 +1,96 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Category from '../Post/Category';
-import '../../styles/pages/Chat/CreateChat.scss';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { useForm } from 'react-hook-form';
+import Category from '../Post/Category';
 import addChatPhoto from '../../assets/svgs/addChatPhoto.svg';
+import '../../styles/pages/Chat/CreateChat.scss';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 
-export default function CreateChat() {
+export default function EditChatRoom() {
   const navigate = useNavigate();
-  const { register, handleSubmit, watch } = useForm({ mode: 'all' });
-  const [chatImg, setChatImg] = useState('');
-  const [previewChatImg, setPreviewChatImg] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const location = useLocation();
+  const chatRoomData = { ...location.state };
 
-  const watchedTitle = watch('title');
-  const watchedContent = watch('content');
+  const { register, handleSubmit } = useForm({ mode: 'all' });
+  const editState = {
+    title: chatRoomData.chatRoomInfo.title,
+    content: chatRoomData.chatRoomInfo.content,
+    selectedCategories: chatRoomData.chatRoomInfo.interests,
+  };
+  const editImgState = chatRoomData.chatRoomImage.imageUrl;
+  const [file, setFile] = useState(editImgState);
 
-  const isFormValid =
-    watchedTitle && watchedContent && selectedCategories.length > 0;
-
+  const [previewChatImg, setPreviewChatImg] = useState(editImgState);
+  const [formState, setFormState] = useState(editState);
+  console.log(chatRoomData);
   const handleBack = () => {
     navigate(-1);
   };
 
-  const setSelectedCategory = (categories) => {
-    setSelectedCategories(categories);
+  const setSelectedCategories = (categories) => {
+    setFormState({
+      ...formState,
+      selectedCategories: categories,
+    });
   };
 
   const handleChatImgChange = (e) => {
     const newFile = e.target.files[0];
     if (newFile && newFile.type.substr(0, 5) === 'image') {
-      setChatImg(newFile);
+      setFile(newFile);
     } else {
-      setChatImg('');
-      setPreviewChatImg('');
+      setFile(null);
+      setPreviewChatImg(null);
     }
   };
 
   useEffect(() => {
-    if (chatImg) {
+    if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewChatImg(reader.result);
       };
-      reader.readAsDataURL(chatImg);
+      reader.readAsDataURL(file);
     } else {
       setPreviewChatImg('');
     }
-  }, [chatImg]);
+  }, [file]);
 
-  const addChatHandler = async (data) => {
-    const chatFormData = new FormData();
-    if (chatImg) {
-      chatFormData.append('file', chatImg);
-    }
-
-    const jsonChat = JSON.stringify({
-      title: data.title,
-      content: data.content,
-      interests: selectedCategories,
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
     });
+  };
 
-    const blob = new Blob([jsonChat], { type: 'application/json' });
-    chatFormData.append('chatRoomCreateRequestDto', blob);
+  const onClickedSubmit = async () => {
+    // console.log(formState);
+    // setFormState(initialState);
+    const formData = new FormData();
+    if (file) {
+      formData.append('file', file);
+    }
+    const json = JSON.stringify({
+      title: formState.title,
+      content: formState.content,
+      interests: formState.selectedCategories,
+    });
+    const blob = new Blob([json], { type: 'application/json' });
+    formData.append('chatRoomUpdateRequestDto"', blob);
 
-    console.log(jsonChat);
+    console.log(json);
+    console.log(formData);
     await api
-      .post('/api/v1/chat/create', chatFormData, {
+      .post('/api/v1/chat/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
       .then((response) => {
         console.log(response);
-        navigate('/chat-page');
+        navigate(-1);
       })
       .catch((error) => {
         console.error(error);
@@ -83,17 +99,14 @@ export default function CreateChat() {
 
   return (
     <div className="newChat_Wrapper">
-      <form onSubmit={handleSubmit(addChatHandler)}>
+      <form onSubmit={handleSubmit(onClickedSubmit)}>
         <div className="onPostContainer">
           <div className="previousIcon" onClick={handleBack}>
             <PreviousIcon />
           </div>
-          <input
-            type="submit"
-            value="등록"
-            className={`submitChat_Button ${isFormValid ? 'active' : ''}`}
-            disabled={!isFormValid}
-          />
+          <div type="submit" className="submitChat_Button">
+            수정
+          </div>
         </div>
 
         <div className="Title-container">
@@ -101,19 +114,24 @@ export default function CreateChat() {
           <input
             className="Title-input"
             type="text"
-            placeholder="제목을 입력해주세요."
+            defaultValue={formState.title}
+            onChange={handleChange}
             {...register('title')}
           />
         </div>
         <div className="Category-container">
           <div className="Category-label">카테고리</div>
-          <Category setSelectedCategories={setSelectedCategory} />
+          <Category
+            setSelectedCategories={setSelectedCategories}
+            selectedCategories={formState.selectedCategories}
+          />
         </div>
 
         <textarea
           name="content"
           className="ChatContent-input"
-          placeholder="채팅방에 대한 소개를 작성해주세요."
+          defaultValue={formState.content}
+          onChange={handleChange}
           {...register('content')}
         />
 
