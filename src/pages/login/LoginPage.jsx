@@ -12,6 +12,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   sessionStorage.removeItem("accessToken")
   sessionStorage.removeItem('refreshToken');
+  sessionStorage.removeItem('memberState');
 
   useEffect(() => {
     const handleSocialLogin = async () => {

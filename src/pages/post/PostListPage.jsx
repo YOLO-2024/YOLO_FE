@@ -9,11 +9,9 @@ import reviewCount from '../../assets/post/reviewCount.svg';
 import add from '../../assets/post/add.svg';
 import { useNavigate } from 'react-router-dom';
 
-
 const PostListPage = () => {
   const [postList, setPostList] = useState([]);
   const [page, setPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
@@ -28,24 +26,19 @@ const PostListPage = () => {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
     Apis.get('/api/v1/post/page', {
       params: { page: page },
     })
       .then((response) => {
         const newPosts = response.data.data.map((item) => item);
         setPostList((prevPosts) => [...prevPosts, ...newPosts]);
-        setIsLoading(false);
+
       })
-      .catch((error) => {
-        console.error('API 호출 오류:', error);
-        setIsLoading(false); // 에러 발생 시 isLoading 상태 업데이트
-      });
   }, [page]);
 
   const handleObserver = (entries) => {
     const target = entries[0];
-    if (target.isIntersecting && !isLoading) {
+    if (target.isIntersecting) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -63,7 +56,13 @@ const PostListPage = () => {
       <div className="PostList_Wrapper">
         {postList ? (
           postList.map((post, index) => (
-            <div key={index} className="PostList_Post_Wrapper" onClick={()=>navigate('/post/'+post.postInfo.postId)}>
+            <div
+              key={index}
+              className="PostList_Post_Wrapper"
+              onClick={() => navigate(`/post/${post.postInfo.postId}`, {
+                state: { postInfo: post },
+              })}
+            >
               {/* 이미지 */}
               <div className="PostList_Post_Image_Box">
                 <img

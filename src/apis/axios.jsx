@@ -28,9 +28,8 @@ Apis.interceptors.response.use(
     let refreshTokenReqDto = {
       refreshToken: sessionStorage.getItem('refreshToken').toString()
     };
-    if (err.response) {
+    if ((err.response.status === 401)) {
       try {
-        console.log(err.response);
         const response = await axios.post(
           import.meta.env.VITE_ENDPOINT + '/api/v1/auth/access',
           refreshTokenReqDto
