@@ -7,10 +7,18 @@
 }
 
 .joinchat_Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 353px;
   height: 34px;
   flex-shrink: 0;
   margin: auto;
+}
+
+.headerIcons_container {
+  display: flex;
+  gap: 10px;
 }
 .joinchat_contentContainer {
   display: flex;
