@@ -122,7 +122,9 @@ const PostPage = () => {
             src={Edit}
             className="PostPage_Header_Edit"
             onClick={() =>
-              navigate('/post/edit/' + state.postInfo.postInfo.postId)
+              navigate('/post/edit/' + state.postInfo.postInfo.postId, {
+                state: { postInfo: state },
+              })
             }
           />
         )}
@@ -218,12 +220,12 @@ const PostPage = () => {
                 >
                   <div className="PostPage_Comment_MyCommentBox_Top">
                     <div className="PostPage_Comment_MyCommentBox_Nickname">
-                      {state.postInfo.writerInfo.nickname}
+                      {memberState.profileInfo.nickname}
                     </div>
                     <img
                       src={
-                        state.postInfo.writerInfo.profileImage
-                          ? state.postInfo.writerInfo.profileImage.imageUrl
+                        memberState.profileImage
+                          ? memberState.profileImage.imageUrl
                           : NoProifle
                       }
                       className="PostPage_Comment_MyCommentBox_Image"

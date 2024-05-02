@@ -1,0 +1,122 @@
+.ChatRoomListPage_Container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    width: 100%;
+    max-width: 450px;
+    margin-top: 50px;
+
+    height: calc(100vh - 124px);
+    font-family: Inter;
+}
+
+.ChatRoomListPage_Wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 41px;
+
+    align-items: center;
+
+    width: 100%;
+    max-width: 450px;
+    overflow-y: scroll;
+}
+
+.ChatRoomPage_ChatRoom_Wrapper {
+    display: flex;
+    flex-direction: row;
+
+    width: 359px;
+    border-radius: 8px
+}
+
+.ChatRoomListPage_ChatRoom_Image_Box {
+    width: 56px;
+    height: 56px;
+}
+
+.ChatRoomListPage_ChatRoom_Image {
+    width: 56px;
+    height: 56px;
+    border-radius: 19px
+}
+
+.ChatRoomPage_ChatRoom_Content_Box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.ChatRoomPage_ChatRoom_Content_First {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.ChatRoomPage_ChatRoom_Content_Title {
+    color: #303030;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0.45px;
+
+    margin-left: 9px;
+    margin-right: auto;
+}
+
+.ChatRoomPage_ChatRoom_Content_Second {
+    color: #686A8A;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.34px;
+
+    margin-top: 2px;
+    margin-left: 9px;
+    max-height: 32px;
+
+    width: 221px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ChatRoomPage_ChatRoom_Count {
+    display: flex;
+    flex-direction: row;
+
+    margin-left: auto;
+
+    .ChatRoomPage_ChatRoom_Count_Icon {
+        width: 14px;
+        height: 14px;
+    }
+
+    .ChatRoomPage_ChatRoom_Count_Text {
+        color: #171930;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 19px;
+        margin-left: 7px;
+        margin-right: 7px;
+    }
+}
+// 
+.ChatRoomPage_CreateButton {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: #2176FF;
+    border-radius: 30px;
+    /* 화면에 고정된 위치에 설정 */
+    bottom: 29px;
+    right: 18px;
+
+    .ChatRoomPage_CreateButton_Icon {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
