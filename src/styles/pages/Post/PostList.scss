@@ -40,6 +40,7 @@
   line-height: 22px; /* 137.5% */
   letter-spacing: 0.448px;
   overflow-x: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -65,6 +66,8 @@
 .postCreatedAt {
   line-height: 22px; /* 183.333% */
   letter-spacing: 0.226px;
+  display: flex;
+  justify-content: end;
 }
 
 .CountContainer {

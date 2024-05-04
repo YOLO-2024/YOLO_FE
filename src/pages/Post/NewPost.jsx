@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Category from './Category';
 import '../../styles/pages/Post/NewPost.scss';
@@ -19,10 +19,6 @@ export default function NewPost() {
   };
   const [formState, setFormState] = useState(initialState);
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormState({
@@ -33,34 +29,36 @@ export default function NewPost() {
 
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    const validFiles = selectedFiles.filter((file) =>
-      file.type.startsWith('image'),
-    );
-
-    if (validFiles.length > 0) {
-      setFile(validFiles); // 파일 상태 업데이트
-      const newImagePreviews = validFiles
-        .map((file) => {
-          try {
-            return URL.createObjectURL(file);
-          } catch (error) {
-            console.error('Error creating object URL:', error);
-            return null; // 오류가 발생한 경우 null 반환
-          }
-        })
-        .filter((url) => url !== null); // 유효하지 않은 URL 제거
-      setImagePreview(newImagePreviews); // 이미지 미리보기 상태 업데이트
+    if (selectedFiles.every((file) => file.type.startsWith('image'))) {
+      const updatedFiles = [...file, ...selectedFiles];
+      setFile(updatedFiles);
+      const newImagePreviews = selectedFiles.map((file) =>
+        URL.createObjectURL(file),
+      );
+      setImagePreview((prevImagePreview) => [
+        ...prevImagePreview,
+        ...newImagePreviews,
+      ]); // 이미지 미리보기 상태 업데이트
     } else {
-      alert('이미지 파일만 업로드 가능합니다.');
       setFile([]);
       setImagePreview([]);
     }
   };
 
-  const handleDeleteImage = (src) => {
-    setImagePreview(imagePreview.filter((imageSrc) => imageSrc !== src));
-  };
+  useEffect(() => {
+    console.log(file);
+  }, [file]);
+  const handleDeleteImage = (i) => {
+    const updatedImagesFile = file.filter((image, index) => i !== index);
+    const updatedImagePreview = imagePreview.filter(
+      (image, index) => i !== index,
+    );
 
+    setFile(updatedImagesFile);
+    setImagePreview(updatedImagePreview);
+    console.log(updatedImagesFile);
+    console.log(updatedImagePreview);
+  };
   const isValidForm = () => {
     return (
       formState.title &&
@@ -78,12 +76,12 @@ export default function NewPost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formState);
-    // setFormState(initialState);
+
     const formData = new FormData();
     file.forEach((file) => {
       formData.append('files', file); // 여러 파일을 formData에 추가
     });
+
     const json = JSON.stringify({
       title: formState.title,
       content: formState.content,
@@ -92,8 +90,6 @@ export default function NewPost() {
     const blob = new Blob([json], { type: 'application/json' });
     formData.append('postCreateRequestDto', blob);
 
-    console.log(json);
-    console.log(formData);
     await api
       .post('/api/v1/post/create', formData, {
         headers: {
@@ -112,7 +108,7 @@ export default function NewPost() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="onPostContainer">
-        <div className="previousIcon" onClick={handleBack}>
+        <div className="previousIcon" onClick={() => navigate(-1)}>
           <PreviousIcon />
         </div>
         <div
@@ -177,12 +173,12 @@ export default function NewPost() {
       />
       {imagePreview.length >= 0 && (
         <div className="image-previewContainer">
-          {imagePreview.map((src) => (
-            <div key={src} className="image-preview">
+          {imagePreview.map((src, index) => (
+            <div key={index} className="image-preview">
               <img src={src} alt="미리보기" />
               <div
                 className="deleteImage"
-                onClick={() => handleDeleteImage(src)}
+                onClick={() => handleDeleteImage(index)}
               >
                 <CancleIcon />
               </div>
