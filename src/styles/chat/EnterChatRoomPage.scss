@@ -1,0 +1,131 @@
+.EnterChatRoomPage_Container,
+.EnterChatRoomPage_Wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    overflow-y: scroll;
+}
+
+.EnterChatRoomPage_Header {
+    z-index: 1;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    max-width: 450px;
+    height: 37px;
+    padding-top: 3px;
+
+    background-color: white;
+    backdrop-filter: blur(10px);
+}
+
+.EnterChatRoomPage_Header_Back {
+    width: 28px;
+    height: 28px;
+    margin-right: auto;
+    margin-left: 23px;
+}
+
+.EnterChatRoomPage_Header_Edit {
+    width: 28px;
+    height: 28px;
+    margin-left: auto;
+}
+
+.EnterChatRoomPage_Header_Delete {
+    width: 28px;
+    height: 28px;
+    margin-right: 14px;
+} 
+
+.EnterChatRoomPage_ChatRoomImage {
+    width: 150px;
+    height: 150px;
+
+    margin : 0 auto;
+    margin-top : 68px;
+    border-radius: 45px;
+    border: none;
+}
+
+.EnterChatRoomPage_ChatRoom_MemberCount {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top : 22px;
+    
+}
+
+.EnterChatRoomPage_ChatRoom_MemberCount_Image {
+    width: 24px;
+    height: 24px;
+}
+
+.EnterChatRoomPage_ChatRoom_MemberCount_Text {
+    color: #686A8A;
+    font-size: 15px;
+    font-family: Inter;
+    font-weight: 400;
+}
+
+.EnterChatRoomPage_ChatRoom_InfoBox {
+    display: flex;
+    flex-direction: column;
+
+    width: 349px;
+    margin: 0 auto;
+
+    margin-top: 10px;
+}
+
+.EnterChatRoomPage_ChatRoom_InfoBox_Text {
+    color: darkgray;
+    margin-left: 8px;
+}
+
+.EnterChatRoomPage_ChatRoom_InfoBox_Info {
+    display: flex;
+    width: calc(100% - 30px);
+    height: 52px;
+    border: none;
+    border-radius: 8px;
+
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
+
+    align-items: center;
+    padding-right: 15px;
+    padding-left : 15px
+}
+
+.EnterChatRoomPage_ChatRoom_EnterBtn {
+    display: flex;
+    width: 335px;
+    height: 52px;
+    opacity: 0.77;
+    background: #2176FF;
+    border-radius: 8px;
+    border: none;
+
+    color: white;
+    font-size: 12px;
+    font-family: Inter;
+    font-weight: 700;
+    line-height: 19px;
+
+    margin : 33px auto;
+
+    align-items: center;
+    justify-content: center;
+}

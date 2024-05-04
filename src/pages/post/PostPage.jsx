@@ -36,7 +36,10 @@ const PostPage = () => {
         ).then((response) => {
             setCommentList(response.data.data)
         })
+
+        Apis.post('/api/v1/post/increase/' + state.postInfo.postInfo.postId);
     }, [])
+
     console.log(commentList);
 
     const dateFormatter = (dateTimeString) => {

@@ -18,6 +18,8 @@ import ChatPage from '../pages/chat/ChatPage';
 import ChatRoomListPage from '../pages/chat/ChatRoomListPage';
 import MyChatRoomListPage from '../pages/chat/MyChatRoomListPage';
 import CreateChatRoomPage from '../pages/chat/CreateChatRoomPage';
+import EnterChatRoomPage from '../pages/chat/EnterChatRoomPage';
+import EditChatRoomPage from '../pages/chat/EditChatRoomPage';
 
 
 const router = createBrowserRouter([
@@ -64,7 +66,9 @@ const router = createBrowserRouter([
   { path: '/post/edit/:postId', element: <EditPostPage /> },
 
   { path: '/chatroom/:roomId', element: <ChatPage /> },
+  { path: '/chatroom/enter/:roomId', element: <EnterChatRoomPage /> },
   { path: '/chatroom/create', element: <CreateChatRoomPage /> },
+  { path: '/chatroom/edit/:roomId', element: <EditChatRoomPage /> },
 ]);
 
 export default router;

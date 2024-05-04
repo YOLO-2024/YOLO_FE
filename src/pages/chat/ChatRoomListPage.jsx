@@ -47,7 +47,18 @@ const ChatRoomListPage = () => {
       <div className="ChatRoomListPage_Wrapper">
         {chatRoomList ? (
           chatRoomList.map((chatRoom, index) => (
-            <div key={index} className="ChatRoomPage_ChatRoom_Wrapper">
+            <div
+              key={index}
+              className="ChatRoomPage_ChatRoom_Wrapper"
+              onClick={() =>
+                navigate(
+                  '/chatroom/enter/' + chatRoom.chatRoomInfo.chatRoomId,
+                  {
+                    state: { chatRoom: chatRoom },
+                  },
+                )
+              }
+            >
               {/* 이미지 */}
               <div className="ChatRoomListPage_ChatRoom_Image_Box">
                 <img

@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Apis from '../../apis/axios';
 import { interestList } from '../post/data/data';
 import '../../styles/chat/CreateChatRoomPage.scss';
@@ -9,9 +9,12 @@ import deletePhoto from '../../assets/post/delete.svg';
 
 const CreateChatRoomPage = () => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState(null);
-  const [contents, setContents] = useState(null);
-  const [list, setlist] = useState([]);
+  const { state } = useLocation();
+  const [title, setTitle] = useState(state.chatRoom.chatRoom.chatRoomInfo.title);
+  const [contents, setContents] = useState(
+    state.chatRoom.chatRoom.chatRoomInfo.content
+  );
+  const [list, setlist] = useState(state.chatRoom.chatRoom.chatRoomInfo.interests);
 
   const onClickInterest = (value) => {
     let updatedInterest = [];
@@ -23,10 +26,8 @@ const CreateChatRoomPage = () => {
     setlist(updatedInterest);
   };
 
-  console.log(list)
-
-  const [imageUrl, setImageUrl] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [imageUrl, setImageUrl] = useState();
+  const [preview, setPreview] = useState();
   const imgRef = useRef();
 
   const onChangeImage = (e) => {
@@ -54,16 +55,47 @@ const CreateChatRoomPage = () => {
     setPreview(null);
   };
 
+
+    const convertURLtoFile = async (url) => {
+      const response = await fetch(url);
+      const data = await response.blob();
+      const ext = url.split('.').pop(); // url 구조에 맞게 수정할 것
+      const filename = url.split('/').pop(); // url 구조에 맞게 수정할 것
+      const metadata = { type: `image/${ext}` };
+      return new File([data], filename, metadata);
+    };
+
+  useEffect(() => {
+        setPreview(
+          state.chatRoom.chatRoom.chatRoomImage ? state.chatRoom.chatRoom
+            .chatRoomImage.imageUrl : null
+        );
+  
+        if (state.chatRoom.chatRoom.chatRoomImage){
+          convertURLtoFile(state.chatRoom.chatRoom.chatRoomImage.imageUrl).then(
+            (response) => {
+              console.log(response);
+              setImageUrl(response);
+            },
+          )
+        } else {
+          setImageUrl(null)
+        }
+    }, []);
+
+    console.log(imageUrl)
+
   const onSubmit = async () => {
     // async 키워드 추가하여 비동기 함수로 선언
     try {
       const formData = new FormData();
       formData.append('file', imageUrl);
       formData.append(
-        'chatRoomCreateRequestDto',
+        'chatRoomUpdateRequestDto',
         new Blob(
           [
             JSON.stringify({
+              chatRoomId: state.chatRoom.chatRoom.chatRoomInfo.chatRoomId,
               title: title,
               content: contents,
               interests: list,
@@ -72,7 +104,7 @@ const CreateChatRoomPage = () => {
           { type: 'application/json' },
         ),
       );
-      await Apis.post(`/api/v1/chat/create`, formData); // await 키워드를 사용하여 비동기적으로 처리
+      await Apis.post(`/api/v1/chat/update`, formData); // await 키워드를 사용하여 비동기적으로 처리
       navigate('/chatroom');
     } catch (error) {
       console.error('API 요청 중 오류가 발생했습니다:', error);
@@ -132,6 +164,7 @@ const CreateChatRoomPage = () => {
             name="message"
             rows="5"
             cols="30"
+            value={contents}
             className="CreatePostPage_ContentInput"
             onChange={(e) => setContents(e.target.value)}
           >
@@ -139,16 +172,16 @@ const CreateChatRoomPage = () => {
           </textarea>
           {/* 이미지 렌더링 */}
           <div className="CreatePostPage_ImageList">
-            {preview &&
-                <div className="CreatePostPage_ImageContainer">
-                  <img
-                    src={deletePhoto}
-                    className="CreatePostPage_DeleteImage"
-                    onClick={() => onDeleteImage()}
-                  />
-                  <img src={preview} className="CreatePostPage_Image" />
-                </div>
-            }
+            {preview && (
+              <div className="CreatePostPage_ImageContainer">
+                <img
+                  src={deletePhoto}
+                  className="CreatePostPage_DeleteImage"
+                  onClick={() => onDeleteImage()}
+                />
+                <img src={preview} className="CreatePostPage_Image" />
+              </div>
+            )}
           </div>
         </div>
         {/* 이미지 추가 */}

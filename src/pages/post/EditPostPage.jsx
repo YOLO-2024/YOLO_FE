@@ -51,6 +51,7 @@ const EditPostPage = () => {
             })
           )
     }, [])
+    
     const imgRef = useRef();
         console.log(imageUrl);
     const onChangeImage = (e) => {
