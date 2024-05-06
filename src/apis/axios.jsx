@@ -26,9 +26,9 @@ Apis.interceptors.response.use(
   async function (err) {
     const originalConfig = err.config;
     let refreshTokenReqDto = {
-      refreshToken: sessionStorage.getItem('refreshToken').toString()
+      refreshToken: sessionStorage.getItem('refreshToken')
     };
-    if ((err.response.status === 401)) {
+    if (err.response && (err.response.status === 401)) {
       try {
         const response = await axios.post(
           import.meta.env.VITE_ENDPOINT + '/api/v1/auth/access',

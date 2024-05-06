@@ -5,9 +5,12 @@ import { useEffect } from 'react';
 import Apis from '../../apis/axios';
 import * as StompJs from '@stomp/stompjs';
 import BackButton from '../../assets/Login/interest/backButton.svg'
+import NoProfile from '../../assets/Login/NoProfile.png';
 import Exit from '../../assets/Chat/exit.svg';
 import Notification from '../../assets/post/Notification.svg';
 import { useRef } from 'react';
+import axios from 'axios';
+import Modal from '../../component/Modal';
 
 const ChatPage = () => {
 
@@ -19,24 +22,26 @@ const ChatPage = () => {
     let [client, changeClient] = useState(null);
     const [chat, setChat] = useState(''); // 입력된 chat을 받을 변수
     const [chatData, setChatData] = useState({});
+    const [isChatDeclarationActive, setIsChatDeclarationActive] = useState(false);
     const { state } = useLocation();
     const userProfile = JSON.parse(sessionStorage.getItem('memberState'));
 
+    console.log(userProfile);
     const getCurrentDate = () => {
         const date = new Date();
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
-  }
+    }
+    
     useEffect(() => {
-        // 최초 렌더링 시 , 웹소켓에 연결
-        // 우리는 사용자가 방에 입장하자마자 연결 시켜주어야 하기 때문에....
-        connect();
         Apis.get('/api/v1/chat/list/' + chatroomId).
         then((response) => {
             setChatData(response.data.data);
+            messageEndRef.current.scrollIntoView({ behavior: 'auto' });
         });
+        connect();
         return () => disConnect();
     }, []);
 
@@ -46,14 +51,12 @@ const ChatPage = () => {
         let arrLength;
         if(currentChatData) {
           arrLength = currentChatData.length;
-            if (
-            currentChatData[arrLength - 1].sender ===
-            userProfile.profileInfo.nickname
-            ) {
-            messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+          if (currentChatData[arrLength - 1].sender === userProfile.profileInfo.nickname) {
+              messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
             }
         }
     }, [chatData])
+
     const connect = () => {
         if (client) disConnect();
         // 소켓 연결
@@ -66,7 +69,7 @@ const ChatPage = () => {
                 debug: function (str) {
                     console.log(str);
                 },
-                reconnectDelay: 5000, // 자동 재 연결
+                reconnectDelay: 5000, // 자동 재연결
                 heartbeatIncoming: 4000,
                 heartbeatOutgoing: 4000,
         });
@@ -87,7 +90,7 @@ const ChatPage = () => {
             clientdata.activate(); // 클라이언트 활성화
             changeClient(clientdata); // 클라이언트 갱신
         } catch (err) {
-            // console.log(err);
+          console.error(err);
         }
     };
 
@@ -176,6 +179,17 @@ const ChatPage = () => {
     }
     return (
       <>
+        {/* 포스트 삭제 */}
+        {isChatDeclarationActive && (
+          <Modal
+            actionType="Declaration"
+            type="CHAT"
+            title="채팅방을 신고하시겠습니까?"
+            body="신고 접수 확인 후, 조치하겠습니다."
+            setIsActive={setIsChatDeclarationActive}
+            id={state.chatRoom.chatRoomInfo.chatRoomId}
+          />
+        )}
         <div className="ChatPage_Header">
           <img
             src={BackButton}
@@ -191,7 +205,10 @@ const ChatPage = () => {
             </div>
           </div>
           <div className="ChatPage_Header_IconBox">
-            <img src={Notification} />
+            <img
+              src={Notification}
+              onClick={() => setIsChatDeclarationActive(true)}
+            />
             <img src={Exit} />
           </div>
         </div>
@@ -212,7 +229,11 @@ const ChatPage = () => {
                           {message.sender}
                         </div>
                         <img
-                          src={message.senderProfile}
+                          src={
+                            userProfile.profileImage !== null
+                              ? userProfile.profileImage.imageUrl
+                              : NoProfile
+                          }
                           className="ChatPage_MessageBox_MyProfile"
                         />
                       </div>
@@ -229,7 +250,11 @@ const ChatPage = () => {
                     <div key={index} className="ChatPage_MessageBox">
                       <div className="ChatPage_MessageBox_Top">
                         <img
-                          src={message.senderProfile}
+                          src={
+                            message.senderProfile !== null
+                              ? message.senderProfile
+                              : NoProfile
+                          }
                           className="ChatPage_MessageBox_OtherProfile"
                         />
                         <div className="ChatPage_MessageBox_OtherNickname">

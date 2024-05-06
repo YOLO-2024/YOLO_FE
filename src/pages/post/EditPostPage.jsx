@@ -38,22 +38,24 @@ const EditPostPage = () => {
 
     const [imageUrl, setImageUrl] = useState([]);
 
-    const [preview, setPreview] = useState();
+    const [preview, setPreview] = useState([]);
 
     useEffect(() => {
         setPreview(
             state.postInfo.postInfo.postImage.map((image) => image.imageUrl),
         )
           state.postInfo.postInfo.postImage.map(
-            (image) => convertURLtoFile(image.imageUrl)
+            (image) => {
+            convertURLtoFile(image.imageUrl)
             .then((file) => {
-                setImageUrl([...imageUrl, file])
+                setImageUrl((prevImageUrl) => [...prevImageUrl, file]);
             })
-          )
+        })
     }, [])
     
     const imgRef = useRef();
-        console.log(imageUrl);
+    console.log(imageUrl);
+    console.log(preview);
     const onChangeImage = (e) => {
         const file = e.target.files[0]; // 첫 번째 파일만 선택
         if (!file) {

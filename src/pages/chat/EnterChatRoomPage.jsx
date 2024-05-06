@@ -6,16 +6,29 @@ import backButton from '../../assets/Login/interest/backButton.svg';
 import NoImage from '../../assets/Login/NoImage.webp';
 import personCount from '../../assets/Chat/personCount.svg';
 import ChatRoomValueBox from '../../component/chat/ChatRoomValueBox';
+import { useState } from 'react';
+import Modal from '../../component/Modal';
 
 const EnterChatRoomPage = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
     const memberState = JSON.parse(sessionStorage.getItem('memberState'));
+    const [isChatDeleteActive, setIsChatDeleteActive] = useState(false)
     console.log(memberState);
     console.log(state);
 
     return (
       <>
+        {isChatDeleteActive && (
+          <Modal
+            actionType="Delete"
+            type="CHAT"
+            title="채팅방을 삭제하시겠습니까?"
+            body="채팅방이 삭제되면, 복구되지 않습니다."
+            setIsActive={setIsChatDeleteActive}
+            id={state.chatRoom.chatRoomInfo.chatRoomId}
+          />
+        )}
         <div className="EnterChatRoomPage_Header">
           <img
             src={backButton}
@@ -42,7 +55,7 @@ const EnterChatRoomPage = () => {
             <img
               src={DeletePost}
               className="EnterChatRoomPage_Header_Delete"
-              onClick={() => {}}
+              onClick={() => {setIsChatDeleteActive(true);}}
             />
           )}
         </div>

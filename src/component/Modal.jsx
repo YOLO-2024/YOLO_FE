@@ -9,6 +9,7 @@ const Modal = ({actionType, type, title, body, setIsActive, id}) => {
 
     const onActionFilter = () => {
         if(actionType === 'Delete') {
+          if(type === 'CHAT') return onChatRoomDelete();
             return type === 'POST' ? onPostDelete() : onCommentDelete();
         } else if(actionType === 'Declaration') {
             onSubmitDeclaration();
@@ -18,6 +19,7 @@ const Modal = ({actionType, type, title, body, setIsActive, id}) => {
     const onPostDelete = () => {
       Apis.delete(`/api/v1/post/delete/${id}`)
       .then(() => {
+        setIsActive(false);
         navigate('/postList');
       })
     };
@@ -29,6 +31,13 @@ const Modal = ({actionType, type, title, body, setIsActive, id}) => {
             window.location.reload();
         })
     }
+
+    const onChatRoomDelete = () => {
+      Apis.delete(`/api/v1/chat/delete/${id}`).then(() => {
+        setIsActive(false);
+        navigate('/chatroom');
+      });
+    };
 
     const onSubmitDeclaration = () => {
         Apis.post('/api/v1/declaration/report', {

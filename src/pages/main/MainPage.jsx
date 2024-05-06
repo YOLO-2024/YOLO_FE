@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import Apis from '../../apis/axios';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
+    const navigate = useNavigate()
     useEffect(() => {
         Apis.get('/api/v1/member/profile')
         .then((response) => {
@@ -13,7 +15,7 @@ const MainPage = () => {
     }, [])
 
     const memberState = JSON.parse(sessionStorage.getItem('memberState'));
-    console.log(memberState);
+    
     return (
         <div>
             
