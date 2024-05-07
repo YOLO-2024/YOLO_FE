@@ -13,7 +13,7 @@ const Header = () => {
       <div className="Header_Container">
         <div className="Header_Wrapper">
           <div className="AppLogo_Wrapper">
-            <img src={AppLogo} alt="AppLogo" onClick={() => navigate('/login')}/>
+            <img src={AppLogo} alt="AppLogo" onClick={() => navigate('/')}/>
           </div>
           <div className="Icon_Wrapper">
             <img src={Alarm} alt="Alarm" onClick={() => navigate('/')}/>

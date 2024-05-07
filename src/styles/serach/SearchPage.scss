@@ -1,0 +1,90 @@
+.SearchPage_Header {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+    top : 0;
+}
+
+.SearchPage_Header_BackButton {
+    width: 34px;
+    height: 34px;
+
+    margin-left : 23px;
+}
+
+.SearchPage_Header_Input {
+    width: 202px;
+    height: 21px;
+
+    background: #F4F4F4;
+    border: none;
+    border-radius: 8px;
+
+    margin-left : auto;
+    margin-right: auto;
+
+    padding : 8px;
+}
+
+.SearchPage_Header_Button {
+    width: 60px;
+    height: 37px;
+
+    opacity: 0.77;
+    background: linear-gradient(131deg, #266ED7 0%, #4D8AEB 100%);
+    border-radius: 8px;
+
+    border: none;
+    color: white;
+    font-size: 12px;
+    font-family: Inter;
+    font-weight: 700;
+    line-height: 19px;
+
+    margin-right : 23px;
+}
+
+.SearchPage_Container,
+.SearchPage_Wrapper {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.SearchPage_Container {
+    margin-top: 37px;
+}
+
+.SearchPage_Wrapper {
+    align-items: center;
+    justify-content: center;
+}
+
+.SearchPage_SearchType {
+    display: flex;
+    flex-direction: row;
+    gap : 12px;
+
+    margin-left : 21px;
+    margin-right : auto;
+
+    margin-bottom : 21px;
+}
+
+.SearchPage_SearchType_Text {
+    color: #303030;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0.56px;
+
+    margin-top : 23px;
+
+}
