@@ -97,7 +97,7 @@ const PostListPage = () => {
                     className="PostList_Post_Count_Icon"
                   />
                   <div className="PostList_Post_Count_Text">
-                    {post.postInfo.likeCount}
+                    {post.postInfo.commentCount}
                   </div>
                   <img src={reviewCount} className="PostList_Post_Count_Icon" />
                   <div className="PostList_Post_Count_Text">

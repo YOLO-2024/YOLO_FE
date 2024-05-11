@@ -204,7 +204,7 @@ const PostPage = () => {
             </div>
             <img src={commentCount} className="PostPage_Post_Count_Icon" />
             <div className="PostPage_Post_Count_Text">
-              {state.postInfo.postInfo.likeCount}
+              {state.postInfo.postInfo.commentCount}
             </div>
             <img src={reviewCount} className="PostPage_Post_Count_Icon" />
             <div className="PostPage_Post_Count_Text">
