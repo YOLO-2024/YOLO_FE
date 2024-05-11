@@ -25,8 +25,10 @@ const ChatPage = () => {
   const [page, setPage] = useState(0);
   const { state } = useLocation();
   const userProfile = JSON.parse(sessionStorage.getItem('memberState'));
+  const [count, setCount] = useState(0); // count 값을 상태로 변경
 
   console.log(chatData);
+  console.log(page);
 
   useEffect(() => {
     connect();
@@ -34,22 +36,41 @@ const ChatPage = () => {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, {
-      threshold: 0,
-    });
-    // 최하단 요소를 관찰 대상으로 지정함
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        console.log(count);
+        if (target.isIntersecting && count > 0) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      },
+      [count],
+    ); // count를 의존성 배열에 추가하여 변경될 때마다 새로운 값을 참조하도록 함
+
     const observerTarget = document.getElementById('observer');
-    // 관찰 시작
+
     if (observerTarget) {
       observer.observe(observerTarget);
     }
-  }, []);
+
+    return () => observer.disconnect(); // 컴포넌트가 unmount될 때 옵저버 해제
+  }, [count]); // count가 변경될 때마다 이펙트를 실행하도록 설정
 
   useLayoutEffect(() => {
     messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
+    fetchData();
+  }, [page]);
+
+  useEffect(() => {
+    console.log(Object.entries(chatData).length);
+    setCount(Object.entries(chatData).length); // chatData가 업데이트될 때마다 count 값 업데이트
+  }, [chatData]);
+
+  // 페이지 데이터를 가져오는 함수
+  const fetchData = () => {
     Apis.get('/api/v1/chat/list/' + chatroomId, {
       params: {
         page: page,
@@ -69,13 +90,6 @@ const ChatPage = () => {
         return mergedData;
       });
     });
-  }, [page]);
-
-  const handleObserver = (entries) => {
-    const target = entries[0];
-    if (target.isIntersecting) {
-      setPage((prevPage) => prevPage + 1);
-    }
   };
 
   const connect = () => {
@@ -160,6 +174,10 @@ const ChatPage = () => {
         message: chat,
       }),
     });
+    // 메시지를 보낸 후 최하단으로 스크롤 이동
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
     setChat('');
   };
 
@@ -198,6 +216,13 @@ const ChatPage = () => {
     return `${hours}:${minutes} ${amOrPm}`; // HH:MM AM 또는 PM 형식으로 조합
   };
 
+  const onClickExit = () => {
+    Apis.delete('/api/v1/chat/exit/' + chatroomId).then((response) => {
+      console.log(response.data);
+      navigate('/chatroom');
+    });
+  };
+
   return (
     <>
       {/* 포스트 삭제 */}
@@ -230,7 +255,7 @@ const ChatPage = () => {
             src={Notification}
             onClick={() => setIsChatDeclarationActive(true)}
           />
-          <img src={Exit} />
+          <img src={Exit} onClick={onClickExit} />
         </div>
       </div>
       <div className="ChatPage_Container">

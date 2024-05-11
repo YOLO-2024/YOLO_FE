@@ -55,6 +55,8 @@
 
 .ChatPage_Wrapper {
     padding-bottom: 30px;
+    padding-top : 30px;
+    overflow-y: scroll;
 }
 .ChatPage_Container {
     height: calc(100vh - 74px);
