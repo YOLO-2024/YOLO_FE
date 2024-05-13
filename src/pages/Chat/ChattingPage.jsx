@@ -303,7 +303,7 @@ const ChattingPage = () => {
 export default ChattingPage;
 */
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import * as StompJs from '@stomp/stompjs';
 import '../../styles/pages/Chat/ChattingPage.scss';
@@ -312,10 +312,8 @@ import basicProfile from '../../assets/images/basicProfile.jpg';
 import '../../styles/component/TextInput.scss';
 
 const ChattingPage = () => {
-  const param = useParams();
   const navigate = useNavigate();
   const messagesEndRef = useRef(null);
-  const chatroomId = param.roomId;
   const socket = import.meta.env.VITE_WEBSOCKET_URL;
   let [client, changeClient] = useState(null);
   const [chatData, setChatData] = useState({});
@@ -336,21 +334,28 @@ const ChattingPage = () => {
     return `${year}-${month}-${day}`;
   };
 
-  Object.keys(chatData).forEach((date) => {
-    console.log(date + ':'); // 날짜 출력
-    console.log(chatData[date]);
-    chatData[date].forEach((msgObject) => {
-      // 해당 날짜의 메시지 목록 순회
-      console.log(msgObject.msg); // 각 메시지의 내용 출력
-    });
-  });
   useEffect(() => {
+    Object.keys(chatData).forEach((date) => {
+      console.log(date + ':'); // 날짜 출력
+      console.log(chatData[date]);
+      chatData[date].forEach((msgObject) => {
+        // 해당 날짜의 메시지 목록 순회
+        console.log(msgObject.msg); // 각 메시지의 내용 출력
+      });
+    });
+  }, [chat]);
+
+  const getData = () => {
     api
       .get('/api/v1/chat/list/' + state.chatRoom.chatRoomInfo.chatRoomId)
       .then((response) => {
         setChatData(response.data.data);
         console.log(chatData);
       });
+  };
+
+  useEffect(() => {
+    getData();
     connect();
     return () => disConnect();
   }, []);
@@ -392,12 +397,13 @@ const ChattingPage = () => {
       // 구독
       clientdata.onConnect = function () {
         clientdata.subscribe(
-          import.meta.env.VITE_SUB + chatroomId,
+          import.meta.env.VITE_SUB + state.chatRoom.chatRoomInfo.chatRoomId,
           (message) => {
             if (message.body) {
               let msgObject = JSON.parse(message.body);
               let msg = msgObject.data;
               console.log(msg);
+              addNewMessage(msg);
             }
           },
         );
@@ -409,6 +415,30 @@ const ChattingPage = () => {
     }
   };
 
+  const addNewMessage = (newMessage) => {
+    setChatData((prevChatData) => {
+      // 오늘 날짜를 'YYYY-MM-DD' 형식으로 얻기
+      const today = new Date(); // 현재 날짜와 시간을 생성
+      today.setHours(today.getHours() + 9); // 현재 시간에 9시간을 더함
+      const newTime = today.toISOString().split('T')[0]; // 결과를 ISO 문자열로 변환
+
+      // 오늘 날짜에 해당하는 메시지 배열이 이미 존재하는지 확인
+      if (prevChatData[newTime]) {
+        // 존재한다면 새 메시지를 배열에 추가
+        return {
+          ...prevChatData,
+          [newTime]: [...prevChatData[newTime], newMessage],
+        };
+      } else {
+        // 존재하지 않는다면 새로운 키-값 쌍 추가
+        return {
+          ...prevChatData,
+          [newTime]: [newMessage],
+        };
+      }
+    });
+  };
+
   const disConnect = () => {
     // 연결 끊기
     if (client === null) {
@@ -418,32 +448,24 @@ const ChattingPage = () => {
   };
 
   const sendChat = () => {
-    const today = new Date().toISOString().split('T')[0];
-    const newMessage = {
-      roomId: state.chatRoom.chatRoomInfo.chatRoomId,
-      sender: userProfile.profileInfo.nickname,
-      message: chat, // 메시지 내용
-      createdAt: new Date().toISOString(),
-    };
-    if (client && client.active) {
-      client.publish({
-        destination:
-          import.meta.env.VITE_PUB + state.chatRoom.chatRoomInfo.chatRoomId, // 서버의 publish URL
-        body: JSON.stringify(newMessage),
-      });
-
-      if (chatData[today]) {
-        // 해당 날짜에 이미 메시지가 있으면 새 메시지 추가
-        chatData[today].push(newMessage);
-      } else {
-        // 해당 날짜에 메시지가 없으면 새 배열 생성 후 메시지 추가
-        chatData[today] = [newMessage];
-      }
-      console.log('메시지 전송 성공');
-      setChat(''); // 메시지 전송 후 입력 필드 초기화
-    } else {
-      console.log('소켓 연결이 되어있지 않습니다.');
+    client.publish({
+      destination:
+        import.meta.env.VITE_PUB + state.chatRoom.chatRoomInfo.chatRoomId, // 서버의 publish URL
+      body: JSON.stringify({
+        roomId: state.chatRoom.chatRoomInfo.chatRoomId,
+        sender: userProfile.profileInfo.nickname,
+        message: chat, // 메시지 내용
+        createdAt: new Date().toISOString(),
+      }),
+    });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
+    console.log(chat);
+    getData();
+    setChat(''); // 메시지 전송 후 입력 필드 초기화
+    console.log('메시지 전송 성공');
+    console.log(chatData);
   };
 
   function formatTime(createdAt) {
@@ -451,7 +473,7 @@ const ChattingPage = () => {
     let hours = createdAtDate.getHours() + 9;
     const minutes = createdAtDate.getMinutes().toString().padStart(2, '0');
     const isAm = hours < 12;
-    const ampm = isAm ? 'PM' : 'AM';
+    const ampm = isAm ? 'AM' : 'PM';
 
     // 24시간제를 12시간제로 변환
     hours = hours % 12;
@@ -462,6 +484,18 @@ const ChattingPage = () => {
 
     return `${formattedHours}:${minutes} ${ampm}`;
   }
+
+  const sortedDates = Object.keys(chatData).sort(
+    (a, b) => new Date(a) - new Date(b),
+  );
+
+  // 정렬된 날짜를 기준으로 새로운 객체 생성
+  const sortedChatData = {};
+  sortedDates.forEach((date) => {
+    sortedChatData[date] = chatData[date].sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+    );
+  });
 
   const handleChange = (e) => {
     const newComment = e.target.value;
@@ -494,67 +528,65 @@ const ChattingPage = () => {
       </div>
       <div className="ChatPage_Container">
         <div className="ChatPage_Wrapper">
-          {Object.keys(chatData)
-            .sort()
-            .map((date) => (
-              <div key={date}>
-                <div className="ChatPage_Date">{date}</div>
+          {Object.entries(sortedChatData).map(([date, chatData]) => (
+            <div key={date}>
+              <div className="ChatPage_Date">{date}</div>
 
-                {chatData[date].map((msgObject, index) =>
-                  msgObject.messageType === 'ENTER' ? (
-                    <div key={index} className="ChatPage_EnterMessage">
-                      <div>{msgObject.sender}님이 입장하셨습니다.</div>
+              {chatData.map((msgObject, index) =>
+                msgObject.messageType === 'ENTER' ? (
+                  <div key={index} className="ChatPage_EnterMessage">
+                    <div>{msgObject.sender}님이 입장하셨습니다.</div>
+                  </div>
+                ) : userProfile.profileInfo.nickname === msgObject.sender ? (
+                  <div key={index} className="ChatPage_MyContentContainer">
+                    <div className="ChatPage_MessageBox_MyNickname">
+                      {msgObject.sender}
+                      <img
+                        src={
+                          userProfile.profileImage !== null
+                            ? userProfile.profileImage.imageUrl
+                            : basicProfile
+                        }
+                        className="ChatPage_MessageBox_MyProfile"
+                      />
                     </div>
-                  ) : userProfile.profileInfo.nickname === msgObject.sender ? (
-                    <div key={index} className="ChatPage_MyContentContainer">
-                      <div className="ChatPage_MessageBox_MyNickname">
-                        {msgObject.sender}
-                        <img
-                          src={
-                            userProfile.profileImage !== null
-                              ? userProfile.profileImage.imageUrl
-                              : basicProfile
-                          }
-                          className="ChatPage_MessageBox_MyProfile"
-                        />
-                      </div>
 
-                      <div style={{ display: 'flex' }}>
-                        <div className="ChatPage_ContentBox_MyTime">
-                          {formatTime(msgObject.createdAt)}
-                        </div>
-                        <div className="ChatPage_ContentBox_MyContent">
-                          {msgObject.msg}
-                        </div>
+                    <div style={{ display: 'flex' }}>
+                      <div className="ChatPage_ContentBox_MyTime">
+                        {formatTime(msgObject.createdAt)}
+                      </div>
+                      <div className="ChatPage_ContentBox_MyContent">
+                        {msgObject.msg}
                       </div>
                     </div>
-                  ) : (
-                    <div key={index} className="ChatPage_ContentContainer">
-                      <div className="ChatPage_MessageBox_OtherNickname">
-                        <img
-                          src={
-                            userProfile.profileImage !== null
-                              ? userProfile.profileImage.imageUrl
-                              : basicProfile
-                          }
-                          className="ChatPage_MessageBox_OtherProfile"
-                        />
-                        {msgObject.sender}
-                      </div>
+                  </div>
+                ) : (
+                  <div key={index} className="ChatPage_ContentContainer">
+                    <div className="ChatPage_MessageBox_OtherNickname">
+                      <img
+                        src={
+                          msgObject.senderProfile !== null
+                            ? msgObject.senderProfile
+                            : basicProfile
+                        }
+                        className="ChatPage_MessageBox_OtherProfile"
+                      />
+                      {msgObject.sender}
+                    </div>
 
-                      <div style={{ display: 'flex' }}>
-                        <div className="ChatPage_ContentBox_OtherContent">
-                          {msgObject.msg}
-                        </div>
-                        <div className="ChatPage_ContentBox_OtherTime">
-                          {formatTime(msgObject.createdAt)}
-                        </div>
+                    <div style={{ display: 'flex' }}>
+                      <div className="ChatPage_ContentBox_OtherContent">
+                        {msgObject.msg}
+                      </div>
+                      <div className="ChatPage_ContentBox_OtherTime">
+                        {formatTime(msgObject.createdAt)}
                       </div>
                     </div>
-                  ),
-                )}
-              </div>
-            ))}
+                  </div>
+                ),
+              )}
+            </div>
+          ))}
         </div>
         <div ref={messagesEndRef}></div>
       </div>
@@ -571,7 +603,7 @@ const ChattingPage = () => {
           className="Textcheck"
           onClick={sendChat}
           style={{
-            background: isValid ? ' #266ED7 6.68%' : '#4D8AEB 99.25%',
+            background: isValid ? '#4D8AEB 50%' : '#4D8AEB 99.25%',
             border: 'none',
           }}
         >
