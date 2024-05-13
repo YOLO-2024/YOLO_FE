@@ -12,10 +12,12 @@ const PopularPostItem = ({ image, title, categories, data }) => {
     console.log(image);
 
     console.log(data);
+    console.log(data.postImage);
     navigate(`/post-page/check/${data.postInfo.postId}`, {
       state: {
         postData: data,
         postInfo: data.postInfo,
+        postImage: data.postImage,
         writerInfo: data.writerInfo,
       },
     });

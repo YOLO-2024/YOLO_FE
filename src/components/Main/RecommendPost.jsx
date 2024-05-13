@@ -8,10 +8,12 @@ const RecommendPostItem = ({ title, categories, data }) => {
   const navigate = useNavigate();
   const onClickedRecommendPost = () => {
     console.log(data);
+    console.log(data.postImage);
     navigate(`/post-page/check/${data.postInfo.postId}`, {
       state: {
         postData: data,
         postInfo: data.postInfo,
+        postImage: data.postImage,
         writerInfo: data.writerInfo,
       },
     });
