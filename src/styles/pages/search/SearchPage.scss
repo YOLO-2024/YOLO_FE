@@ -1,3 +1,44 @@
+.searchBar_Wrapper {
+  display: flex;
+  margin: auto;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.gobackButton {
+  height: 34px;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  display: flex;
+  width: 60%;
+  height: 37px;
+  flex-shrink: 0;
+  background: #f4f4f4;
+  border: none;
+  border-radius: 30px;
+  justify-content: flex-start;
+  padding-left: 10px;
+}
+
+.searchBar_Button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60.371px;
+  height: 37px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  background-color: #266ed7;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
+  &:disabled {
+    background-color: gray;
+  }
+}
+
 .search_Wrapper {
   display: flex;
   height: calc(var(--vh, 1vh) * 90);
@@ -28,6 +69,78 @@
 
 .searchResult_Container {
   display: flex;
-  margin: auto;
+  flex-direction: column;
+  padding: 15px;
+  padding-bottom: 50px;
   font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
+}
+
+.chatIcon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 25%;
+  margin-right: 3%;
+}
+
+.searchResult_none {
+  display: flex;
+  justify-content: center;
+  margin-top: 70vw;
+  color: #171930;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px; /* 158.333% */
+  text-decoration-line: underline;
+  opacity: 0.3991;
+}
+
+.chatId {
+  display: flex;
+  // margin: 5px 0px 20px 5px;
+  margin-bottom: 25px;
+}
+.chatInfoWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.chatInfoContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.chatTitle {
+  color: #303030;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px; /* 137.5% */
+  letter-spacing: 0.448px;
+}
+
+.chatContent {
+  width: 211px;
+  color: #686a8a;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 133.333% */
+  letter-spacing: 0.336px;
+}
+
+.chatMemberCount {
+  display: flex;
+  color: #686a8a;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.336px;
+  align-items: center;
 }

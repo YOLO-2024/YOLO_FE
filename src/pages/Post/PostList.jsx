@@ -4,73 +4,97 @@ import { LikeIcon } from '../../assets/svgs/LikeIcon';
 import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import api from '../../utils/api';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 
 //포스트 페이지 나열 컴포넌트
 export default function PostList() {
   const navigate = useNavigate();
-  const [postsData, setPostsData] = useState([]);
-
-  const onCheck = ({ post }) => {
-    console.log(post.postImage);
-    navigate(`/post-page/check/${post.postInfo.postId}`, {
-      state: {
-        postId: `${post.postInfo.postId}`,
-        writerName: `${post.writerInfo.nickname}`,
-        title: `${post.postInfo.title}`,
-        createdAt: `${post.postInfo.createdAt.split('T')[0]}`,
-        category: `${post.postInfo.categories}`,
-        content: `${post.postInfo.content}`,
-        likeCount: `${post.postInfo.likeCount}`,
-        reviewCount: `${post.postInfo.reviewCount}`,
-        postImages: post.postImage,
-        profileImage: `${post.writerInfo.profileImage?.imageUrl}`,
-      },
-    });
-  };
+  const user = sessionStorage.getItem('accessToken');
+  const [postList, setPostList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const obsRef = useRef(null);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.get('/api/v1/post/check', {});
-        setPostsData(response.data);
-        console.log('post 불러오기');
-      } catch (error) {
-        console.error('api error: ', error);
+    if (!isLastPage) {
+      setLoading(true);
+      const fetchPosts = async () => {
+        await api
+          .get('/api/v1/post/page', {
+            headers: { Authorization: `Bearer ${user}` },
+            params: { page: page },
+          })
+          .then((response) => {
+            console.log(response.data);
+            if (response.data.data.length === 0) {
+              // 데이터 길이가 0이면 마지막 페이지로 간주
+              setIsLastPage(true);
+            }
+            setPostList((prevPosts) => [...prevPosts, ...response.data.data]);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error(error);
+            setLoading(false);
+          });
+      };
+      fetchPosts();
+    }
+  }, [page, isLastPage]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: '20px',
+      threshold: 0,
+    });
+
+    if (postList.length && obsRef.current) {
+      observer.observe(obsRef.current);
+    }
+
+    // 관찰 대상인 마지막 요소가 변경될 때마다 observer를 업데이트
+    return () => {
+      if (obsRef.current) {
+        observer.unobserve(obsRef.current);
       }
     };
-    getData();
-  }, []);
+  }, [postList]);
 
-  useEffect(() => {
-    console.log(postsData);
-  }, [postsData]);
-
-  if (!postsData.data || !postsData.data) {
-    return <div>데이터를 불러오는 중이거나 데이터가 없습니다.</div>;
-  }
+  const handleObserver = (entities) => {
+    const target = entities[0];
+    if (target.isIntersecting && !loading) {
+      setPage((prev) => prev + 1);
+    }
+  };
 
   return (
     <div className="PostList">
-      {postsData.data.map((post) => (
+      {postList.map((post, index) => (
         <div
           className="postId"
           key={post.postInfo.postId}
-          onClick={() => onCheck({ post })}
+          onClick={() =>
+            navigate(`/post-page/check/${post.postInfo.postId}`, {
+              state: post,
+            })
+          }
+          ref={index === postList.length - 1 ? obsRef : null}
         >
-          <div className="postIcon">
-            <img
-              className="postIcon"
-              src={
-                post.postImage.length !== 0
-                  ? post.postImage[0].imageUrl
-                  : basicProfile
-              }
-              alt="게시물 사진"
-            />
-          </div>
+          {/* <div className="postIcon"> */}
+          <img
+            className="postIcon"
+            src={
+              post.postImage.length !== 0
+                ? post.postImage[0].imageUrl
+                : basicProfile
+            }
+            alt="게시물 사진"
+          />
+          {/* </div> */}
 
           <div className="Post-container">
             <div className="Titlecontainer">

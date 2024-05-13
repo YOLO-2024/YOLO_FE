@@ -1,3 +1,4 @@
+
 import Modal from './Modal';
 import '../../styles/component/Modal/DeleteModal.scss';
 import { useNavigate } from 'react-router-dom';
@@ -63,3 +64,4 @@ function DeleteModal({ isOpen, toggleModal, type, ID }) {
 }
 
 export default DeleteModal;
+
