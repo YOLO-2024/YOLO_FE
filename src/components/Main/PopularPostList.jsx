@@ -1,34 +1,67 @@
 import '../../styles/component/main/MainPostList.scss';
-import DummyPostImage from '../../assets/images/DummyPostImage.jpg';
+// import DummyPostImage from '../../assets/images/DummyPostImage.jpg';
+import api from '../../utils/api';
+import NoImage from '../../assets/images/NoImage.webp';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const PopularPostItem = ({ title, tag }) => {
+const PopularPostItem = ({ image, title, categories, data }) => {
+  const navigate = useNavigate();
+
+  const onClickedPost = () => {
+    console.log(image);
+
+    console.log(data);
+    navigate(`/post-page/check/${data.postInfo.postId}`, {
+      state: { postData: data.postInfo },
+    });
+  };
+
   return (
-    <div className="mainPostItem_Container">
+    <div className="mainPostItem_Container" onClick={onClickedPost}>
       <div className="mainPostImage_Container">
-        <img src={DummyPostImage} />
+        <img
+          src={image ? NoImage : image}
+          style={{ width: '147px', height: '108px' }}
+        />
       </div>
       <div className="mainPostTitle_Container">{title}</div>
-      <div className="mainPostTag">{tag}</div>
+      <div className="mainPostTag">{categories}</div>
     </div>
   );
 };
 
 export default function PopularPostList() {
-  const postdummyList = [
-    { postId: 1, popularTitle: '내돈내산 후기: 가습기', tags: '기술' },
-    { postId: 2, popularTitle: '내가 산 자취 꿀탬', tags: '라이프스타일' },
-    { postId: 3, popularTitle: '산책 같이 갈사람', tags: '운동' },
-    { postId: 4, popularTitle: '오늘의 메뉴 추천', tags: '음식' },
-    { postId: 5, popularTitle: '요즘 빠진 게임', tags: '게임' },
-  ];
+  const [popularPostList, setPopularPostList] = useState([]);
+
+  useEffect(() => {
+    const getPopularPost = async () => {
+      try {
+        const popularList = await api.get('/api/v1/post/popular');
+        console.log(popularList.data.data);
+        setPopularPostList(popularList.data.data);
+        console.log(popularPostList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getPopularPost();
+  }, []);
+
+  useEffect(() => {
+    console.log(popularPostList);
+  }, [popularPostList]);
 
   return (
     <div className="mainPost_Container">
-      {postdummyList.map((dumPost) => (
+      {popularPostList.map((post, index) => (
         <PopularPostItem
-          key={dumPost.postId}
-          title={dumPost.popularTitle}
-          tag={dumPost.tags}
+          key={index}
+          postId={post.postInfo.postId}
+          title={post.postInfo.title}
+          categories={post.postInfo.categories}
+          image={post.postImage}
+          data={post}
         />
       ))}
     </div>

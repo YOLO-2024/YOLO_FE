@@ -70,12 +70,14 @@
 //       {/* <div className="postTitle-container">
 //         <div className="postTitle">{postData.postInfo.title}</div>
 
+
 //         <div className="postCategory">
 //           {postData.postInfo.categories.map((category, index) => (
 //             <span key={index}>#{category.trim()} </span>
 //           ))}
 //         </div>
 //       </div> */}
+
 
 //       {/* <div className="postContent">{postData.postInfo.content}</div>
 //       <div className="postImage-container">
