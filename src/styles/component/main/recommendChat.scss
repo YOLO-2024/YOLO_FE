@@ -10,8 +10,9 @@
   max-width: 800px;
   gap: 20px;
   width: 100%;
-  background: #fafafa;
+  background: #fff;
   height: 112px;
+  margin-bottom: 7px;
   -ms-overflow-style: none; /* 인터넷 익스플로러 */
   scrollbar-width: none; /* 파이어폭스 */
   scroll-snap-type: x mandatory;
@@ -24,14 +25,23 @@
 .recommendItem_Container {
   display: flex;
   flex-direction: column;
-  width: 358px;
-  margin-left: 16px;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
   border-radius: 15px;
   flex-shrink: 0;
   background: #fff;
   gap: 5px;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
   scroll-snap-align: center;
+  position: relative; // 이 위치에 relative를 추가
+}
+
+.carousel_pagination {
+  position: absolute;
+  display: flex;
+  gap: 6px;
+  transform: translateX(50%) translateY(95px);
 }
 
 .recommendTitle_Container {
@@ -65,14 +75,6 @@
   gap: 20px;
   background: #fafafa;
   padding: 5%;
-}
-
-.carousel_pagination {
-  position: absolute;
-  display: flex;
-  gap: 6px;
-  left: 7%;
-  bottom: 15%;
 }
 
 .carousel_circle {
