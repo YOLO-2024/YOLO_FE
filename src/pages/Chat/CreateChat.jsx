@@ -6,6 +6,7 @@ import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { useForm } from 'react-hook-form';
 import addChatPhoto from '../../assets/svgs/addChatPhoto.svg';
 import api from '../../utils/api';
+import close from '../../assets/svgs/close.svg';
 
 export default function CreateChat() {
   const navigate = useNavigate();
@@ -36,6 +37,11 @@ export default function CreateChat() {
       setChatImg('');
       setPreviewChatImg('');
     }
+  };
+
+  const resetToDefaultImage = () => {
+    setChatImg(null);
+    setPreviewChatImg(null);
   };
 
   useEffect(() => {
@@ -127,6 +133,12 @@ export default function CreateChat() {
                 borderRadius: '10px',
               }}
             />
+            <button
+              onClick={() => resetToDefaultImage()}
+              className="resetDefaultImg_Button"
+            >
+              <img src={close} alt="이미지 제거" />
+            </button>
           </div>
         )}
         <div>

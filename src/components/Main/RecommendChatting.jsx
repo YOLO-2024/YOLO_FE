@@ -1,19 +1,31 @@
 import '../../styles/component/main/recommendChat.scss';
 import GroupIcon from '../../assets/svgs/GroupIcon';
-// import { useState } from 'react';
 import { useState, useEffect, useRef } from 'react';
+import api from '../../utils/api';
+import { useNavigate } from 'react-router-dom';
 
-const RecommendChatItem = ({ content, isActive }) => {
+const RecommendChatItem = ({ title, isActive, chatroomId, data }) => {
+  const navigate = useNavigate();
+
+  const onClickedRecommendChat = () => {
+    console.log(chatroomId);
+    navigate(`/chat-page/join/${chatroomId}`, {
+      state: { chatRoomData: data },
+    });
+  };
   return (
     <>
-      <div className={`recommendItem_Container ${isActive ? 'active' : ''}`}>
+      <div
+        className={`recommendItem_Container ${isActive ? 'active' : ''}`}
+        onClick={onClickedRecommendChat}
+      >
         <div className="chatIcon_Box">
           <GroupIcon />
         </div>
         <div className="recommendTitle_Container" style={{ color: '#2176FF' }}>
           추천 단체 채팅
         </div>
-        <div className="recommendTitle_Container">{content}</div>
+        <div className="recommendTitle_Container">{title}</div>
       </div>
     </>
   );
@@ -22,14 +34,24 @@ const RecommendChatItem = ({ content, isActive }) => {
 export default function RecommendChatting() {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef(null);
+  const [recommendChatList, setRecommendChatList] = useState([]);
 
-  const chatdummyList = [
-    { chatroomId: 1, content: '배달비 n분의 1 할 사람~' },
-    { chatroomId: 2, content: '게임 같이 할 사람~' },
-    { chatroomId: 3, content: '산책 모임방' },
-    { chatroomId: 4, content: '자취 꿀팁 같이 공유해요~' },
-    { chatroomId: 5, content: '맛집 탐방러 모임' },
-  ];
+  useEffect(() => {
+    const getRecommendedChat = async () => {
+      try {
+        const recommendedChatList = await api.get('/api/v1/chat/location-chat');
+        console.log(recommendedChatList.data.data);
+        setRecommendChatList(recommendedChatList.data.data);
+        console.log(recommendChatList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRecommendedChat();
+  }, []);
+  useEffect(() => {
+    console.log(recommendChatList);
+  }, [recommendChatList]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,12 +78,17 @@ export default function RecommendChatting() {
   return (
     <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
       <div ref={containerRef} className="recommendChat_Container">
-        {chatdummyList.map((dummy) => (
-          <RecommendChatItem key={dummy.chatroomId} content={dummy.content} />
+        {recommendChatList.map((chat, index) => (
+          <RecommendChatItem
+            key={index}
+            title={chat.chatRoomInfo.title}
+            chatroomId={chat.chatRoomInfo.chatRoomId}
+            data={chat}
+          />
         ))}
       </div>
       <div className="carousel_pagination">
-        {chatdummyList.map((_, index) => (
+        {recommendChatList.map((_, index) => (
           <div
             key={index}
             className={`carousel_circle ${index === activeIndex ? 'active' : ''}`}

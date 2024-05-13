@@ -1,54 +1,55 @@
 import '../../styles/component/main/MainPostList.scss';
-import DummyPostImage from '../../assets/images/DummyPostImage.jpg';
+import NoImage from '../../assets/images/NoImage.webp';
+import { useEffect, useState } from 'react';
+import api from '../../utils/api';
 
-const RecommendPostItem = ({ title, tag }) => {
+const RecommendPostItem = ({ title, categories, postId, image }) => {
+  const onClickedRecommendPost = () => {
+    console.log(postId);
+  };
   return (
-    <div className="mainPostItem_Container">
+    <div className="mainPostItem_Container" onClick={onClickedRecommendPost}>
       <div className="mainPostImage_Container">
-        <img src={DummyPostImage} />
+        <img
+          src={image ? NoImage : image}
+          style={{ width: '147px', height: '108px' }}
+        />
       </div>
       <div className="mainPostTitle_Container">{title}</div>
-      <div className="mainPostTag">{tag}</div>
+      <div className="mainPostTag">{categories}</div>
     </div>
   );
 };
 
 export default function RecommendPost() {
-  const recommendPostList = [
-    {
-      recommendPostId: 1,
-      recommendTitle: '내돈내산 후기: 가습기',
-      recommendTag: '기술',
-    },
-    {
-      recommendPostId: 2,
-      recommendTitle: '내가 산 자취 꿀탬',
-      recommendTag: '라이프스타일',
-    },
-    {
-      recommendPostId: 3,
-      recommendTitle: '산책 같이 갈사람',
-      recommendTag: '운동',
-    },
-    {
-      recommendPostId: 4,
-      recommendTitle: '오늘의 메뉴 추천',
-      recommendTag: '음식',
-    },
-    {
-      recommendPostId: 5,
-      recommendTitle: '요즘 빠진 게임',
-      recommendTag: '게임',
-    },
-  ];
+  const [recommendPostList, setRecommendPostList] = useState([]);
 
+  useEffect(() => {
+    const getRecommendedPost = async () => {
+      try {
+        const recommendedList = await api.get('/api/v1/post/review');
+        console.log(recommendedList.data.data);
+        setRecommendPostList(recommendedList.data.data);
+        console.log(recommendPostList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRecommendedPost();
+  }, []);
+
+  useEffect(() => {
+    console.log(recommendPostList);
+  }, [recommendPostList]);
   return (
     <div className="mainPost_Container">
-      {recommendPostList.map((recommendPost) => (
+      {recommendPostList.map((recommendPost, index) => (
         <RecommendPostItem
-          key={recommendPost.recommendPostId}
-          title={recommendPost.recommendTitle}
-          tag={recommendPost.recommendTag}
+          key={index}
+          postId={recommendPost.postInfo.postId}
+          title={recommendPost.postInfo.title}
+          categories={recommendPost.postInfo.categories}
+          image={recommendPost.postImage}
         />
       ))}
     </div>

@@ -26,7 +26,7 @@ export default function JoinChatPage() {
 
   console.log(myname);
   console.log(myname.profileInfo.nickname);
-  console.log(chatRoomData.creatorInfo.nickname);
+  console.log(chatRoomData.creatorInfo?.nickname);
   const onClickGoBack = () => {
     navigate(-1);
   };
@@ -64,7 +64,8 @@ export default function JoinChatPage() {
         <DeleteModal
           isOpen={isDeleteModalOpen}
           toggleModal={onClickDelete}
-          type={'채팅방을'}
+          type="채팅방을"
+          ID={chatRoomData.chatRoomInfo.chatRoomId}
         />
         <div className="joinchat_contentContainer">
           <div className="joinchat_profileWrapper">
@@ -98,7 +99,7 @@ export default function JoinChatPage() {
           <div className="joinchat_infoContainer">
             <div className="text">카테고리</div>
             <div className="joinchat_inputContainer">
-              {chatRoomData.chatRoomInfo.interests}
+              {chatRoomData.chatRoomInfo.interests + ' '}
             </div>
           </div>
           <div className="joinchat_infoContainer">
@@ -110,6 +111,13 @@ export default function JoinChatPage() {
           <div
             className="joinchat_joinButton"
             style={{ background: '#2176FF', color: '#FFFFFF' }}
+            onClick={() =>
+              navigate('/chat-page/' + chatRoomData.chatRoomInfo.chatRoomId, {
+                state: {
+                  chatRoom: chatRoomData,
+                },
+              })
+            }
           >
             채팅방 입장하기
           </div>

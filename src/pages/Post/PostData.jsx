@@ -39,7 +39,7 @@ export default function PostData({ userInfo }) {
         <div className="postTitle">{userInfo.title}</div>
 
         <div className="postCategory">
-          {userInfo.category.split(',').map((category, index) => (
+          {userInfo.category?.split(',').map((category, index) => (
             <span key={index}>#{category.trim()} </span>
           ))}
         </div>

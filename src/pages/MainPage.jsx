@@ -18,8 +18,6 @@ const PopularPostList = lazy(
 export default function MainPage() {
   const [profileData, setProfileData] = useState([]);
   const navigate = useNavigate();
-  // const userRefreshToken = sessionStorage.getItem('refreshToken');
-  const refreshTokens = sessionStorage.getItem('refreshToken');
 
   const onResignClick = async () => {
     const confirmLogout = window.confirm('회원탈퇴 하시겠습니까?');
@@ -52,16 +50,16 @@ export default function MainPage() {
     sessionStorage.setItem('myInfo', JSON.stringify(profileData));
   }, [profileData]);
 
-  const getNewToken = () => {
+  const getRecommendedChat = async () => {
     try {
-      api.post('/api/v1/auth/access', refreshTokens);
-      console.log(profileData);
+      const recommendedChatList = await api.get('/api/v1/chat/location-chat');
+      console.log(recommendedChatList.data.data);
     } catch (error) {
       console.log(error);
     }
   };
   const onClickButton = () => {
-    getNewToken();
+    getRecommendedChat();
   };
 
   return (

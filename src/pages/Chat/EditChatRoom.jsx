@@ -3,98 +3,110 @@ import { useForm } from 'react-hook-form';
 import Category from '../Post/Category';
 import addChatPhoto from '../../assets/svgs/addChatPhoto.svg';
 import '../../styles/pages/Chat/CreateChat.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
+import close from '../../assets/svgs/close.svg';
 
 export default function EditChatRoom() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const chatRoomData = { ...location.state };
+  const { state } = useLocation();
+  const [title, setTitle] = useState(state.chatRoomInfo.title);
+  const [contents, setContents] = useState(state.chatRoomInfo.content);
+  const { register, handleSubmit, watch } = useForm({ mode: 'all' });
+  const [selectedCategories, setSelectedCategories] = useState(
+    state.chatRoomInfo.interests,
+  );
 
-  const { register, handleSubmit } = useForm({ mode: 'all' });
-  const editState = {
-    title: chatRoomData.chatRoomInfo.title,
-    content: chatRoomData.chatRoomInfo.content,
-    selectedCategories: chatRoomData.chatRoomInfo.interests,
+  const [imageUrl, setImageUrl] = useState();
+  const imgRef = useRef();
+  const [imagePreview, setImagePreview] = useState();
+
+  const watchedTitle = watch('title');
+  const watchedContent = watch('content');
+
+  const isFormValid = watchedTitle && watchedContent && selectedCategories;
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    setImageUrl(file);
+    reader.onloadend = () => {
+      setImagePreview(reader.result); // 미리보기 이미지 설정
+    };
+    reader.readAsDataURL(file); // 파일 읽기
   };
-  const editImgState = chatRoomData.chatRoomImage.imageUrl;
-  const [file, setFile] = useState(editImgState);
 
-  const [previewChatImg, setPreviewChatImg] = useState(editImgState);
-  const [formState, setFormState] = useState(editState);
-  console.log(chatRoomData);
+  const onClickFileBtn = () => {
+    imgRef.current.click(); // useRef를 통해 파일 입력 요소 클릭
+  };
+
+  const resetToDefaultImage = () => {
+    setImageUrl(null);
+    setImagePreview(imageUrl);
+    console.log(imagePreview);
+  };
+
+  console.log(state);
+  console.log(imageUrl);
+  console.log(imagePreview);
+  console.log(state.chatRoomImage);
+
+  const convertURLtoFile = async (url) => {
+    const response = await fetch(url);
+    const data = await response.blob();
+    const ext = url.split('.').pop(); // url 구조에 맞게 수정할 것
+    const filename = url.split('/').pop(); // url 구조에 맞게 수정할 것
+    const metadata = { type: `image/${ext}` };
+    return new File([data], filename, metadata);
+  };
+
+  useEffect(() => {
+    setImagePreview(state.chatRoomImage ? state.chatRoomImage.imageUrl : null);
+
+    if (state.chatRoomImage) {
+      convertURLtoFile(state.chatRoomImage.imageUrl).then((response) => {
+        console.log(response);
+        setImageUrl(response);
+      });
+    } else {
+      setImageUrl(null);
+    }
+  }, []);
+
   const handleBack = () => {
     navigate(-1);
   };
 
-  const setSelectedCategories = (categories) => {
-    setFormState({
-      ...formState,
-      selectedCategories: categories,
-    });
-  };
-
-  const handleChatImgChange = (e) => {
-    const newFile = e.target.files[0];
-    if (newFile && newFile.type.substr(0, 5) === 'image') {
-      setFile(newFile);
-    } else {
-      setFile(null);
-      setPreviewChatImg(null);
-    }
-  };
-
-  useEffect(() => {
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewChatImg(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPreviewChatImg('');
-    }
-  }, [file]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
+  const setSelectedCategory = (categories) => {
+    setSelectedCategories(categories);
   };
 
   const onClickedSubmit = async () => {
-    // console.log(formState);
-    // setFormState(initialState);
-    const formData = new FormData();
-    if (file) {
-      formData.append('file', file);
-    }
-    const json = JSON.stringify({
-      title: formState.title,
-      content: formState.content,
-      interests: formState.selectedCategories,
-    });
-    const blob = new Blob([json], { type: 'application/json' });
-    formData.append('chatRoomUpdateRequestDto"', blob);
+    try {
+      const formData = new FormData();
+      formData.append('file', imageUrl);
+      formData.append(
+        'chatRoomUpdateRequestDto',
+        new Blob([
+          JSON.stringify({
+            chatRoomId: state.chatRoomInfo.chatRoomId,
+            title: title,
+            content: contents,
+            interests: selectedCategories,
+          }),
+        ]),
+      );
 
-    console.log(json);
-    console.log(formData);
-    await api
-      .post('/api/v1/chat/update', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        navigate(-1);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      await api.post(`/api/v1/chat/update`, formData); // await 키워드를 사용하여 비동기적으로 처리
+      navigate('/chatroom');
+    } catch (error) {
+      console.error('API 요청 중 오류가 발생했습니다:', error);
+    }
   };
 
   return (
@@ -104,61 +116,69 @@ export default function EditChatRoom() {
           <div className="previousIcon" onClick={handleBack}>
             <PreviousIcon />
           </div>
-          <div type="submit" className="submitChat_Button">
-            수정
-          </div>
+          <input
+            type="submit"
+            value="수정"
+            className={`submitChat_Button ${isFormValid ? 'active' : ''}`}
+            disabled={!isFormValid}
+          />
         </div>
-
         <div className="Title-container">
           <div className="Title-label">채팅방 제목</div>
           <input
             className="Title-input"
             type="text"
-            defaultValue={formState.title}
-            onChange={handleChange}
+            defaultValue={title}
+            onChange={(e) => setTitle(e.target.value)}
             {...register('title')}
           />
         </div>
         <div className="Category-container">
           <div className="Category-label">카테고리</div>
           <Category
-            setSelectedCategories={setSelectedCategories}
-            selectedCategories={formState.selectedCategories}
+            setSelectedCategories={setSelectedCategory}
+            selectedCategories={selectedCategories}
           />
         </div>
-
         <textarea
           name="content"
           className="ChatContent-input"
-          defaultValue={formState.content}
-          onChange={handleChange}
+          defaultValue={contents}
+          onChange={(e) => setContents(e.target.value)}
           {...register('content')}
         />
 
-        {previewChatImg && (
+        {imagePreview && (
           <div className="previewChatImg_Container">
             <img
-              src={previewChatImg}
+              src={imagePreview}
               style={{
                 width: '100px',
                 height: '100px',
                 borderRadius: '10px',
               }}
             />
+            {/* file 대신 imagePreview를 검사하여 close 버튼 렌더링 */}
+            <button
+              onClick={() => resetToDefaultImage()}
+              className="resetDefaultImg_Button"
+            >
+              <img src={close} alt="이미지 제거" />
+            </button>
           </div>
         )}
-        <div>
+
+        <div onClick={onClickFileBtn}>
           <label htmlFor="photoURLInput" className="addImage-container">
             <img src={addChatPhoto} />
             <div>채팅방 커버 이미지 추가</div>
           </label>
           <input
-            id="photoURLInput"
-            name="file"
             type="file"
+            ref={imgRef}
             style={{ display: 'none' }}
             {...register('file')}
-            onChange={handleChatImgChange}
+            onChange={handleImageChange}
           />
         </div>
       </form>
