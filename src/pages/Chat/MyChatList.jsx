@@ -26,11 +26,6 @@ const MyChatList = () => {
     console.log(chatListData.data);
   }, [chatListData]);
 
-  const onClickedChat = (chatRoomId, chatRoomData) => {
-    console.log(chatRoomData);
-    navigate(`/chat-page/join/${chatRoomId}`, { state: { chatRoomData } });
-  };
-
   return (
     <div className="chatList_Container">
       {chatListData.data ? (
@@ -38,7 +33,11 @@ const MyChatList = () => {
           <div
             key={index}
             className="chatItem_Container"
-            onClick={() => onClickedChat(index, chat)}
+            onClick={() =>
+              navigate('/chat-page/' + chat.chatRoomInfo.chatRoomId, {
+                state: { chatRoom: chat },
+              })
+            }
           >
             <div className="chatItem_ProfileImg">
               <img
