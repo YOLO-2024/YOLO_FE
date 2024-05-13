@@ -26,7 +26,7 @@ export default function JoinChatPage() {
 
   console.log(myname);
   console.log(myname.profileInfo.nickname);
-  console.log(chatRoomData.creatorInfo.nickname);
+  console.log(chatRoomData.creatorInfo?.nickname);
   const onClickGoBack = () => {
     navigate(-1);
   };
