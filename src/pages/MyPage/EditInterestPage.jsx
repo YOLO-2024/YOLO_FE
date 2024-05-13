@@ -39,7 +39,7 @@ export default function EditInterest() {
         },
       )
       .then((response) => {
-        console.log(response), navigate('/MyPage');
+        console.log(response), navigate('/main-page');
       })
       .catch((error) => console.log(error));
   };

@@ -10,7 +10,8 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
 
   const onActionFilter = () => {
     if (actionType === 'Delete') {
-      if (type === 'CHAT') return onChatRoomDelete();
+      if (type === 'CHATD') return onChatRoomDelete();
+      else if (type === 'CHATE') return onChatRoomExit();
       else if (type === 'MEMBER') return onMemberDelete();
       return type === 'POST' ? onPostDelete() : onCommentDelete();
     } else if (actionType === 'Declaration') {
@@ -18,7 +19,22 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
     }
   };
 
-  const onChatRoomDelete = () => {};
+  const onChatRoomDelete = async () => {
+    await api
+      .delete('/api/v1/chat/delete/${chatRoomId}', {
+        headers: {
+          Authorization: `Bearer ${user}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        navigate('/chat-page');
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const onChatRoomExit = () => {};
 
   const onMemberDelete = async () => {
     await api
