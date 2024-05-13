@@ -1,6 +1,6 @@
 .main_Container {
   width: 100%;
-  background: #fafafa;
+  background: #fff;
   overflow: hidden;
 }
 
@@ -9,6 +9,7 @@
   flex-direction: column;
   height: 250px;
   margin-top: 16px;
+  gap: 7px;
 }
 
 .main_styledText {

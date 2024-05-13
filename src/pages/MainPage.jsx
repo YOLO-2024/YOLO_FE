@@ -3,8 +3,6 @@ import '../styles/pages/MainPage.scss';
 // import PopularPostList from '../components/Main/PopularPostList';
 // import RecommendPost from '../components/Main/RecommendPost';
 import api from '../utils/api';
-import LogoutButton from '../components/Login/LogoutButton';
-import { useNavigate } from 'react-router-dom';
 import { lazy, Suspense, useEffect, useState } from 'react';
 
 const RecommendChatting = lazy(
@@ -17,20 +15,6 @@ const PopularPostList = lazy(
 
 export default function MainPage() {
   const [profileData, setProfileData] = useState([]);
-  const navigate = useNavigate();
-
-  const onResignClick = async () => {
-    const confirmLogout = window.confirm('회원탈퇴 하시겠습니까?');
-
-    if (confirmLogout) {
-      await api.delete('/api/v1/auth/resign', {
-        headers: {},
-        'Content-Type': 'application/json',
-      });
-
-      navigate('/login');
-    }
-  };
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -50,18 +34,6 @@ export default function MainPage() {
     sessionStorage.setItem('myInfo', JSON.stringify(profileData));
   }, [profileData]);
 
-  const getRecommendedChat = async () => {
-    try {
-      const recommendedChatList = await api.get('/api/v1/chat/location-chat');
-      console.log(recommendedChatList.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const onClickButton = () => {
-    getRecommendedChat();
-  };
-
   return (
     <>
       <Suspense fallback={<div>loading...</div>}>
@@ -75,9 +47,6 @@ export default function MainPage() {
             <div className="main_styledText">추천 게시물</div>
             <RecommendPost />
           </div>
-          <LogoutButton />
-          <button onClick={onResignClick}>회원탈퇴</button>
-          <button onClick={onClickButton}>버튼</button>
         </div>
       </Suspense>
     </>
