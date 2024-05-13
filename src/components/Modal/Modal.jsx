@@ -21,7 +21,7 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
 
   const onChatRoomDelete = async () => {
     await api
-      .delete(`/api/v1/chat/delete/${id}`, {
+      .delete('/api/v1/chat/delete/${chatRoomId}', {
         headers: {
           Authorization: `Bearer ${user}`,
           'Content-Type': 'application/json',
@@ -29,7 +29,8 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
       })
       .then((response) => {
         console.log(response);
-        navigate('/login');
+
+        navigate('/chat-page');
       })
       .catch((error) => console.log(error));
   };

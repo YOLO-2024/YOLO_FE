@@ -31,9 +31,9 @@ export default function JoinChatPage() {
     navigate(-1);
   };
 
-  const onClickDelete = () => {
-    setIsChatDeleteActive(!isChatDeleteActive);
-  };
+  // const onClickDelete = () => {
+  //   setIsChatDeleteActive(!isChatDeleteActive);
+  // };
 
   const onClickedEdit = () => {
     console.log(chatRoomData);
@@ -43,8 +43,19 @@ export default function JoinChatPage() {
     });
   };
 
+  console.log(chatRoomData);
   return (
     <>
+      {isChatDeleteActive && (
+        <Modal
+          actionType="Delete"
+          type="CHAT"
+          title="채팅방을 삭제하시겠습니까?"
+          body="채팅방이 삭제되면, 복구되지 않습니다."
+          setIsActive={setIsChatDeleteActive}
+          id={chatRoomData.chatRoomInfo.chatRoomId}
+        />
+      )}
       <div className="joinchat_Wrapper">
         <div className="joinchat_Header">
           <div className="previousIcon" onClick={onClickGoBack}>
@@ -55,24 +66,18 @@ export default function JoinChatPage() {
               <div onClick={() => onClickedEdit()}>
                 <ModeEditIcon />
               </div>
-              <div onClick={onClickDelete}>
+              <div
+                onClick={() => {
+                  setIsChatDeleteActive(true);
+                  console.log(isChatDeleteActive);
+                }}
+              >
                 <DeleteIcon />
               </div>
             </div>
           ) : null}
         </div>
-        {isChatDeleteActive ?? (
-          <Modal
-            actionType="Delete"
-            type="CHATD"
-            title="채팅방을 삭제 하시겠습니까?"
-            body="
-            채팅방이 삭제되면 복구되지 않습니다.  
-          
-        "
-            id={chatRoomData.chatRoomInfo.chatRoomId}
-          />
-        )}
+
         <div className="joinchat_contentContainer">
           <div className="joinchat_profileWrapper">
             <div className="joinchat_profileImg">
