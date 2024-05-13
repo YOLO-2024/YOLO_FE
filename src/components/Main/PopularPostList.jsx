@@ -7,25 +7,18 @@ import { useNavigate } from 'react-router-dom';
 
 const PopularPostItem = ({ image, title, categories, data }) => {
   const navigate = useNavigate();
-  /*
+
   const onClickedPost = () => {
     console.log(image);
-    console.log(postId);
+
     console.log(data);
-    navigate(`/post-page/check/${postId}`, {
-      state: { postData: data },
+    navigate(`/post-page/check/${data.postInfo.postId}`, {
+      state: { postData: data.postInfo },
     });
   };
-  */
+
   return (
-    <div
-      className="mainPostItem_Container"
-      onClick={() =>
-        navigate('/post-page/check/' + data.postInfo.postId, {
-          state: { postDatas: data },
-        })
-      }
-    >
+    <div className="mainPostItem_Container" onClick={onClickedPost}>
       <div className="mainPostImage_Container">
         <img
           src={image ? NoImage : image}
@@ -39,7 +32,6 @@ const PopularPostItem = ({ image, title, categories, data }) => {
 };
 
 export default function PopularPostList() {
-  const navigate = useNavigate();
   const [popularPostList, setPopularPostList] = useState([]);
 
   useEffect(() => {
@@ -70,11 +62,6 @@ export default function PopularPostList() {
           categories={post.postInfo.categories}
           image={post.postImage}
           data={post}
-          onClick={() =>
-            navigate('/post-page/check/' + post.postInfo.postId, {
-              state: { postId: post },
-            })
-          }
         />
       ))}
     </div>
