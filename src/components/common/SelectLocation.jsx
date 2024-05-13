@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../styles/component/common/SelectLocation.scss';
 import arrow_down from '../../assets/svgs/arrow_down.svg';
 import arrow_up from '../../assets/svgs/arrow_up.svg'; // arrow_up 이미지 import
@@ -8,8 +8,11 @@ const SelectLocation = (props) => {
   // props 추가
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(props.value || '');
 
+  useEffect(() => {
+    setSelectedLocation(props.value); // 부모 컴포넌트로부터 받은 value가 바뀔 때마다 selectedLocation 업데이트
+  }, [props.value]);
   const toggleDropdown = () => {
     setIsExpanded(!isExpanded);
   };

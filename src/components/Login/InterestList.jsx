@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 export default function InterestList({ onInterestChange }) {
   // const [isselected, setIsselected] = useState(false);
-  const [interest, setInterest] = useState([]);
+  const [interest, setInterest] = useState('');
 
   const categorylist = [
     { key: '영화', value: <MovieIcon /> },
