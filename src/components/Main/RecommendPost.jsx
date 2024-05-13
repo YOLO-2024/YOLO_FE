@@ -2,17 +2,29 @@ import '../../styles/component/main/MainPostList.scss';
 import NoImage from '../../assets/images/NoImage.webp';
 import { useEffect, useState } from 'react';
 import api from '../../utils/api';
+import { useNavigate } from 'react-router-dom';
 
-const RecommendPostItem = ({ title, categories, postId, image }) => {
+const RecommendPostItem = ({ title, categories, data }) => {
+  const navigate = useNavigate();
   const onClickedRecommendPost = () => {
-    console.log(postId);
+    console.log(data);
+    navigate(`/post-page/check/${data.postInfo.postId}`, {
+      state: {
+        postData: data,
+        postInfo: data.postInfo,
+        writerInfo: data.writerInfo,
+      },
+    });
   };
+  console.log(data);
+  console.log(data.postImage[0]?.imageUrl);
+  const imageData = data.postImage[0]?.imageUrl;
   return (
     <div className="mainPostItem_Container" onClick={onClickedRecommendPost}>
       <div className="mainPostImage_Container">
         <img
-          src={image ? NoImage : image}
-          style={{ width: '147px', height: '108px' }}
+          src={imageData ? imageData : NoImage}
+          style={{ width: '147px', height: '108px', borderRadius: '15px' }}
         />
       </div>
       <div className="mainPostTitle_Container">{title}</div>
@@ -49,7 +61,7 @@ export default function RecommendPost() {
           postId={recommendPost.postInfo.postId}
           title={recommendPost.postInfo.title}
           categories={recommendPost.postInfo.categories}
-          image={recommendPost.postImage}
+          data={recommendPost}
         />
       ))}
     </div>

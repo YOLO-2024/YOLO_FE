@@ -2,6 +2,7 @@
   width: 100%;
   background: #fafafa;
   overflow: hidden;
+  height: calc(var(--vh, 1vh) * 85);
 }
 
 .main_Post_Container {

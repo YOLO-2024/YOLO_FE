@@ -31,7 +31,7 @@
   background: #fff;
   gap: 5px;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
-  scroll-snap-align: start;
+  scroll-snap-align: center;
 }
 
 .recommendTitle_Container {
@@ -68,7 +68,7 @@
 }
 
 .carousel_pagination {
-  position: relative;
+  position: absolute;
   display: flex;
   gap: 6px;
   left: 7%;
