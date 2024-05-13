@@ -5,7 +5,7 @@ import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 
 //포스트 페이지 나열 컴포넌트

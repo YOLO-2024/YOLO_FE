@@ -5,7 +5,7 @@ import Category from './Category';
 import { AddPhoto } from '../../assets/svgs/AddPhoto';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { CancleIcon } from '../../assets/svgs/CancleIcon';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 
 export default function EditPost() {
   const navigate = useNavigate();

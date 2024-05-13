@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import BackIcon from '../../assets/svgs/BackIcon';
-import { api } from '../../utils/customAxios';
+import api from '../../utils/api';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import '../../styles/pages/MyPage.scss';
 

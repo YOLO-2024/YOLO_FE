@@ -1,7 +1,7 @@
 import '../../styles/component/Modal/Modal.scss';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../utils/api';
+import api from '../../utils/api';
 
 const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
   const navigate = useNavigate();
