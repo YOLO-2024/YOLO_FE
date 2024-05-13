@@ -22,6 +22,9 @@ import MyChatPage from '../pages/MyChatPage';
 
 import TestPage from '../pages/Login/\bTestPage';
 import EditChatRoom from '../pages/Chat/EditChatRoom';
+import MyPage from '../pages/MyPage/MyPage';
+import EditProfile from '../pages/MyPage/EditProfilePage';
+import EditInterest from '../pages/MyPage/EditInterestPage';
 
 const router = createBrowserRouter([
   {
@@ -76,11 +79,17 @@ const router = createBrowserRouter([
         path: '/mychat-page',
         element: <MyChatPage />,
       },
+      {
+        path: '/MyPage',
+        element: <MyPage />,
+      },
+      { path: '/MyPage/edit', element: <EditProfile /> },
     ],
   },
   { path: '/post-page/new', element: <NewPost /> },
   { path: '/post-page/check/:postId', element: <CheckPost /> },
   { path: '/post-page/edit/:postId', element: <EditPost /> },
+  { path: '/MyPage/edit/interest', element: <EditInterest /> },
 ]);
 
 export default router;

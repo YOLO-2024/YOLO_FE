@@ -27,7 +27,7 @@ export default function Header() {
         <div className="header_Icon">
           <AlertIcon />
         </div>
-        <div className="header_Icon">
+        <div className="header_Icon" onClick={() => navigate('/MyPage')}>
           <ProfileIcon />
         </div>
         <div

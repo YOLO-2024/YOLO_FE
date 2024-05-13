@@ -7,7 +7,7 @@ import chattingPerson from '../../assets/svgs/chattingPerson.svg';
 import BottomNavBar from '../../components/Layout/BottomNavBar';
 import { ModeEditIcon } from '../../assets/svgs/ModeEditIcon';
 import { DeleteIcon } from '../../assets/svgs/DeleteIcon';
-import DeleteModal from '../../components/Modal/DeleteModal';
+// import DeleteModal from '../../components/Modal/DeleteModal';
 import { useEffect, useState } from 'react';
 
 export default function JoinChatPage() {
@@ -61,11 +61,11 @@ export default function JoinChatPage() {
             </div>
           ) : null}
         </div>
-        <DeleteModal
+        {/* <DeleteModal
           isOpen={isDeleteModalOpen}
           toggleModal={onClickDelete}
           type={'채팅방을'}
-        />
+        /> */}
         <div className="joinchat_contentContainer">
           <div className="joinchat_profileWrapper">
             <div className="joinchat_profileImg">
