@@ -76,7 +76,14 @@ export default function RecommendChatting() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
+    <div
+      style={{
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column',
+        marginTop: '15px',
+      }}
+    >
       <div ref={containerRef} className="recommendChat_Container">
         {recommendChatList.map((chat, index) => (
           <RecommendChatItem

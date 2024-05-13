@@ -13,16 +13,20 @@ const PopularPostItem = ({ image, title, categories, data }) => {
 
     console.log(data);
     navigate(`/post-page/check/${data.postInfo.postId}`, {
-      state: { postData: data.postInfo },
+      state: {
+        postData: data,
+        postInfo: data.postInfo,
+        writerInfo: data.writerInfo,
+      },
     });
   };
-
+  const imageData = data.postImage[0]?.imageUrl;
   return (
     <div className="mainPostItem_Container" onClick={onClickedPost}>
       <div className="mainPostImage_Container">
         <img
-          src={image ? NoImage : image}
-          style={{ width: '147px', height: '108px' }}
+          src={imageData ? imageData : NoImage}
+          style={{ width: '147px', height: '108px', borderRadius: '15px' }}
         />
       </div>
       <div className="mainPostTitle_Container">{title}</div>

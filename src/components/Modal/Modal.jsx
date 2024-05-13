@@ -29,6 +29,7 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
       })
       .then((response) => {
         console.log(response);
+
         navigate('/chat-page');
       })
       .catch((error) => console.log(error));

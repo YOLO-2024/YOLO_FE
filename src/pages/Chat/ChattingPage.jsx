@@ -310,6 +310,8 @@ import '../../styles/pages/Chat/ChattingPage.scss';
 import BackIcon from '../../assets/svgs/BackIcon';
 import basicProfile from '../../assets/images/basicProfile.jpg';
 import '../../styles/component/TextInput.scss';
+import Exit from '../../assets/svgs/Exit.svg';
+import { NotificationIcon } from '../../assets/svgs/NotificationIcon';
 
 const ChattingPage = () => {
   const navigate = useNavigate();
@@ -524,6 +526,10 @@ const ChattingPage = () => {
           <div className="ChatPage_Header_TextBox_MemberCount">
             {state.chatRoom.chatRoomInfo.memberCount}명
           </div>
+        </div>
+        <div className="ChatPage_Header_IconBox">
+          <img src={Exit} style={{ width: '30px', height: '30px' }} />
+          <NotificationIcon />
         </div>
       </div>
       <div className="ChatPage_Container">
