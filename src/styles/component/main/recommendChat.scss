@@ -16,7 +16,7 @@
   margin-top: 5px;
   -ms-overflow-style: none; /* 인터넷 익스플로러 */
   scrollbar-width: none; /* 파이어폭스 */
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
 }
 
 .recommendChat_Container::-webkit-scrollbar {
@@ -26,7 +26,7 @@
 .recommendItem_Container {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: calc(100% - 20px);
   height: 105px;
   margin-left: 5%;
   margin-right: 5%;
@@ -34,6 +34,8 @@
   flex-shrink: 0;
   background: #fff;
   gap: 5px;
+  overflow-x: scroll;
+  scroll-snap-type: x proximity;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
   scroll-snap-align: center;
   position: relative; // 이 위치에 relative를 추가

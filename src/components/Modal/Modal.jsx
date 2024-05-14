@@ -15,13 +15,13 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
       else if (type === 'MEMBER') return onMemberDelete();
       return type === 'POST' ? onPostDelete() : onCommentDelete();
     } else if (actionType === 'Declaration') {
-      onSubmitDeclaration();
+      type === 'CHAT' ? onChatRoomDeclaration() : onSubmitDeclaration();
     }
   };
 
   const onChatRoomDelete = async () => {
     await api
-      .delete('/api/v1/chat/delete/${chatRoomId}', {
+      .delete(`/api/v1/chat/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${user}`,
           'Content-Type': 'application/json',
@@ -35,7 +35,39 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
       .catch((error) => console.log(error));
   };
 
-  const onChatRoomExit = () => {};
+  const onChatRoomExit = async () => {
+    await api
+      .delete(`/api/v1/chat/exit/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log(response);
+
+        navigate('/chat-page');
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const onChatRoomDeclaration = async () => {
+    await api
+      .post(
+        'api/v1/declaration/report',
+        { id: id, content: content, declarationType: 'CHAT' },
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log('채팅방 신고 ', response);
+        setIsActive(false);
+      })
+      .catch((error) => console.log('채팅방 신고 ', error));
+  };
 
   const onMemberDelete = async () => {
     await api
