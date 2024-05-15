@@ -1,6 +1,8 @@
 .chat_Container {
   display: flex;
-  width: 100%;
   flex-direction: column;
-  height: calc(var(--vh, 1vh) * 85);
+  padding: 0% 2% 15% 2%;
+  max-width: 550px;
+  width: 100%;
+  height: -webkit-fill-available;
 }

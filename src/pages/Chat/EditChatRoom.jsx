@@ -42,7 +42,7 @@ export default function EditChatRoom() {
   };
 
   const onClickFileBtn = () => {
-    imgRef.current.click(); // useRef를 통해 파일 입력 요소 클릭
+    imgRef.current?.click(); // useRef를 통해 파일 입력 요소 클릭
   };
 
   const resetToDefaultImage = () => {
@@ -87,26 +87,33 @@ export default function EditChatRoom() {
   };
 
   const onClickedSubmit = async () => {
-    try {
-      const formData = new FormData();
-      formData.append('file', imageUrl);
-      formData.append(
-        'chatRoomUpdateRequestDto',
-        new Blob([
-          JSON.stringify({
-            chatRoomId: state.chatRoomInfo.chatRoomId,
-            title: title,
-            content: contents,
-            interests: selectedCategories,
-          }),
-        ]),
-      );
+    const formData = new FormData();
+    formData.append('file', imageUrl);
+    formData.append(
+      'chatRoomUpdateRequestDto',
+      new Blob([
+        JSON.stringify({
+          chatRoomId: state.chatRoomInfo.chatRoomId,
+          title: title,
+          content: contents,
+          interests: selectedCategories,
+        }),
+      ]),
+    );
 
-      await api.post(`/api/v1/chat/update`, formData); // await 키워드를 사용하여 비동기적으로 처리
-      navigate('/chatroom');
-    } catch (error) {
-      console.error('API 요청 중 오류가 발생했습니다:', error);
-    }
+    await api
+      .post('/api/v1/chat/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        navigate('/chat-page');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (

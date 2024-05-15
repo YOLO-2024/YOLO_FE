@@ -13,26 +13,21 @@ const RecommendChatItem = ({ title, isActive, chatroomId, data }) => {
       state: { chatRoomData: data },
     });
   };
-
   return (
-    <div className={`recommendItem_Container ${isActive ? 'active' : ''}`}>
-      <div className="chatIcon_Box">
-        <GroupIcon />
-      </div>
+    <>
       <div
-        className="recommendTitle_Container"
-        style={{ color: '#2176FF' }}
+        className={`recommendItem_Container ${isActive ? 'active' : ''}`}
         onClick={onClickedRecommendChat}
       >
-        추천 단체 채팅
+        <div className="chatIcon_Box">
+          <GroupIcon />
+        </div>
+        <div className="recommendTitle_Container" style={{ color: '#2176FF' }}>
+          추천 단체 채팅
+        </div>
+        <div className="recommendTitle_Container">{title}</div>
       </div>
-      <div
-        className="recommendTitle_Container"
-        onClick={onClickedRecommendChat}
-      >
-        {title}
-      </div>
-    </div>
+    </>
   );
 };
 
