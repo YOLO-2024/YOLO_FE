@@ -2,7 +2,7 @@ import '../../styles/pages/Chat/JoinChatPage.scss';
 import '../../styles/pages/login/AddInfoPage.scss';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { useNavigate, useLocation } from 'react-router-dom';
-import basicProfile from '../../assets/images/basicProfile.jpg';
+import NoImage from '../../assets/images/NoImage.webp';
 import chattingPerson from '../../assets/svgs/chattingPerson.svg';
 import BottomNavBar from '../../components/Layout/BottomNavBar';
 import { ModeEditIcon } from '../../assets/svgs/ModeEditIcon';
@@ -43,6 +43,10 @@ export default function JoinChatPage() {
     });
   };
 
+  const onErrorImg = (e) => {
+    e.target.src = NoImage;
+  };
+
   console.log(chatRoomData);
   return (
     <>
@@ -81,9 +85,14 @@ export default function JoinChatPage() {
           <div className="joinchat_profileWrapper">
             <div className="joinchat_profileImg">
               <img
-                src={chatRoomData.chatRoomImage?.imageUrl || basicProfile}
+                onError={onErrorImg}
+                src={
+                  chatRoomData.chatRoomImage?.imageUrl
+                    ? chatRoomData.chatRoomImage?.imageUrl
+                    : NoImage
+                }
                 style={{
-                  borderRadius: '30%',
+                  borderRadius: '15%',
                   width: 'calc(var(--vh, 1vh) * 15)',
                   height: 'calc(var(--vh, 1vh) * 15)',
                 }}

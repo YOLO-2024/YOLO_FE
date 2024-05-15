@@ -3,7 +3,7 @@ import chattingPerson from '../../assets/svgs/chattingPerson.svg';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import { useEffect, useRef, useState } from 'react';
-import basicProfile from '../../assets/images/basicProfile.jpg';
+import NoImage from '../../assets/images/NoImage.webp';
 
 const ChatList = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const ChatList = () => {
     });
 
     if (endRef.current) {
-      observer.current.observe(endRef.current); // Intersection Observer에 감지할 요소 등록
+      observer.current.observe(endRef.current);
     }
 
     return () => {
@@ -63,6 +63,10 @@ const ChatList = () => {
     navigate(`/chat-page/join/${chatRoomId}`, { state: { chatRoomData } });
   };
 
+  const onErrorImg = (e) => {
+    e.target.src = NoImage;
+  };
+
   return (
     <div className="chatList_Container">
       {chatListData ? (
@@ -74,7 +78,12 @@ const ChatList = () => {
           >
             <div className="chatItem_ProfileImg">
               <img
-                src={chat.chatRoomImage?.imageUrl || basicProfile}
+                onError={onErrorImg}
+                src={
+                  chat.chatRoomImage?.imageUrl
+                    ? chat.chatRoomImage?.imageUrl
+                    : NoImage
+                }
                 style={{ width: '53px', height: '53px', borderRadius: '10px' }}
               />
             </div>
