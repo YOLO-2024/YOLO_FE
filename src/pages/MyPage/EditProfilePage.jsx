@@ -11,12 +11,11 @@ export default function EditProfile() {
   const [locationData, setLocationData] = useState(
     isWriter.profileInfo.location,
   );
-
   const [isLocationValid, setIsLocationValid] = useState(false);
   const [file, setFile] = useState(isWriter.profileImage);
   const [imagePreview, setImagePreview] = useState('');
   const fileInputRef = useRef(null);
-  const [view, setView] = useState(false);
+  const [drop, setDrop] = useState(false);
   const [formState, setFormState] = useState({
     nickname: isWriter.profileInfo.nickname,
     content: isWriter.profileInfo.content,
@@ -48,14 +47,11 @@ export default function EditProfile() {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(newFile);
-    } else {
-      setFile(null);
-      setImagePreview(null);
     }
+    setDrop(false);
   };
-  // console.log(file);
-  // console.log(imagePreview);
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
 
@@ -76,7 +72,7 @@ export default function EditProfile() {
       ),
     );
 
-    await api
+    api
       .post('/api/v1/member/update-profile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -87,6 +83,11 @@ export default function EditProfile() {
       })
       .catch((error) => console.log(error));
   };
+
+  // console.log('file', file);
+  // console.log('preview', imagePreview);
+  // console.log(formState);
+  console.log(file);
 
   return (
     <div className="My_ProfileEdit_Container">
@@ -102,11 +103,30 @@ export default function EditProfile() {
             }
           />
         </div>
-        <div
-          className="My_ProfileImage_button"
-          onClick={() => fileInputRef.current.click()}
-        >
-          프로필 등록
+        <div className="My_ProfileImage_button" onClick={() => setDrop(!drop)}>
+          프로필 등록 {drop ? '▲' : '▼'}
+          {drop && (
+            <div className="dropdown-menu">
+              <div
+                className="My_ProfileImage_button_selecte"
+                onClick={() => {
+                  fileInputRef.current.click();
+                }}
+              >
+                이미지 선택
+              </div>
+              <div
+                className="My_ProfileImage_button_default"
+                onClick={() => {
+                  setImagePreview(defaultImage);
+                  setFile(defaultImage);
+                  setDrop(false);
+                }}
+              >
+                기본 이미지
+              </div>
+            </div>
+          )}
         </div>
 
         <input
@@ -118,8 +138,10 @@ export default function EditProfile() {
           onChange={handleImageChange}
           ref={fileInputRef}
           multiple
+          onClick={(e) => (e.target.value = '')}
         />
       </div>
+
       <div className="My_ProfileInfo_Wrapper">
         <form onSubmit={handleSubmit}>
           <div className="My_ProfileInfo_Location">
@@ -152,7 +174,7 @@ export default function EditProfile() {
           <div className="My_ProfileInfo_Button">
             <button
               className="My_ProfileInfo_editButton"
-              disabled={formState.nickname === '' ? true : false}
+              disabled={!formState.nickname || !formState.content}
               onClick={handleSubmit}
             >
               수정
