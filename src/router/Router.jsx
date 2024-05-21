@@ -27,9 +27,13 @@ import EditProfile from '../pages/MyPage/EditProfilePage';
 import EditInterest from '../pages/MyPage/EditInterestPage';
 
 import ChattingPage from '../pages/Chat/ChattingPage';
-
+import Splash from '../pages/Splash';
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Splash />,
+  },
   {
     path: '/login',
     element: <LoginPage />,
@@ -67,7 +71,6 @@ const router = createBrowserRouter([
     element: <ChattingPage />,
   },
   {
-    path: '/',
     element: <Layout />,
     children: [
       {

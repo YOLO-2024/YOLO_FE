@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 // import SelectLocation from '../../components/common/SelectLocation';
@@ -6,7 +6,6 @@ import basicProfile from '../../assets/images/basicProfile.jpg';
 import '../../styles/pages/login/AddInfoPage.scss';
 import '../../styles/component/common/SelectLocation.scss';
 import api from '../../utils/api';
-import close from '../../assets/svgs/close.svg';
 
 const SelectLocation = lazy(
   () => import('../../components/common/SelectLocation'),
@@ -24,6 +23,8 @@ export default function AddInfoPage() {
   const [imagePreview, setImagePreview] = useState(basicProfile);
   const [isLocationValid, setIsLocationValid] = useState(false);
   const userTok = sessionStorage.getItem('accessToken');
+  const fileInputRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (file) {
@@ -49,11 +50,7 @@ export default function AddInfoPage() {
     } else {
       setFile(null);
     }
-  };
-
-  const resetToDefaultImage = () => {
-    setImagePreview(basicProfile); // 기본 이미지로 리셋
-    setFile(''); // 선택된 파일 상태도 리셋
+    setIsOpen(false);
   };
 
   const addInfoHandler = async (data) => {
@@ -96,7 +93,7 @@ export default function AddInfoPage() {
   };
 
   return (
-    <div className="mainWrapper">
+    <div>
       <div className="styledText">추가정보 입력</div>
       <div className="profileWrapper">
         <div className="profileImg">
@@ -108,27 +105,41 @@ export default function AddInfoPage() {
               height: 'calc(var(--vh, 1vh) * 15)',
             }}
           />
-          {file && (
-            <button
-              onClick={resetToDefaultImage}
-              className="resetDefaultImg_Button"
-            >
-              <img src={close} />
-            </button>
+        </div>
+        <div className="profileImg_btn" onClick={() => setIsOpen(!isOpen)}>
+          프로필 등록 {isOpen ? '▲' : '▼'}
+          {isOpen && (
+            <div className="dropdown_container">
+              <div
+                className="setProfileImg_btn"
+                onClick={() => {
+                  fileInputRef.current.click();
+                }}
+              >
+                이미지 선택
+              </div>
+              <div
+                className="setProfileImg_btn"
+                onClick={() => {
+                  setImagePreview(basicProfile);
+                  setFile('');
+                  setIsOpen(false);
+                }}
+              >
+                기본 이미지
+              </div>
+            </div>
           )}
         </div>
         <input
           id="photoURLInput"
-          className="profileImgSubmit"
           style={{ display: 'none' }}
           name="file"
           type="file"
           {...register('file')}
           onChange={handleImageChange}
+          ref={fileInputRef}
         />
-        <label htmlFor="photoURLInput" className="profileImgSubmit">
-          프로필 등록
-        </label>
       </div>
 
       <div className="infoContainer">
