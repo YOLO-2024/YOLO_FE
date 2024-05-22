@@ -1,0 +1,31 @@
+.splash_Container {
+  display: flex;
+  background: #fff;
+  flex-direction: column;
+  justify-content: center;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+.splash_Header {
+  display: flex;
+  position: absolute;
+  width: 144px;
+  height: 90px;
+  top: 50px;
+  left: 30px;
+  flex-direction: column;
+}
+.splash_Text {
+  color: rgba(0, 0, 0, 0.9);
+  font-family: Inter;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
+}
+
+.splash_Logo {
+  display: flex;
+  justify-content: center;
+}
