@@ -10,10 +10,10 @@ import api from '../../utils/api';
 export default function EditPost() {
   const navigate = useNavigate();
   const location = useLocation();
-  const fileInputRef = useRef(null);
+  const imgRef = useRef(null);
   const postData = { ...location.state };
-  const [file, setFile] = useState(postData.postImage || []);
-  const [imagePreview, setImagePreview] = useState(postData.postImage);
+  const [imgUrl, setImgUrl] = useState([]);
+  const [preview, setPreview] = useState([]);
   const user = sessionStorage.getItem('accessToken');
 
   const [formState, setFormState] = useState({
@@ -50,76 +50,97 @@ export default function EditPost() {
   //   const selectedFiles = Array.from(e.target.files);
 
   //   if (selectedFiles.every((file) => file.type.startsWith('image'))) {
-  //     //동일한 형태로 만들어주기
-  //     const newImagePreviews = selectedFiles.map((file) => ({
-  //       imageUrl: URL.createObjectURL(file),
-  //     }));
-  //     const updatedFiles = [...file, ...selectedFiles];
-  //     setFile(updatedFiles);
-  //     console.log('add file', updatedFiles);
-  //     console.log('편집 after:', file);
-
+  //     const updatedFiles = [...img, ...selectedFiles];
+  //     setImg(updatedFiles);
+  //     const newImagePreviews = selectedFiles.map((file) =>
+  //       URL.createObjectURL(file),
+  //     );
   //     setImagePreview((prevImagePreview) => [
   //       ...prevImagePreview,
   //       ...newImagePreviews,
-  //     ]);
-  //   } else {
-  //     setFile([]);
-  //     setImagePreview([]);
+  //     ]); // 이미지 미리보기 상태 업데이트
   //   }
+
+  // const file = e.target.files[0];
+  // if (!file) {
+  //   return;
+  // }
+
+  // const reader = new FileReader();
+  // setImg([...img, file]);
+  // reader.onloadend = () => {
+  //   setImagePreview([...imagePreview, reader.result]);
+  // };
+  // reader.readAsDataURL(file);
   // };
 
-  const handleImageChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    console.log(selectedFiles);
-    if (selectedFiles.every((file) => file.type.startsWith('image'))) {
-      const updatedFiles = [...file, ...selectedFiles];
-      setFile(updatedFiles);
-      const newImagePreviews = selectedFiles.map((file) =>
-        URL.createObjectURL(file),
-      );
-      setImagePreview((prevImagePreview) => [
-        ...prevImagePreview,
-        ...newImagePreviews,
-      ]); // 이미지 미리보기 상태 업데이트
-    } else {
-      setFile([]);
-      setImagePreview([]);
-    }
+  const convertURLtoFile = async (url) => {
+    const response = await fetch(url);
+    const data = await response.blob();
+    const ext = url.split('.').pop(); // url 구조에 맞게 수정할 것
+    const filename = url.split('/').pop(); // url 구조에 맞게 수정할 것
+    const metadata = { type: `image/${ext}` };
+    return new File([data], filename, metadata);
   };
 
   useEffect(() => {
-    console.log(file);
-  }, [file]);
-  const handleDeleteImage = (i) => {
-    const updatedImagesFile = file.filter((image, index) => i !== index);
-    const updatedImagePreview = imagePreview.filter(
-      (image, index) => i !== index,
-    );
+    setPreview(postData.postImage.map((image) => image.imageUrl));
+    postData.postImage.map((image) => {
+      convertURLtoFile(image.imageUrl).then((file) => {
+        setImgUrl((prevImageUrl) => [...prevImageUrl, file]);
+      });
+    });
+  }, []);
 
-    setFile(updatedImagesFile);
-    setImagePreview(updatedImagePreview);
-    console.log(updatedImagesFile);
-    console.log(updatedImagePreview);
+  const onChangeImage = (e) => {
+    const file = e.target.files[0]; // 첫 번째 파일만 선택
+
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    setImgUrl([...imgUrl, file]);
+    reader.onloadend = () => {
+      // 이미지를 미리보기로 설정
+      setPreview([...preview, reader.result]);
+    };
+
+    reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // console.log(file);
-    const formData = new FormData();
-    file.forEach((file) => {
-      formData.append('files', file);
-    });
-    // console.log('제출', formData.files);
-    const json = JSON.stringify({
-      postId: formState.postId,
-      title: formState.title,
-      content: formState.content,
-      categories: formState.selectedCategories,
-    });
+  const handleDeleteImage = (index) => {
+    const updatedImagesFile = imgUrl.filter((image, i) => i !== index);
+    const updatedImagePreview = preview.filter((image, i) => i !== index);
 
-    const blob = new Blob([json], { type: 'application/json' });
-    formData.append('postUpdateRequestDto', blob);
+    setImgUrl(updatedImagesFile);
+    setPreview(updatedImagePreview);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    if (imgUrl.length > 0) {
+      imgUrl.forEach((file) => {
+        formData.append('files', file);
+      });
+    } else {
+      formData.append('files', null);
+    }
+
+    formData.append(
+      'postUpdateRequestDto',
+      new Blob(
+        [
+          JSON.stringify({
+            postId: formState.postId,
+            title: formState.title,
+            content: formState.content,
+            categories: formState.selectedCategories,
+          }),
+        ],
+        { type: 'application/json' },
+      ),
+    );
 
     await api
       .post('/api/v1/post/edit', formData, {
@@ -130,7 +151,7 @@ export default function EditPost() {
       })
       .then((response) => {
         console.log('수정', response);
-        navigate(-1);
+        navigate('/post-page');
       })
       .catch((error) => {
         console.log('수정', error);
@@ -180,11 +201,11 @@ export default function EditPost() {
         onChange={handleChange}
       />
 
-      {imagePreview.length >= 0 && (
+      {preview && (
         <div className="image-previewContainer">
-          {imagePreview.map((src, index) => (
+          {preview.map((src, index) => (
             <div key={index} className="image-preview">
-              <img src={src.imageUrl ? src.imageUrl : src} alt="미리보기" />
+              <img src={src} alt="미리보기" />
               <div
                 className="deleteImage"
                 onClick={() => handleDeleteImage(index)}
@@ -198,23 +219,21 @@ export default function EditPost() {
 
       <div
         className="addImage-container"
-        onClick={() => fileInputRef.current.click()}
+        onClick={() => imgRef.current.click()}
       >
         <div className="AddPhoto">
           <AddPhoto />
         </div>
         <div>이미지 추가</div>
+        <input
+          className="AddPhoto"
+          style={{ display: 'none' }}
+          // name="file"
+          type="file"
+          onChange={onChangeImage}
+          ref={imgRef}
+        />
       </div>
-      <input
-        id="photoURLInput"
-        className="AddPhoto"
-        style={{ display: 'none' }}
-        name="file"
-        type="file"
-        onChange={handleImageChange}
-        ref={fileInputRef}
-        multiple
-      />
     </form>
   );
 }

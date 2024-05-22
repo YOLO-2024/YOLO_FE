@@ -48,6 +48,7 @@ export default function NewPost() {
   useEffect(() => {
     console.log(file);
   }, [file]);
+
   const handleDeleteImage = (i) => {
     const updatedImagesFile = file.filter((image, index) => i !== index);
     const updatedImagePreview = imagePreview.filter(
@@ -74,7 +75,7 @@ export default function NewPost() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -90,7 +91,7 @@ export default function NewPost() {
     const blob = new Blob([json], { type: 'application/json' });
     formData.append('postCreateRequestDto', blob);
 
-    await api
+    api
       .post('/api/v1/post/create', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',

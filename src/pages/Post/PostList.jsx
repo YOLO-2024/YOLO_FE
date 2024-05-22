@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../utils/api';
-import basicProfile from '../../assets/images/basicProfile.jpg';
+import NoImage from '../../assets/images/NoImage.webp';
 
 //포스트 페이지 나열 컴포넌트
 export default function PostList() {
@@ -47,16 +47,12 @@ export default function PostList() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
-      root: null,
-      rootMargin: '20px',
       threshold: 0,
     });
 
     if (postList.length && obsRef.current) {
       observer.observe(obsRef.current);
     }
-
-    // 관찰 대상인 마지막 요소가 변경될 때마다 observer를 업데이트
     return () => {
       if (obsRef.current) {
         observer.unobserve(obsRef.current);
@@ -88,9 +84,7 @@ export default function PostList() {
           <img
             className="postIcon"
             src={
-              post.postImage.length !== 0
-                ? post.postImage[0].imageUrl
-                : basicProfile
+              post.postImage.length !== 0 ? post.postImage[0].imageUrl : NoImage
             }
             alt="게시물 사진"
           />
@@ -111,6 +105,7 @@ export default function PostList() {
               </div>
               <div>
                 <CommentIcon />
+                {post.postInfo.commentCount}
               </div>
               <div>
                 <ReviewIcon />

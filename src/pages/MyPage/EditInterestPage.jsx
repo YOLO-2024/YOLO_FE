@@ -1,21 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import BackIcon from '../../assets/svgs/BackIcon';
 import api from '../../utils/api';
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../styles/pages/MyPage.scss';
+import InterestList from '../../components/Login/InterestList';
 
 export default function EditInterest() {
   const user = sessionStorage.getItem('accessToken');
   const isWriter = JSON.parse(sessionStorage.getItem('myInfo'));
   const navigate = useNavigate();
-  const InterestList = lazy(
-    () => import('../../components/Login/InterestList'),
-  );
   const [interestList, setInterestList] = useState(
     isWriter.profileInfo.interestList,
   );
   const [showWarning, setShowWarning] = useState(false);
-  console.log('isWriter', isWriter);
 
   useEffect(() => {
     if (interestList.length >= 2) {
@@ -43,7 +40,6 @@ export default function EditInterest() {
       })
       .catch((error) => console.log(error));
   };
-  console.log(interestList);
   return (
     <div className="My_InterestEdit_Container">
       <div className="My_InterestEdit_header">
@@ -53,9 +49,7 @@ export default function EditInterest() {
         <div className="My_InterestEdit_headerText">관심사를 선택해주세요.</div>
       </div>
       <div className="My_InterestEdit_interest">
-        <Suspense fallback={<div>loading...</div>}>
-          <InterestList onInterestChange={setInterestList} />
-        </Suspense>
+        <InterestList onInterestChange={setInterestList} />
       </div>
       {showWarning && (
         <div className="warningText">관심사를 2개 이상 선택해주세요.</div>
