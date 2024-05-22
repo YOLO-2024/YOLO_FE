@@ -85,3 +85,36 @@
   display: flex;
   justify-content: center;
 }
+
+.My_InterestEdit_header {
+  margin: 30px 0px 30px 15px;
+}
+.My_InterestEdit_headerText {
+  color: #171930;
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 34px; /* 141.667% */
+  margin: 20px 0 0 20px;
+}
+
+.My_InterestEdit_button {
+  width: 351px;
+  height: 52px;
+  color: white;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  opacity: 0.7671;
+  background-color: #266ed7;
+
+  &:disabled {
+    background-color: gray;
+  }
+  margin: 60px auto;
+}
+
+.My_resetDefaultImg_Button {
+  border: none;
+}
