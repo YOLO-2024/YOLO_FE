@@ -8,10 +8,12 @@ const RecommendPostItem = ({ title, categories, data }) => {
   const navigate = useNavigate();
   const onClickedRecommendPost = () => {
     console.log(data);
+    console.log(data.postImage);
     navigate(`/post-page/check/${data.postInfo.postId}`, {
       state: {
         postData: data,
         postInfo: data.postInfo,
+        postImage: data.postImage,
         writerInfo: data.writerInfo,
       },
     });
@@ -24,11 +26,33 @@ const RecommendPostItem = ({ title, categories, data }) => {
       <div className="mainPostImage_Container">
         <img
           src={imageData ? imageData : NoImage}
-          style={{ width: '147px', height: '108px', borderRadius: '15px' }}
+          style={{
+            width: '147px',
+            height: '108px',
+            borderRadius: '15px',
+          }}
         />
       </div>
       <div className="mainPostTitle_Container">{title}</div>
-      <div className="mainPostTag">{categories}</div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          gap: '2px',
+          flexWrap: 'wrap',
+          maxWidth: '150px',
+        }}
+      >
+        {categories.map((category, index) => (
+          <div
+            key={index}
+            className="mainPostTag"
+            style={{ width: categories.length === 1 ? '60px' : '' }}
+          >
+            {category}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
