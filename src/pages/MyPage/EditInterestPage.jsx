@@ -13,7 +13,6 @@ export default function EditInterest() {
     isWriter.profileInfo.interestList,
   );
   const [showWarning, setShowWarning] = useState(false);
-  console.log('isWriter', isWriter);
 
   useEffect(() => {
     if (interestList.length >= 2) {
@@ -41,7 +40,6 @@ export default function EditInterest() {
       })
       .catch((error) => console.log(error));
   };
-  console.log(interestList);
   return (
     <div className="My_InterestEdit_Container">
       <div className="My_InterestEdit_header">
