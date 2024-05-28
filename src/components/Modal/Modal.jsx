@@ -66,7 +66,11 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
         console.log('채팅방 신고 ', response);
         setIsActive(false);
       })
-      .catch((error) => console.log('채팅방 신고 ', error));
+      .catch((error) => {
+        alert('이미 신고 완료된 채팅방 입니다.');
+        setIsActive(false);
+        console.log('채팅방 신고 ', error);
+      });
   };
 
   const onMemberDelete = async () => {

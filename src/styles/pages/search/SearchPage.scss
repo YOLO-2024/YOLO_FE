@@ -85,7 +85,6 @@
 .searchResult_none {
   display: flex;
   justify-content: center;
-  margin-top: 70vw;
   color: #171930;
   font-family: Inter;
   font-size: 15px;
@@ -94,6 +93,7 @@
   line-height: 19px; /* 158.333% */
   text-decoration-line: underline;
   opacity: 0.3991;
+  margin-top: 50%;
 }
 
 .chatId {
