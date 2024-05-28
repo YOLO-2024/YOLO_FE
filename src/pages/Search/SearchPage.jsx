@@ -12,66 +12,112 @@ import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import person from '../../assets/svgs/chattingPerson.svg';
 
 export default function SearchPage() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState('');
   const [keyword, setKeyword] = useState('');
   const [isSearch, setIsSearch] = useState(false);
-  const [loading, setLoading] = useState(false);
+
   const [chatList, setChatList] = useState([]);
   const [postList, setPostList] = useState([]);
-  const [page, setPage] = useState(0);
-  const navigate = useNavigate();
-  const obsRef = useRef(null);
+  const [postPage, setPostPage] = useState(0);
+  const [chatPage, setChatPage] = useState(0);
+  const [postLast, setPostLast] = useState(false);
+  const [chatLast, setChatLast] = useState(false);
+  const postObsRef = useRef(null);
+  const chatObsRef = useRef(null);
 
-  console.log(page);
-  const onSerach = () => {
+  const onSearch = () => {
     setIsSearch(true);
     setSelected('게시물');
-    api
-      .get('/api/v1/search/search-post', {
-        params: { page: page, keyword: keyword },
-      })
-      .then((response) => {
-        console.log(response.data.data);
-        setPostList(response.data.data);
-      })
-      .catch((error) => console.log(error));
-
-    api
-      .get('/api/v1/search/search-chatroom', {
-        params: { page: page, keyword: keyword },
-      })
-      .then((response) => {
-        console.log(response.data.data);
-        setChatList(response.data.data);
-      })
-      .catch((error) => console.log(error));
+    setPostList([]);
+    setChatList([]);
+    setPostPage(0);
+    setChatPage(0);
+    setPostLast(false);
+    setChatLast(false);
+    getPost();
+    getChat();
   };
 
   useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, {
-      root: null,
-      rootMargin: '20px',
-      threshold: 0,
-    });
+    getPost();
+  }, [postPage]);
 
-    if (postList.length && obsRef.current) {
-      observer.observe(obsRef.current);
+  useEffect(() => {
+    getChat();
+  }, [chatPage]);
+
+  const getPost = () => {
+    if (!postLast) {
+      api
+        .get('/api/v1/search/search-post', {
+          params: { page: postPage, keyword: keyword },
+        })
+        .then((response) => {
+          console.log(response.data.data);
+          if (response.data.data.length === 0) setPostLast(true);
+          setPostList((prev) => [...prev, ...response.data.data]);
+        })
+        .catch((error) => console.log(error));
+    }
+  };
+
+  const getChat = () => {
+    if (!chatLast) {
+      api
+        .get('/api/v1/search/search-chatroom', {
+          params: { page: chatPage, keyword: keyword },
+        })
+        .then((response) => {
+          console.log(response.data.data);
+          if (response.data.data.length === 0) setChatLast(true);
+          setChatList((prev) => [...prev, ...response.data.data]);
+        })
+        .catch((error) => console.log(error));
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !postLast) {
+          setPostPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 0 },
+    );
+
+    if (postObsRef.current) {
+      observer.observe(postObsRef.current);
     }
 
-    // 관찰 대상인 마지막 요소가 변경될 때마다 observer를 업데이트
     return () => {
-      if (obsRef.current) {
-        observer.unobserve(obsRef.current);
+      if (postObsRef.current) {
+        observer.unobserve(postObsRef.current);
       }
     };
   }, [postList]);
 
-  const handleObserver = (entities) => {
-    const target = entities[0];
-    if (target.isIntersecting && !loading) {
-      setPage((prev) => prev + 1);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !chatLast) {
+          setChatPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 0 },
+    );
+
+    if (chatObsRef.current) {
+      observer.observe(chatObsRef.current);
     }
-  };
+
+    return () => {
+      if (chatObsRef.current) {
+        observer.unobserve(chatObsRef.current);
+      }
+    };
+  }, [chatList]);
 
   return (
     <>
@@ -83,13 +129,15 @@ export default function SearchPage() {
           type="text"
           className="searchInput"
           placeholder="제목, 글 내용, 관심사, 거주지"
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={(e) => {
+            setKeyword(e.target.value);
+          }}
           style={{ fontSize: '15px' }}
         />
         <button
           className="searchBar_Button"
           disabled={keyword === '' ? true : false}
-          onClick={onSerach}
+          onClick={onSearch}
         >
           검색
         </button>
@@ -124,7 +172,7 @@ export default function SearchPage() {
                         state: post,
                       });
                     }}
-                    ref={index === postList.length - 1 ? obsRef : null}
+                    ref={index === postList.length - 1 ? postObsRef : null}
                   >
                     <div className="postIcon">
                       <img
@@ -154,6 +202,7 @@ export default function SearchPage() {
                         </div>
                         <div>
                           <CommentIcon />
+                          {post.postInfo.commentCount}
                         </div>
                         <div>
                           <ReviewIcon />
@@ -169,6 +218,7 @@ export default function SearchPage() {
                 검색 결과가 존재하지 않습니다.
               </div>
             ))}
+
           {selected === '채팅방' &&
             (chatList.length > 0 ? (
               <>
@@ -180,10 +230,11 @@ export default function SearchPage() {
                       navigate(
                         `/chat-page/join/${chat.chatRoomInfo.chatRoomId}`,
                         {
-                          state: { chat },
+                          state: { chatRoomData: chat },
                         },
                       );
                     }}
+                    ref={index === chatList.length - 1 ? chatObsRef : null}
                   >
                     <img
                       className="chatIcon"

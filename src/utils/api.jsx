@@ -24,41 +24,35 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => {
+  function (response) {
     return response;
   },
-  async (error) => {
-    const originalConfig = error.config;
-    // 이미 재요청을 시도했다면 무한 루프를 막기 위해 바로 에러 전파
-    if (originalConfig._retry) {
-      return Promise.reject(error);
-    }
-
-    if (error.response.status === 401 && !originalConfig._retry) {
-      originalConfig._retry = true; // 재시도 했다는 표시 추가
-
+  async function (err) {
+    const originalConfig = err.config;
+    let refreshTokenReqDto = {
+      refreshToken: sessionStorage.getItem('refreshToken'),
+    };
+    if (err.response && err.response.status === 401) {
       try {
-        const refresh_Token = sessionStorage.getItem('refreshToken');
-        // 서버로부터 새로운 accessToken
-        const { data } = await axios.post('/api/v1/auth/refresh', {
-          refresh_Token,
-        });
-        const newAccessToken = data.accessToken;
+        const response = await axios.post(
+          import.meta.env.VITE_ENDPOINT + '/api/v1/auth/access',
+          refreshTokenReqDto,
+        );
+        if (response) {
+          sessionStorage.setItem('accessToken', response.data.data.accessToken);
+          sessionStorage.setItem(
+            'refreshToken',
+            response.data.data.refreshToken,
+          );
 
-        // 새로운 AccessToken을 세션 스토리지와 요청 헤더에 설정
-        sessionStorage.setItem('accessToken', newAccessToken);
-        api.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
-
-        // 새로운 토큰으로 재시도
-        return api(originalConfig);
+          return await api.request(originalConfig);
+        }
       } catch (err) {
-        console.error('Unable to refresh token', err);
-        sessionStorage.clear(); // 세션 스토리지 클리어
-        window.location.href = '/login'; // 로그인 페이지로 이동
-        return Promise.reject(err);
+        console.error(err);
       }
+      return Promise.reject(err);
     }
-    return Promise.reject(error);
+    return Promise.reject(err);
   },
 );
 

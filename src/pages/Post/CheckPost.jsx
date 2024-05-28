@@ -35,6 +35,9 @@ export default function CheckPost() {
   const [comment, setComment] = useState('');
   const [commentList, setCommentList] = useState([]);
 
+  const [imageModal, setImageModal] = useState(false);
+  const [selectedImg, setSelectedImg] = useState('');
+
   console.log(postData);
   useEffect(() => {
     api
@@ -86,8 +89,8 @@ export default function CheckPost() {
         },
       )
       .then((response) => {
-        console.log('comment post', response);
         setComment('');
+        console.log('comment post', response);
       })
       .catch((error) => {
         console.log('comment post', error);
@@ -116,7 +119,7 @@ export default function CheckPost() {
   return (
     <>
       <div className="Post_Header">
-        <div className="previousIcon" onClick={() => navigate(-1)}>
+        <div className="previousIcon" onClick={() => navigate('/post-page')}>
           <PreviousIcon />
         </div>
         <div className="Post_Header_options">
@@ -231,8 +234,24 @@ export default function CheckPost() {
       <div className="Post_ImageContainer">
         {postData.postImage &&
           postData.postImage.map((img, index) => (
-            <img key={index} className="Post_Image" src={img.imageUrl} />
+            <img
+              key={index}
+              className="Post_Image"
+              src={img.imageUrl}
+              onClick={() => {
+                setSelectedImg(img.imageUrl);
+                setImageModal(true);
+              }}
+            />
           ))}
+        {imageModal && (
+          <div className="modal-Container">
+            <div className="close" onClick={() => setImageModal(false)}>
+              <PreviousIcon />
+            </div>
+            <img className="image-modal-content" src={selectedImg} alt="" />
+          </div>
+        )}
       </div>
       <div className="Post_CountContainer">
         <div className="Post_likeIcon">
@@ -256,7 +275,14 @@ export default function CheckPost() {
               className="Post_CommentWrapper"
             >
               {comment.writerInfo.nickname === writer ? (
-                <div className="Post_MyComment">
+                <div
+                  className="Post_MyComment"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                  }}
+                >
                   <div className="Post_MyComment_WriterBox">
                     <div className="Post_MyCommentWriter">
                       {comment.writerInfo.nickname}
@@ -289,7 +315,7 @@ export default function CheckPost() {
                     <img
                       src={
                         comment.writerInfo.profileImage
-                          ? comment.writerInfo.profileImage
+                          ? comment.writerInfo.profileImage.imageUrl
                           : defaultImage
                       }
                       className="Post_CommentImage"

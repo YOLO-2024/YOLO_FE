@@ -82,3 +82,17 @@
     margin: 13%;
   }
 }
+
+.chatList_none {
+  display: flex;
+  justify-content: center;
+  color: #171930;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px; /* 158.333% */
+  text-decoration-line: underline;
+  opacity: 0.3991;
+  margin-top: 50%;
+}

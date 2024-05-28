@@ -1,6 +1,6 @@
 import '../../styles/pages/MyPage.scss';
 import defaultImage from '../../assets/images/basicProfile.jpg';
-import { Suspense, lazy, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 // import close from '../../assets/svgs/close.svg';
@@ -11,8 +11,9 @@ export default function EditProfile() {
   const [locationData, setLocationData] = useState(
     isWriter.profileInfo.location,
   );
-  const [isLocationValid, setIsLocationValid] = useState(false);
-  const [file, setFile] = useState(isWriter.profileImage);
+  const [isLocationValid, setIsLocationValid] = useState(true);
+  const [profile, setProfile] = useState(null);
+
   const [imagePreview, setImagePreview] = useState('');
   const fileInputRef = useRef(null);
   const [drop, setDrop] = useState(false);
@@ -37,10 +38,40 @@ export default function EditProfile() {
     });
   };
 
+  const handleDefaultImage = () => {
+    setImagePreview(defaultImage);
+    setProfile(defaultImage);
+    setDrop(false);
+  };
+
+  const convertURLtoFile = async (url) => {
+    const response = await fetch(url);
+    const data = await response.blob();
+    const ext = url.split('.').pop(); // url 구조에 맞게 수정할 것
+    const filename = url.split('/').pop(); // url 구조에 맞게 수정할 것
+    const metadata = { type: `image/${ext}` };
+    return new File([data], filename, metadata);
+  };
+
+  useEffect(() => {
+    const initializeFile = async () => {
+      if (isWriter.profileImage) {
+        const file = await convertURLtoFile(isWriter.profileImage.imageUrl);
+        setProfile(file);
+        setImagePreview(isWriter.profileImage.imageUrl);
+      } else {
+        setProfile(defaultImage);
+        setImagePreview(defaultImage);
+      }
+    };
+    initializeFile();
+  }, []);
+
   const handleImageChange = (e) => {
     const newFile = e.target.files[0];
+
     if (newFile && newFile.type.substr(0, 5) === 'image') {
-      setFile(newFile);
+      setProfile(newFile);
 
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -54,9 +85,9 @@ export default function EditProfile() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-
-    if (file) {
-      formData.append('file', file);
+    // formData.append('file', profile);
+    if (profile && profile !== defaultImage) {
+      formData.append('file', profile);
     }
     formData.append(
       'updateProfileRequestDto',
@@ -84,11 +115,6 @@ export default function EditProfile() {
       .catch((error) => console.log(error));
   };
 
-  // console.log('file', file);
-  // console.log('preview', imagePreview);
-  // console.log(formState);
-  console.log(file);
-
   return (
     <div className="My_ProfileEdit_Container">
       <div className="My_ProfileImage_Wrapper">
@@ -96,10 +122,10 @@ export default function EditProfile() {
           <img
             src={
               imagePreview
-                ? imagePreview
-                : isWriter.profileImage
-                  ? isWriter.profileImage.imageUrl
-                  : defaultImage
+              // ? imagePreview
+              // : isWriter.profileImage
+              //   ? isWriter.profileImage.imageUrl
+              //   : defaultImage
             }
           />
         </div>
@@ -117,11 +143,7 @@ export default function EditProfile() {
               </div>
               <div
                 className="My_ProfileImage_button_default"
-                onClick={() => {
-                  setImagePreview(defaultImage);
-                  setFile(defaultImage);
-                  setDrop(false);
-                }}
+                onClick={handleDefaultImage}
               >
                 기본 이미지
               </div>
@@ -137,8 +159,6 @@ export default function EditProfile() {
           type="file"
           onChange={handleImageChange}
           ref={fileInputRef}
-          multiple
-          onClick={(e) => (e.target.value = '')}
         />
       </div>
 

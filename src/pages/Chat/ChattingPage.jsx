@@ -48,29 +48,29 @@ const ChattingPage = () => {
     });
   }, [chat]);
 
-  const getData = async () => {
-    await api
+  const getData = () => {
+    api
       .get('/api/v1/chat/list/' + state.chatRoom.chatRoomInfo.chatRoomId, {
         params: {
           page: page,
         },
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+        },
       })
       .then((response) => {
-        const newMessages = response.data.data;
+        const newData = response.data.data;
 
         setChatData((prevChatData) => {
-          const totalMessages = { ...prevChatData };
-          Object.keys(newMessages).forEach((date) => {
-            if (totalMessages[date]) {
-              totalMessages[date] = [
-                ...totalMessages[date],
-                ...newMessages[date],
-              ];
+          const mergedData = { ...prevChatData };
+          Object.keys(newData).forEach((date) => {
+            if (mergedData[date]) {
+              mergedData[date] = [...newData[date], ...mergedData[date]];
             } else {
-              totalMessages[date] = newMessages[date];
+              mergedData[date] = newData[date];
             }
           });
-          return totalMessages;
+          return mergedData;
         });
       });
   };
