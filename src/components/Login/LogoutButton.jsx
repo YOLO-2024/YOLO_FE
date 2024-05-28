@@ -10,11 +10,7 @@ const LogoutButton = () => {
     if (confirmLogout) {
       // 토큰 상태를 초기화
       sessionStorage.setItem('accessToken', null);
-      // resetRefreshToken();
-
-      // 로그인 페이지로 리다이렉트
-
-      navigate('/login'); // React Router v6용
+      navigate('/login');
     }
   };
 

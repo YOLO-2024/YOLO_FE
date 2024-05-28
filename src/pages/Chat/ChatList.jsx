@@ -23,14 +23,12 @@ const ChatList = () => {
       });
   }, [page]);
 
-  const observer = useRef(); // Intersection Observer 객체를 저장할 ref
+  const observer = useRef();
 
   useEffect(() => {
-    // Intersection Observer 콜백 함수
     const handleIntersection = (entries) => {
-      const target = entries[0]; // 감지된 엘리먼트
+      const target = entries[0];
       if (target.isIntersecting) {
-        // 엘리먼트가 화면에 보이면
         console.log('등장');
         console.log(chatListData);
         setPage((prevPage) => prevPage + 1); // 페이지 수 증가
@@ -39,7 +37,7 @@ const ChatList = () => {
 
     // Intersection Observer 생성
     observer.current = new IntersectionObserver(handleIntersection, {
-      threshold: 0.5, // 엘리먼트가 화면에 50% 이상 보이면 감지
+      threshold: 0.5,
     });
 
     if (endRef.current) {
@@ -47,7 +45,6 @@ const ChatList = () => {
     }
 
     return () => {
-      // 컴포넌트가 언마운트되면 Intersection Observer 해제
       if (observer.current) {
         observer.current.disconnect();
       }
