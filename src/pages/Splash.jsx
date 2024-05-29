@@ -7,7 +7,6 @@ export default function Splash() {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(true);
 
-  /*
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
@@ -15,7 +14,6 @@ export default function Splash() {
 
     return () => clearTimeout(timer);
   }, []);
-*/
 
   if (!isVisible) {
     navigate('/login');
