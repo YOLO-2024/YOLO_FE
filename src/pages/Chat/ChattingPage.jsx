@@ -9,6 +9,7 @@ import '../../styles/component/TextInput.scss';
 import Exit from '../../assets/svgs/Exit.svg';
 import { NotificationIcon } from '../../assets/svgs/NotificationIcon';
 import Modal from '../../components/Modal/Modal';
+import axios from 'axios';
 
 const ChattingPage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const ChattingPage = () => {
 
   const getData = async () => {
     try {
-      const response = await api.get(
+      const response = await axios.get(
         `/api/v1/chat/list/${state.chatRoom.chatRoomInfo.chatRoomId}`,
         {
           params: { page },
