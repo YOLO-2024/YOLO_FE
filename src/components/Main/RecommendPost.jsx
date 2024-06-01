@@ -79,15 +79,19 @@ export default function RecommendPost() {
   }, [recommendPostList]);
   return (
     <div className="mainPost_Container">
-      {recommendPostList.map((recommendPost, index) => (
-        <RecommendPostItem
-          key={index}
-          postId={recommendPost.postInfo.postId}
-          title={recommendPost.postInfo.title}
-          categories={recommendPost.postInfo.categories}
-          data={recommendPost}
-        />
-      ))}
+      {recommendPostList.length === 0 ? (
+        <div className="mainPost_none">게시물이 존재하지 않습니다.</div>
+      ) : (
+        recommendPostList.map((recommendPost, index) => (
+          <RecommendPostItem
+            key={index}
+            postId={recommendPost.postInfo.postId}
+            title={recommendPost.postInfo.title}
+            categories={recommendPost.postInfo.categories}
+            data={recommendPost}
+          />
+        ))
+      )}
     </div>
   );
 }

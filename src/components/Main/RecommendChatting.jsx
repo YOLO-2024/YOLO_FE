@@ -85,22 +85,33 @@ export default function RecommendChatting() {
       }}
     >
       <div ref={containerRef} className="recommendChat_Container">
-        {recommendChatList.map((chat, index) => (
+        {recommendChatList.length === 0 ? (
           <RecommendChatItem
-            key={index}
-            title={chat.chatRoomInfo.title}
-            chatroomId={chat.chatRoomInfo.chatRoomId}
-            data={chat}
+            title="추천 단체 채팅방이 존재하지 않습니다."
+            isActive={false}
+            chatroomId={null}
+            data={null}
           />
-        ))}
+        ) : (
+          recommendChatList.map((chat, index) => (
+            <RecommendChatItem
+              key={index}
+              title={chat.chatRoomInfo.title}
+              isActive={index === activeIndex}
+              chatroomId={chat.chatRoomInfo.chatRoomId}
+              data={chat}
+            />
+          ))
+        )}
       </div>
       <div className="carousel_pagination">
-        {recommendChatList.map((_, index) => (
-          <div
-            key={index}
-            className={`carousel_circle ${index === activeIndex ? 'active' : ''}`}
-          ></div>
-        ))}
+        {recommendChatList.length > 0 &&
+          recommendChatList.map((_, index) => (
+            <div
+              key={index}
+              className={`carousel_circle ${index === activeIndex ? 'active' : ''}`}
+            ></div>
+          ))}
       </div>
     </div>
   );

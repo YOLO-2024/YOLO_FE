@@ -60,3 +60,18 @@
   line-height: 16px;
   font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Sans-serif;
 }
+
+.mainPost_none {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 25%;
+  color: #171930;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px; /* 158.333% */
+  text-decoration-line: underline;
+  opacity: 0.3991;
+}
