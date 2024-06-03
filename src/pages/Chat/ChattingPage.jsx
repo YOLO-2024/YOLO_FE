@@ -10,6 +10,7 @@ import Exit from '../../assets/svgs/Exit.svg';
 import { NotificationIcon } from '../../assets/svgs/NotificationIcon';
 import Modal from '../../components/Modal/Modal';
 import axios from 'axios';
+import api from '../../utils/api';
 
 const ChattingPage = () => {
   const navigate = useNavigate();
@@ -24,9 +25,7 @@ const ChattingPage = () => {
   const [isChatRoomExit, setIsChatRoomExit] = useState(false);
   const [page, setPage] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
-
-  const path = `${import.meta.env.VITE_ENDPOINT}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`;
-  const NEW_URL = path.replace('/chat-page/undefined', '');
+  const NEW_URL = import.meta.env.VITE_ENDPOINT;
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -36,17 +35,26 @@ const ChattingPage = () => {
     return `${year}-${month}-${day}`;
   };
 
+  useEffect(() => {
+    if (state?.chatRoom?.chatRoomInfo?.chatRoomId) {
+      getData();
+    }
+  }, [state?.chatRoom?.chatRoomInfo?.chatRoomId, page]);
+
   const getData = async () => {
     try {
-      const response = await axios.get(NEW_URL, {
-        params: { page },
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'Cache-Control': 'no-cache',
+      const response = await axios.get(
+        `${NEW_URL}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
+        {
+          params: { page },
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'Cache-Control': 'no-cache',
+          },
         },
-      });
+      );
       console.log(response);
       const newData = response.data.data;
 
@@ -71,12 +79,6 @@ const ChattingPage = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (state?.chatRoom?.chatRoomInfo?.chatRoomId) {
-      getData();
-    }
-  }, [page]);
 
   useEffect(() => {
     connect();
