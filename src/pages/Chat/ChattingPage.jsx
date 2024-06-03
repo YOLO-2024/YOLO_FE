@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import api from '../../utils/api';
+import axios from 'axios';
 import * as StompJs from '@stomp/stompjs';
 import '../../styles/pages/Chat/ChattingPage.scss';
 import BackIcon from '../../assets/svgs/BackIcon';
@@ -9,6 +9,7 @@ import '../../styles/component/TextInput.scss';
 import Exit from '../../assets/svgs/Exit.svg';
 import { NotificationIcon } from '../../assets/svgs/NotificationIcon';
 import Modal from '../../components/Modal/Modal';
+import api from '../../utils/api';
 
 const ChattingPage = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const ChattingPage = () => {
   const getData = async () => {
     try {
       const response = await api.get(
-        `/api/v1/chat/list/${state.chatRoom.chatRoomInfo.chatRoomId}`,
+        `api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
         {
           params: { page },
           headers: {
@@ -43,19 +44,22 @@ const ChattingPage = () => {
           },
         },
       );
-
+      console.log(response);
       const newData = response.data.data;
-      setChatData((prevChatData) => {
-        const mergedData = { ...prevChatData };
-        Object.keys(newData).forEach((date) => {
-          if (mergedData[date]) {
-            mergedData[date] = [...newData[date], ...mergedData[date]];
-          } else {
-            mergedData[date] = newData[date];
-          }
+
+      if (newData && typeof newData === 'object') {
+        setChatData((prevChatData) => {
+          const mergedData = { ...prevChatData };
+          Object.keys(newData).forEach((date) => {
+            if (mergedData[date]) {
+              mergedData[date] = [...newData[date], ...mergedData[date]];
+            } else {
+              mergedData[date] = newData[date];
+            }
+          });
+          return mergedData;
         });
-        return mergedData;
-      });
+      }
     } catch (error) {
       console.error('Failed to fetch data:', error);
       if (error.response && error.response.status === 401) {
@@ -66,13 +70,15 @@ const ChattingPage = () => {
   };
 
   useEffect(() => {
-    getData();
-  }, [page]);
+    if (state?.chatRoom?.chatRoomInfo?.chatRoomId) {
+      getData();
+    }
+  }, [page, state]);
 
   useEffect(() => {
     connect();
     return () => disconnect();
-  }, []);
+  }, [state]);
 
   useEffect(() => {
     const currentDate = getCurrentDate();
@@ -92,8 +98,8 @@ const ChattingPage = () => {
   }, [chatData]);
 
   const connect = () => {
-    if (isConnected) {
-      console.log('Already connected.');
+    if (isConnected || !state?.chatRoom?.chatRoomInfo?.chatRoomId) {
+      console.log('Already connected or chatRoomId not provided.');
       return;
     }
     try {
@@ -152,7 +158,7 @@ const ChattingPage = () => {
   };
 
   const sendChat = () => {
-    if (chat.trim()) {
+    if (chat.trim() && client) {
       client.publish({
         destination: `${import.meta.env.VITE_PUB}${state.chatRoom.chatRoomInfo.chatRoomId}`,
         body: JSON.stringify({
@@ -231,11 +237,11 @@ const ChattingPage = () => {
         </div>
         <div className="ChatPage_Header_TextBox">
           <div className="ChatPage_Header_TextBox_Title">
-            {state.chatRoom.chatRoomInfo.title}
+            {state?.chatRoom?.chatRoomInfo?.title || 'Chat Room'}
           </div>
 
           <div className="ChatPage_Header_TextBox_MemberCount">
-            {state.chatRoom.chatRoomInfo.memberCount}명
+            {state?.chatRoom?.chatRoomInfo?.memberCount || 0}명
           </div>
         </div>
         <div className="ChatPage_Header_IconBox">
@@ -258,7 +264,7 @@ const ChattingPage = () => {
           title="채팅방을 신고 하시겠습니까?"
           body="신고 접수 확인 후, 조치하겠습니다."
           setIsActive={setIsChatDeclarationActive}
-          id={state.chatRoom.chatRoomInfo.chatRoomId}
+          id={state?.chatRoom?.chatRoomInfo?.chatRoomId}
         />
       )}
       {isChatRoomExit && (
@@ -274,7 +280,7 @@ const ChattingPage = () => {
             </span>
           }
           setIsActive={setIsChatRoomExit}
-          id={state.chatRoom.chatRoomInfo.chatRoomId}
+          id={state?.chatRoom?.chatRoomInfo?.chatRoomId}
         />
       )}
       <div className="ChatPage_Container">
