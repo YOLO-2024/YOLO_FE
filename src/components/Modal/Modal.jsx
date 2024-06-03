@@ -115,6 +115,7 @@ const Modal = ({ actionType, type, title, body, setIsActive, id }) => {
       .then((response) => {
         console.log(response);
         setIsActive(false);
+        window.location.reload();
       })
       .catch((error) => console.log(error));
   };

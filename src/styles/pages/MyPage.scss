@@ -1,6 +1,7 @@
 .MyPage {
   width: 100%;
 }
+
 .My_ProfileEdit {
   width: 100%;
   height: 52px;
@@ -34,6 +35,7 @@
   }
 }
 .My_ProfileEdit_Container {
+  margin-top: 40px;
   width: 100%;
 }
 
@@ -88,7 +90,9 @@
   flex-direction: column;
   align-items: center;
 }
-
+.My_ProfileInfo_Wrapper {
+  width: 100%;
+}
 .My_ProfileInfo_text {
   color: #171930;
   font-family: Inter;
@@ -106,15 +110,14 @@
   flex-direction: column;
 }
 .My_ProfileInfo_input {
-  // width: 350px;
-  width: calc(var(--vh, 1vh) * 42);
+  width: 93%;
   height: 52px;
+  margin: 0 auto;
   flex-shrink: 0;
   border-radius: 8px;
   border: none;
   background: #fff;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
 }
 
 .My_ProfileInfo_Button {
@@ -122,7 +125,7 @@
 }
 
 .My_ProfileInfo_editButton {
-  width: calc(var(--vh, 1vh) * 42);
+  width: 93%;
   height: 52px;
   border-radius: 8px;
   border: none;
