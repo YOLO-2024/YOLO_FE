@@ -10,6 +10,7 @@ import Exit from '../../assets/svgs/Exit.svg';
 import { NotificationIcon } from '../../assets/svgs/NotificationIcon';
 import Modal from '../../components/Modal/Modal';
 import api from '../../utils/api';
+import axios from 'axios';
 
 const ChattingPage = () => {
   const navigate = useNavigate();
@@ -35,12 +36,14 @@ const ChattingPage = () => {
 
   const getData = async () => {
     try {
-      const response = await api.get(
-        `/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
+      const response = await axios.get(
+        `${import.meta.env.VITE_ENDPOINT}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
         {
           params: { page },
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
         },
       );
@@ -73,7 +76,7 @@ const ChattingPage = () => {
     if (state?.chatRoom?.chatRoomInfo?.chatRoomId) {
       getData();
     }
-  }, [page, state]);
+  }, [page]);
 
   useEffect(() => {
     connect();
