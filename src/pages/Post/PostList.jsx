@@ -18,6 +18,7 @@ export default function PostList() {
   const obsRef = useRef(null);
   const [isLastPage, setIsLastPage] = useState(false);
 
+  console.log(postList);
   useEffect(() => {
     if (!isLastPage) {
       setLoading(true);
@@ -69,52 +70,58 @@ export default function PostList() {
 
   return (
     <div className="PostList">
-      {postList.map((post, index) => (
-        <div
-          className="postId"
-          key={post.postInfo.postId}
-          onClick={() =>
-            navigate(`/post-page/check/${post.postInfo.postId}`, {
-              state: post,
-            })
-          }
-          ref={index === postList.length - 1 ? obsRef : null}
-        >
-          {/* <div className="postIcon"> */}
-          <img
-            className="postIcon"
-            src={
-              post.postImage.length !== 0 ? post.postImage[0].imageUrl : NoImage
+      {postList.length > 0 ? (
+        postList.map((post, index) => (
+          <div
+            className="postId"
+            key={post.postInfo.postId}
+            onClick={() =>
+              navigate(`/post-page/check/${post.postInfo.postId}`, {
+                state: post,
+              })
             }
-            alt="게시물 사진"
-          />
-          {/* </div> */}
+            ref={index === postList.length - 1 ? obsRef : null}
+          >
+            {/* <div className="postIcon"> */}
+            <img
+              className="postIcon"
+              src={
+                post.postImage.length !== 0
+                  ? post.postImage[0].imageUrl
+                  : NoImage
+              }
+              alt="게시물 사진"
+            />
+            {/* </div> */}
 
-          <div className="Post-container">
-            <div className="Titlecontainer">
-              <div className="postTitle">{post.postInfo.title}</div>
-              <div className="postCreatedAt">
-                {post.postInfo.createdAt.split('T')[0]}
+            <div className="Post-container">
+              <div className="Titlecontainer">
+                <div className="postTitle">{post.postInfo.title}</div>
+                <div className="postCreatedAt">
+                  {post.postInfo.createdAt.split('T')[0]}
+                </div>
               </div>
-            </div>
-            <div className="postContents">{post.postInfo.content}</div>
-            <div className="CountContainer">
-              <div>
-                <LikeIcon />
-                {post.postInfo.likeCount}
-              </div>
-              <div>
-                <CommentIcon />
-                {post.postInfo.commentCount}
-              </div>
-              <div>
-                <ReviewIcon />
-                {post.postInfo.reviewCount}
+              <div className="postContents">{post.postInfo.content}</div>
+              <div className="CountContainer">
+                <div>
+                  <LikeIcon />
+                  {post.postInfo.likeCount}
+                </div>
+                <div>
+                  <CommentIcon />
+                  {post.postInfo.commentCount}
+                </div>
+                <div>
+                  <ReviewIcon />
+                  {post.postInfo.reviewCount}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <div className="searchResult_none">등록된 게시물이 없습니다.</div>
+      )}
     </div>
   );
 }

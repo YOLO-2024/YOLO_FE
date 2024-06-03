@@ -1,26 +1,20 @@
-.buttonContainer{
-    max-width: 550px;
-    width: 100%;
-    position: fixed;
-    bottom: 13%;
-    // right: 15%;
-    // border: 1px solid red;
+.buttonContainer {
+  max-width: 550px;
+  width: 100%;
+  position: fixed;
+  bottom: 13%;
 }
-.new{   
-width: 60px;
-height: 60px;
-border-radius: 100px;
-background: #2176FF;
-display: flex;
-margin-left: 83%;
-// position: fixed;
-// bottom: 15%;
-// right: calc(var(--vh, 1vh)*20);
-// right: 20%;
-filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
-svg{
+.new {
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  background: #2176ff;
+  display: flex;
+  margin-left: 80%;
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+  svg {
     width: 42.353px;
     height: 42.353px;
     margin: 13%;
-}
+  }
 }

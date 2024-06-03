@@ -50,7 +50,6 @@ export default function CheckPost() {
       .catch((error) => {
         console.log('comment', error);
       });
-
     api.post(
       `/api/v1/post/increase/${postData.postInfo.postId}`,
       {},
@@ -63,15 +62,20 @@ export default function CheckPost() {
     );
   }, []);
 
+  // const dateFormatter = (dateTimeString) => {
+  //   const dateTime = new Date(dateTimeString);
+  //   const formattedDateTime = `${dateTime.getFullYear()}.${String(dateTime.getMonth() + 1).padStart(2, '0')}.${String(dateTime.getDate()).padStart(2, '0')} ${String(dateTime.getHours()).padStart(2, '0')}:${String(dateTime.getMinutes()).padStart(2, '0')}`;
+  //   return formattedDateTime;
+  // };
+
   const dateFormatter = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
+    dateTime.setHours(dateTime.getHours() + 9); // 9시간 추가
+
     const formattedDateTime = `${dateTime.getFullYear()}.${String(dateTime.getMonth() + 1).padStart(2, '0')}.${String(dateTime.getDate()).padStart(2, '0')} ${String(dateTime.getHours()).padStart(2, '0')}:${String(dateTime.getMinutes()).padStart(2, '0')}`;
+
     return formattedDateTime;
   };
-
-  // console.log(postData);
-  // console.log(comment);
-  // console.log(commentList);
 
   const handleComment = () => {
     api
@@ -89,8 +93,15 @@ export default function CheckPost() {
         },
       )
       .then((response) => {
+        const newComment = response.data.data;
+
+        // 현재 댓글 목록에 새 댓글 추가
+        setCommentList((prevCommentList) => [...prevCommentList, newComment]);
+
+        // 댓글 입력창 초기화
         setComment('');
         console.log('comment post', response);
+        console.log(comment);
       })
       .catch((error) => {
         console.log('comment post', error);
@@ -189,6 +200,7 @@ export default function CheckPost() {
         <textarea
           className="Post_CommentInput"
           placeholder="댓글을 입력해주세요."
+          value={comment}
           onChange={(e) => {
             setComment(e.target.value);
           }}
@@ -202,20 +214,25 @@ export default function CheckPost() {
         </button>
       </div>
       <div className="Post_WriterContainer">
-        <img
-          className="Post_WriterIcon"
-          src={
-            postData.writerInfo.profileImage
-              ? postData.writerInfo.profileImage.imageUrl
-              : defaultImage
-          }
-        />
-        <div>
-          <div className="Post_WriterName">{postData.writerInfo.nickname}</div>
-          <div className="Post_CreatedAt">
-            {dateFormatter(postData.postInfo.createdAt)}
+        <div className="Post_WriterContainer_left">
+          <img
+            className="Post_WriterIcon"
+            src={
+              postData.writerInfo.profileImage
+                ? postData.writerInfo.profileImage.imageUrl
+                : defaultImage
+            }
+          />
+          <div>
+            <div className="Post_WriterName">
+              {postData.writerInfo.nickname}
+            </div>
+            <div className="Post_CreatedAt">
+              {dateFormatter(postData.postInfo.createdAt)}
+            </div>
           </div>
         </div>
+
         <div className="Post_likeButton" onClick={handleLikeCount}>
           <LikeWhiteIcon />
           좋아요
@@ -258,8 +275,9 @@ export default function CheckPost() {
           <LikeIcon />
           {postData.postInfo.likeCount}
         </div>
-        <div>
+        <div className="Post_commentIcon">
           <CommentIcon />
+          {postData.postInfo.commentCount}
         </div>
         <div className="Post_reviewIcon">
           <ReviewIcon />
