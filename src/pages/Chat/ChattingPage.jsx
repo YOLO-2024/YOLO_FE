@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+//import axios from 'axios';
 import * as StompJs from '@stomp/stompjs';
 import '../../styles/pages/Chat/ChattingPage.scss';
 import BackIcon from '../../assets/svgs/BackIcon';
