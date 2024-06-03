@@ -7,11 +7,9 @@ import InterestList from '../../components/Login/InterestList';
 
 export default function EditInterest() {
   const user = sessionStorage.getItem('accessToken');
-  const isWriter = JSON.parse(sessionStorage.getItem('myInfo'));
+  // const isWriter = JSON.parse(sessionStorage.getItem('myInfo'));
   const navigate = useNavigate();
-  const [interestList, setInterestList] = useState(
-    isWriter.profileInfo.interestList,
-  );
+  const [interestList, setInterestList] = useState([]);
   const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {

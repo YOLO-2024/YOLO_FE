@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
   const queryClient = new QueryClient();
+  const URL = import.meta.env.VITE_CLIENT_URL;
 
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
@@ -16,7 +17,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router} url={URL} />
         {/* <ReactQueryDevtools /> */}
       </QueryClientProvider>
     </>
