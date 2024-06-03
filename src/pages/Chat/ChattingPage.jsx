@@ -36,7 +36,7 @@ const ChattingPage = () => {
   const getData = async () => {
     try {
       const response = await api.get(
-        `api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
+        `/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
         {
           params: { page },
           headers: {
