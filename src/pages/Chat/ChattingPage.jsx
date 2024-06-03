@@ -9,7 +9,6 @@ import '../../styles/component/TextInput.scss';
 import Exit from '../../assets/svgs/Exit.svg';
 import { NotificationIcon } from '../../assets/svgs/NotificationIcon';
 import Modal from '../../components/Modal/Modal';
-import api from '../../utils/api';
 import axios from 'axios';
 
 const ChattingPage = () => {
