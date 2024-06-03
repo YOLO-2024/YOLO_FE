@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import dotenv from 'dotenv';
 
-const VITE_NEW_ENDPOINT = 'http://localhost:3000';
+// 환경 변수 로드
+dotenv.config();
 
 export default defineConfig({
   plugins: [react()],
@@ -10,7 +12,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: VITE_NEW_ENDPOINT,
+        target: process.env.VITE_ENDPOINT, // process.env를 통해 환경 변수 접근
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
