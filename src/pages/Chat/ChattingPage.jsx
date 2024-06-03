@@ -44,6 +44,7 @@ const ChattingPage = () => {
             Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
             'Content-Type': 'application/json',
             Accept: 'application/json',
+            'Cache-Control': 'no-cache',
           },
         },
       );
