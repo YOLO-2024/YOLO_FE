@@ -25,6 +25,7 @@ const ChattingPage = () => {
   const [isChatRoomExit, setIsChatRoomExit] = useState(false);
   const [page, setPage] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
+  const NEW_URL = import.meta.env.VITE_ENDPOINT;
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -37,7 +38,7 @@ const ChattingPage = () => {
   const getData = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_ENDPOINT}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
+        `${NEW_URL}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
         {
           params: { page },
           headers: {
