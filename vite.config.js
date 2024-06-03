@@ -4,7 +4,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   const env = mode === 'production' ? 'production' : 'development';
   const VITE_ENDPOINT =
-    env === 'production' ? process.env.VITE_ENDPOINT : 'http://localhost:3000';
+    env === 'production'
+      ? import.meta.env.VITE_ENDPOINT
+      : 'http://localhost:3000';
 
   return {
     plugins: [react()],
