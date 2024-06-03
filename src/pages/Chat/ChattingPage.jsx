@@ -24,7 +24,9 @@ const ChattingPage = () => {
   const [isChatRoomExit, setIsChatRoomExit] = useState(false);
   const [page, setPage] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
-  const NEW_URL = import.meta.env.VITE_ENDPOINT;
+
+  const path = `${import.meta.env.VITE_ENDPOINT}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`;
+  const NEW_URL = path.replace('/chat-page/undefined', '');
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -36,18 +38,15 @@ const ChattingPage = () => {
 
   const getData = async () => {
     try {
-      const response = await axios.get(
-        `${NEW_URL}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
-        {
-          params: { page },
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'Cache-Control': 'no-cache',
-          },
+      const response = await axios.get(NEW_URL, {
+        params: { page },
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'Cache-Control': 'no-cache',
         },
-      );
+      });
       console.log(response);
       const newData = response.data.data;
 
