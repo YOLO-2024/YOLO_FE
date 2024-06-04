@@ -1,24 +1,28 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import dotenv from 'dotenv';
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react-swc';
 
-// 환경 변수 로드
-dotenv.config();
+export default defineConfig(({ mode }) => {
+  // Load environment variables based on the mode (development, production, etc.)
+  const env = loadEnv(mode, process.cwd());
 
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: 'localhost',
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: process.env.VITE_ENDPOINT, // process.env를 통해 환경 변수 접근
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+  return {
+    plugins: [react()],
+    server: {
+      port: 3000,
+      proxy: {
+        '/api': {
+          target: env.VITE_ENDPOINT,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/\/$/, ''), // 맨 뒤에 있는 '/'를 제거합니다.
+          secure: false, // SSL 검증을 비활성화할 수 있습니다.
+        },
       },
     },
-  },
-  build: {
-    minify: false,
-  },
+    build: {
+      minify: false,
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 });

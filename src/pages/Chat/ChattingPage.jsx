@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 //import axios from 'axios';
 import * as StompJs from '@stomp/stompjs';
 import '../../styles/pages/Chat/ChattingPage.scss';
@@ -13,6 +13,9 @@ import axios from 'axios';
 import api from '../../utils/api';
 
 const ChattingPage = () => {
+  const param = useParams();
+  const chatroomId = param.roomId;
+
   const navigate = useNavigate();
   const messagesEndRef = useRef(null);
   const [client, setClient] = useState(null);
@@ -42,23 +45,15 @@ const ChattingPage = () => {
   }, [state?.chatRoom?.chatRoomInfo?.chatRoomId, page]);
 
   const getData = async () => {
-    try {
-      const response = await axios.get(
-        `${NEW_URL}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
-        {
-          params: { page: page },
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'Cache-Control': 'no-cache',
-          },
+    await api
+      .get('/api/v1/chat/list/' + chatroomId, {
+        params: {
+          page: page,
         },
-      );
-      console.log(response);
-      const newData = response.data.data;
+      })
+      .then((response) => {
+        const newData = response.data.data;
 
-      if (newData && typeof newData === 'object') {
         setChatData((prevChatData) => {
           const mergedData = { ...prevChatData };
           Object.keys(newData).forEach((date) => {
@@ -70,14 +65,7 @@ const ChattingPage = () => {
           });
           return mergedData;
         });
-      }
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
-      if (error.response && error.response.status === 401) {
-        console.error('Unauthorized: Access token is invalid or expired.');
-        // navigate('/login');
-      }
-    }
+      });
   };
 
   useEffect(() => {

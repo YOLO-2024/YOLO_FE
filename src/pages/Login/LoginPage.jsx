@@ -4,7 +4,6 @@ import Saly from '../../assets/images/Saly.jpg';
 import Naver from '../../assets/svgs/Naver';
 import Kakao from '../../assets/svgs/Kakao';
 import Google from '../../assets/svgs/Google';
-// import { accessTokenState } from '../../state/AuthState';
 import { useSocialLogin } from '../../hooks/useSocialLogin';
 
 export default function LoginPage() {
@@ -35,7 +34,6 @@ export default function LoginPage() {
   };
 
   useSocialLogin({ socialType });
-  // console.log(accessTokenState);
 
   return (
     <div className="login_wrapper">
