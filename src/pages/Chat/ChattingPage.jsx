@@ -46,7 +46,7 @@ const ChattingPage = () => {
       const response = await axios.get(
         `${NEW_URL}/api/v1/chat/list/${state?.chatRoom?.chatRoomInfo?.chatRoomId}`,
         {
-          params: { page },
+          params: { page: page },
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
             'Content-Type': 'application/json',
