@@ -1,0 +1,16 @@
+body {
+  padding: 0;
+  margin: 0 auto;
+  max-width: 550px;
+  touch-action: pan-y pan-x;
+  -webkit-tap-highlight-color: transparent;
+  background: #fff;
+}
+
+img {
+  touch-action: pan-y pan-x;
+}
+
+div {
+  touch-action: pan-y pan-x;
+}
