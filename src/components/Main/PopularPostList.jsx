@@ -78,16 +78,20 @@ export default function PopularPostList() {
 
   return (
     <div className="mainPost_Container">
-      {popularPostList.map((post, index) => (
-        <PopularPostItem
-          key={index}
-          postId={post.postInfo.postId}
-          title={post.postInfo.title}
-          categories={post.postInfo.categories}
-          image={post.postImage}
-          data={post}
-        />
-      ))}
+      {popularPostList.length === 0 ? (
+        <div className="mainPost_none">게시물이 존재하지 않습니다.</div>
+      ) : (
+        popularPostList.map((post, index) => (
+          <PopularPostItem
+            key={index}
+            postId={post.postInfo.postId}
+            title={post.postInfo.title}
+            categories={post.postInfo.categories}
+            image={post.postImage}
+            data={post}
+          />
+        ))
+      )}
     </div>
   );
 }

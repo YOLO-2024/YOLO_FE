@@ -4,15 +4,15 @@ import Saly from '../../assets/images/Saly.jpg';
 import Naver from '../../assets/svgs/Naver';
 import Kakao from '../../assets/svgs/Kakao';
 import Google from '../../assets/svgs/Google';
-// import { accessTokenState } from '../../state/AuthState';
 import { useSocialLogin } from '../../hooks/useSocialLogin';
 
 export default function LoginPage() {
-  const KAKAO_LOGIN_URL = import.meta.env.VITE_KAKAO_LOGIN_URL;
-  const NAVER_LOGIN_URL = import.meta.env.VITE_NAVER_LOGIN_URL;
-  const NAVER_LOGIN_STATE = import.meta.env.VITE_NAVER_LOGIN_STATE;
-  const GOOGLE_LOGIN_URL = import.meta.env.VITE_GOOGLE_LOGIN_URL;
-  const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
+  const KAKAO_LOGIN_URL = process.env.REACT_APP_KAKAO_LOGIN_URL;
+  const NAVER_LOGIN_URL = process.env.REACT_APP_NAVER_LOGIN_URL;
+  const NAVER_LOGIN_STATE = process.env.REACT_APP_NAVER_LOGIN_STATE;
+  const GOOGLE_LOGIN_URL = process.env.REACT_APP_GOOGLE_LOGIN_URL;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+
   const socialType = sessionStorage.getItem('socialType');
 
   console.log(KAKAO_LOGIN_URL);
@@ -35,7 +35,6 @@ export default function LoginPage() {
   };
 
   useSocialLogin({ socialType });
-  // console.log(accessTokenState);
 
   return (
     <div className="login_wrapper">

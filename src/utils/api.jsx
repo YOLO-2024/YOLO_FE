@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_CLIENT_URL,
+  baseURL: process.env.REACT_APP_CLIENT_URL,
   timeout: 3000,
   headers: {
     'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ api.interceptors.response.use(
     if (err.response && err.response.status === 401) {
       try {
         const response = await axios.post(
-          import.meta.env.VITE_ENDPOINT + '/api/v1/auth/access',
+          process.env.REACT_APP_ENDPOINT + '/api/v1/auth/access',
           refreshTokenReqDto,
         );
         if (response) {
