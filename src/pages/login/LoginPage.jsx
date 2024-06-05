@@ -10,7 +10,7 @@ import Naver from '../../assets/Login/Naver.svg';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  sessionStorage.removeItem("accessToken")
+  sessionStorage.removeItem('accessToken');
   sessionStorage.removeItem('refreshToken');
   sessionStorage.removeItem('memberState');
 
@@ -27,12 +27,15 @@ const LoginPage = () => {
             authorizationCode: code,
             state: state || undefined,
           });
-          sessionStorage.setItem("accessToken", response.data.data.token.accessToken);
+          sessionStorage.setItem(
+            'accessToken',
+            response.data.data.token.accessToken,
+          );
           sessionStorage.setItem(
             'refreshToken',
             response.data.data.token.refreshToken,
           );
-          if(response.data.data.profile.profileInfo.nickname == null) {
+          if (response.data.data.profile.profileInfo.nickname == null) {
             navigate('/addInfo');
           } else {
             navigate('/');

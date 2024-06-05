@@ -11,6 +11,7 @@ import Notification from '../../assets/post/Notification.svg';
 import { useRef } from 'react';
 import Modal from '../../component/Modal';
 import { useLayoutEffect } from 'react';
+import axios from 'axios';
 
 const ChatPage = () => {
   const param = useParams(); // 채널을 구분하는 식별자
@@ -77,18 +78,17 @@ const ChatPage = () => {
       },
     }).then((response) => {
       const newData = response.data.data;
-
-      setChatData((prevChatData) => {
-        const mergedData = { ...prevChatData };
-        Object.keys(newData).forEach((date) => {
-          if (mergedData[date]) {
-            mergedData[date] = [...newData[date], ...mergedData[date]];
-          } else {
-            mergedData[date] = newData[date];
-          }
+        setChatData((prevChatData) => {
+          const mergedData = { ...prevChatData };
+          Object.keys(newData).forEach((date) => {
+            if (mergedData[date]) {
+              mergedData[date] = [...newData[date], ...mergedData[date]];
+            } else {
+              mergedData[date] = newData[date];
+            }
+          });
+          return mergedData;
         });
-        return mergedData;
-      });
     });
   };
 
