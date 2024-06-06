@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'https://api.yolo-shop.shop',
+  baseURL: process.env.REACT_APP_CLIENT_URL,
   timeout: 3000,
   headers: {
     'Content-Type': 'application/json',
