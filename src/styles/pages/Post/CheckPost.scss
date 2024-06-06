@@ -181,17 +181,18 @@
 
 .Post_ImageContainer {
   display: flex;
-  gap: 5%;
+  gap: 15px;
   padding: 0% 3% 5% 3%;
   max-width: 550px;
-  overflow-x: auto;
+  overflow-x: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
 .Post_Image {
-  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
   height: 100px;
   border-radius: 10px;
   border: 1px solid #000;
@@ -256,8 +257,8 @@
   border-radius: 17px;
   background: #d9e9ff;
   font-feature-settings:
-    "clig" off,
-    "liga" off;
+    'clig' off,
+    'liga' off;
   padding: 3%;
 }
 
@@ -288,8 +289,8 @@
   border-radius: 17px;
   background: #f6f5ff;
   font-feature-settings:
-    "clig" off,
-    "liga" off;
+    'clig' off,
+    'liga' off;
   padding: 3%;
 }
 

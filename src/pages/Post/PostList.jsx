@@ -3,7 +3,6 @@ import { CommentIcon } from '../../assets/svgs/CommentIcon';
 import { LikeIcon } from '../../assets/svgs/LikeIcon';
 import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../utils/api';
 import NoImage from '../../assets/images/NoImage.webp';
@@ -82,7 +81,6 @@ export default function PostList() {
             }
             ref={index === postList.length - 1 ? obsRef : null}
           >
-            {/* <div className="postIcon"> */}
             <img
               className="postIcon"
               src={
@@ -92,7 +90,6 @@ export default function PostList() {
               }
               alt="게시물 사진"
             />
-            {/* </div> */}
 
             <div className="Post-container">
               <div className="Titlecontainer">
