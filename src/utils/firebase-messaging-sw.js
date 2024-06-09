@@ -1,9 +1,5 @@
-importScripts(
-  'https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js',
-);
-importScripts(
-  'https://www.gstatic.com/firebasejs/9.6.0/firebase-messaging-compat.js',
-);
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
@@ -15,5 +11,6 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENTID,
 };
 
-firebase.initializeApp(firebaseConfig);
-const messaging = firebase.messaging();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);

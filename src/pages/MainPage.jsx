@@ -29,25 +29,23 @@ export default function MainPage() {
       measurementId: process.env.REACT_APP_MEASUREMENTID,
     });
 
-    const messaging = getMessaging(firebaseApp);
+    const messaging = getMessaging();
 
-    try {
-      const currentToken = await getToken(messaging, {
-        vapidKey: process.env.REACT_APP_VAPIDKEY,
+    getToken(messaging, {
+      vapidKey: process.env.REACT_APP_VAPIDKEY,
+    })
+      .then((currentToken) => {
+        if (currentToken) {
+          localStorage.setItem('deviceToken', currentToken);
+          // 정상적으로 토큰 발급 시 콘솔 출력
+          console.log(currentToken);
+        }
+      })
+      .catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
       });
 
-      if (currentToken) {
-        localStorage.setItem('deviceToken', currentToken);
-        console.log('FCM token:', currentToken);
-      } else {
-        console.log(
-          'No registration token available. Request permission to generate one.',
-        );
-      }
-    } catch (err) {
-      console.log('An error occurred while retrieving token. ', err);
-    }
-
+    // 브라우저를 보고 있을 때에는 콘솔로 출력
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
     });
@@ -55,29 +53,13 @@ export default function MainPage() {
 
   useEffect(() => {
     onMessageFCM();
-
-    const token = localStorage.getItem('deviceToken');
-    if (token) {
-      api
-        .post('/api/v1/notification/login', { token })
-        .then((response) => {
-          console.log('Notification login response:', response.data);
-        })
-        .catch((error) => {
-          if (error.response) {
-            // 서버가 응답을 보낸 경우
-            console.log(
-              'Notification login error response data:',
-              error.response.data,
-            );
-          } else {
-            // 네트워크 에러 또는 기타 이유
-            console.log('Notification login error:', error.message);
-          }
-        });
-    } else {
-      console.log('No device token found.');
-    }
+    api
+      .post('/api/v1/notification/login', {
+        token: localStorage.getItem('deviceToken'),
+      })
+      .then((response) => {
+        console.log(response.data);
+      });
   }, []);
 
   useEffect(() => {
