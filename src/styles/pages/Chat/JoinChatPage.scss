@@ -3,7 +3,7 @@
   background: #fafafa;
   flex-direction: column;
   margin: auto;
-  height: calc(100vh - 74px);
+  height: 100vh;
 }
 
 .joinchat_Header {
@@ -78,6 +78,7 @@
   flex-shrink: 0;
   text-align: center;
   align-content: center;
-  margin: 3%;
+  margin-top: 15px;
+  margin-bottom: 10%;
   border: none;
 }

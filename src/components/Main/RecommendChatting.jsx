@@ -13,21 +13,20 @@ const RecommendChatItem = ({ title, isActive, chatroomId, data }) => {
       state: { chatRoomData: data },
     });
   };
+
   return (
-    <>
-      <div
-        className={`recommendItem_Container ${isActive ? 'active' : ''}`}
-        onClick={onClickedRecommendChat}
-      >
-        <div className="chatIcon_Box">
-          <GroupIcon />
-        </div>
-        <div className="recommendTitle_Container" style={{ color: '#2176FF' }}>
-          추천 단체 채팅
-        </div>
-        <div className="recommendTitle_Container">{title}</div>
+    <div
+      className={`recommendItem_Container ${isActive ? 'active' : ''}`}
+      onClick={onClickedRecommendChat}
+    >
+      <div className="chatIcon_Box">
+        <GroupIcon />
       </div>
-    </>
+      <div className="recommendTitle_Container" style={{ color: '#2176FF' }}>
+        추천 단체 채팅
+      </div>
+      <div className="recommendTitle_Container">{title}</div>
+    </div>
   );
 };
 
@@ -42,13 +41,13 @@ export default function RecommendChatting() {
         const recommendedChatList = await api.get('/api/v1/chat/location-chat');
         console.log(recommendedChatList.data.data);
         setRecommendChatList(recommendedChatList.data.data);
-        console.log(recommendChatList);
       } catch (error) {
         console.log(error);
       }
     };
     getRecommendedChat();
   }, []);
+
   useEffect(() => {
     console.log(recommendChatList);
   }, [recommendChatList]);
@@ -103,15 +102,15 @@ export default function RecommendChatting() {
             />
           ))
         )}
-      </div>
-      <div className="carousel_pagination">
-        {recommendChatList.length > 0 &&
-          recommendChatList.map((_, index) => (
-            <div
-              key={index}
-              className={`carousel_circle ${index === activeIndex ? 'active' : ''}`}
-            ></div>
-          ))}
+        <div className="carousel_pagination">
+          {recommendChatList.length > 0 &&
+            recommendChatList.map((_, index) => (
+              <div
+                key={index}
+                className={`carousel_circle ${index === activeIndex ? 'active' : ''}`}
+              ></div>
+            ))}
+        </div>
       </div>
     </div>
   );

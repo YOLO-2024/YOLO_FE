@@ -142,7 +142,6 @@ export default function JoinChatPage() {
           </div>
         </div>
       </div>
-      <BottomNavBar />
     </>
   );
 }
