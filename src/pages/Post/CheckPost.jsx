@@ -39,7 +39,6 @@ export default function CheckPost() {
   const [imageModal, setImageModal] = useState(false);
   const [selectedImg, setSelectedImg] = useState('');
 
-  // console.log(postData);
   useEffect(() => {
     api
       .get(`/api/v1/comment/check/${postData.postInfo.postId}`, {
@@ -64,7 +63,7 @@ export default function CheckPost() {
       )
       .then((res) => setData(res.data));
   }, []);
-  console.log(data);
+
   const dateFormatter = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     dateTime.setHours(dateTime.getHours() + 9); // 9시간 추가
