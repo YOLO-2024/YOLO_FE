@@ -1,25 +1,25 @@
 .PostList {
   display: flex;
   flex-direction: column;
-  padding: 12px 12px 70px 12px;
+  padding: 12px;
   max-width: 550px;
   width: 100%;
   height: -webkit-fill-available;
-  // &:last-child {
-  //   margin-bottom: 20px;
-  // }
 }
 .postId {
   height: 57px;
   display: flex;
   margin-bottom: 50px;
+  &:last-child {
+    margin-bottom: 90px;
+  }
 }
 .postIcon {
   width: 56px;
   height: 56px;
   flex-shrink: 0;
-  border-radius: 25%;
-  margin-right: 3%;
+  border-radius: 15px;
+  margin-right: 12px;
 }
 
 .Post-container {
@@ -74,6 +74,6 @@
   display: flex;
   width: 100%;
   justify-content: end;
-  margin-top: 2%;
-  gap: 3%;
+  margin-top: 5px;
+  gap: 6px;
 }
