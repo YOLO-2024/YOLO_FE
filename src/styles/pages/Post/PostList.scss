@@ -1,7 +1,7 @@
 .PostList {
   display: flex;
   flex-direction: column;
-  padding: 12px;
+  padding: 12px 12px 40px 12px;
   max-width: 550px;
   width: 100%;
   height: -webkit-fill-available;
@@ -11,7 +11,7 @@
   display: flex;
   margin-bottom: 50px;
   &:last-child {
-    margin-bottom: 90px;
+    padding-bottom: 90px;
   }
 }
 .postIcon {
