@@ -5,7 +5,7 @@ import { ReviewIcon } from '../../assets/svgs/ReviewIcon';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../utils/api';
-import NoImage from '../../assets/images/NoImage.webp';
+import NoImage from '../../assets/images/NoImage.jpg';
 
 //포스트 페이지 나열 컴포넌트
 export default function PostList() {
@@ -17,7 +17,6 @@ export default function PostList() {
   const obsRef = useRef(null);
   const [isLastPage, setIsLastPage] = useState(false);
 
-  console.log(postList);
   useEffect(() => {
     if (!isLastPage) {
       setLoading(true);
