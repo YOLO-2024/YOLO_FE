@@ -35,17 +35,19 @@ export default function SearchPage() {
     setChatPage(0);
     setPostLast(false);
     setChatLast(false);
-    getPost();
-    getChat();
   };
 
   useEffect(() => {
-    getPost();
-  }, [postPage]);
+    if (isSearch) {
+      getPost();
+    }
+  }, [postPage, isSearch]);
 
   useEffect(() => {
-    getChat();
-  }, [chatPage]);
+    if (isSearch) {
+      getChat();
+    }
+  }, [chatPage, isSearch]);
 
   const getPost = () => {
     if (!postLast) {
@@ -131,6 +133,7 @@ export default function SearchPage() {
           placeholder="제목, 글 내용, 관심사, 거주지"
           onChange={(e) => {
             setKeyword(e.target.value);
+            setIsSearch(false);
           }}
           style={{ fontSize: '15px' }}
         />
@@ -144,130 +147,134 @@ export default function SearchPage() {
       </div>
       <div className="search_Wrapper">
         {isSearch && (
-          <div className="searchTarget_Container">
-            <div
-              className={`searchTarget_Text ${selected === '게시물' ? 'selected' : ''}`}
-              onClick={() => setSelected('게시물')}
-            >
-              게시물
+          <>
+            <div className="searchTarget_Container">
+              <div
+                className={`searchTarget_Text ${selected === '게시물' ? 'selected' : ''}`}
+                onClick={() => setSelected('게시물')}
+              >
+                게시물
+              </div>
+              <div
+                className={`searchTarget_Text ${selected === '채팅방' ? 'selected' : ''}`}
+                onClick={() => setSelected('채팅방')}
+              >
+                채팅방
+              </div>
             </div>
-            <div
-              className={`searchTarget_Text ${selected === '채팅방' ? 'selected' : ''}`}
-              onClick={() => setSelected('채팅방')}
-            >
-              채팅방
-            </div>
-          </div>
-        )}
-        <div className="searchResult_Container">
-          {selected === '게시물' &&
-            (postList.length > 0 ? (
-              <>
-                {postList.map((post, index) => (
-                  <div
-                    key={post.postInfo.postId}
-                    className="postId"
-                    onClick={() => {
-                      navigate(`/post-page/check/${post.postInfo.postId}`, {
-                        state: post,
-                      });
-                    }}
-                    ref={index === postList.length - 1 ? postObsRef : null}
-                  >
-                    <div className="postIcon">
-                      <img
-                        className="postIcon"
-                        src={
-                          post.postImage.length !== 0
-                            ? post.postImage[0].imageUrl
-                            : basicProfile
-                        }
-                        alt="게시물 사진"
-                      />
-                    </div>
-                    <div className="Post-container">
-                      <div className="Titlecontainer">
-                        <div className="postTitle">{post.postInfo.title}</div>
-                        <div className="postCreatedAt">
-                          {post.postInfo.createdAt.split('T')[0]}
+            <div className="searchResult_Container">
+              {selected === '게시물' &&
+                (postList.length > 0 ? (
+                  <>
+                    {postList.map((post, index) => (
+                      <div
+                        key={post.postInfo.postId}
+                        className="postId"
+                        onClick={() => {
+                          navigate(`/post-page/check/${post.postInfo.postId}`, {
+                            state: post,
+                          });
+                        }}
+                        ref={index === postList.length - 1 ? postObsRef : null}
+                      >
+                        <div className="postIcon">
+                          <img
+                            className="postIcon"
+                            src={
+                              post.postImage.length !== 0
+                                ? post.postImage[0].imageUrl
+                                : basicProfile
+                            }
+                            alt="게시물 사진"
+                          />
+                        </div>
+                        <div className="Post-container">
+                          <div className="Titlecontainer">
+                            <div className="postTitle">
+                              {post.postInfo.title}
+                            </div>
+                            <div className="postCreatedAt">
+                              {post.postInfo.createdAt.split('T')[0]}
+                            </div>
+                          </div>
+                          <div className="postContents">
+                            {post.postInfo.content}
+                          </div>
+                          <div className="CountContainer">
+                            <div>
+                              <LikeIcon />
+                              {post.postInfo.likeCount}
+                            </div>
+                            <div>
+                              <CommentIcon />
+                              {post.postInfo.commentCount}
+                            </div>
+                            <div>
+                              <ReviewIcon />
+                              {post.postInfo.reviewCount}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="postContents">
-                        {post.postInfo.content}
-                      </div>
-                      <div className="CountContainer">
-                        <div>
-                          <LikeIcon />
-                          {post.postInfo.likeCount}
-                        </div>
-                        <div>
-                          <CommentIcon />
-                          {post.postInfo.commentCount}
-                        </div>
-                        <div>
-                          <ReviewIcon />
-                          {post.postInfo.reviewCount}
-                        </div>
-                      </div>
-                    </div>
+                    ))}
+                  </>
+                ) : (
+                  <div className="searchResult_none">
+                    검색 결과가 존재하지 않습니다.
                   </div>
                 ))}
-              </>
-            ) : (
-              <div className="searchResult_none">
-                검색 결과가 존재하지 않습니다.
-              </div>
-            ))}
 
-          {selected === '채팅방' &&
-            (chatList.length > 0 ? (
-              <>
-                {chatList.map((chat, index) => (
-                  <div
-                    className="chatId"
-                    key={chat.chatRoomInfo.chatRoomId}
-                    onClick={() => {
-                      navigate(
-                        `/chat-page/join/${chat.chatRoomInfo.chatRoomId}`,
-                        {
-                          state: { chatRoomData: chat },
-                        },
-                      );
-                    }}
-                    ref={index === chatList.length - 1 ? chatObsRef : null}
-                  >
-                    <img
-                      className="chatIcon"
-                      src={
-                        chat.chatRoomInfo.imageUrl
-                          ? chat.chatRoomInfo.imageUrl
-                          : basicProfile
-                      }
-                      alt="채팅방 사진"
-                    />
-                    <div className="chatInfoWrapper">
-                      <div className="chatInfoContainer">
-                        <div className="chatTitle">
-                          {chat.chatRoomInfo.title}
-                        </div>
-                        <div className="chatContent">
-                          {chat.chatRoomInfo.content}
+              {selected === '채팅방' &&
+                (chatList.length > 0 ? (
+                  <>
+                    {chatList.map((chat, index) => (
+                      <div
+                        className="chatId"
+                        key={chat.chatRoomInfo.chatRoomId}
+                        onClick={() => {
+                          navigate(
+                            `/chat-page/join/${chat.chatRoomInfo.chatRoomId}`,
+                            {
+                              state: { chatRoomData: chat },
+                            },
+                          );
+                        }}
+                        ref={index === chatList.length - 1 ? chatObsRef : null}
+                      >
+                        <img
+                          className="chatIcon"
+                          src={
+                            chat.chatRoomInfo.imageUrl
+                              ? chat.chatRoomInfo.imageUrl
+                              : basicProfile
+                          }
+                          alt="채팅방 사진"
+                        />
+                        <div className="chatInfoWrapper">
+                          <div className="chatInfoContainer">
+                            <div className="chatTitle">
+                              {chat.chatRoomInfo.title}
+                            </div>
+                            <div className="chatContent">
+                              {chat.chatRoomInfo.content}
+                            </div>
+                          </div>
+                          <div className="chatMemberCount">
+                            <img src={person} />
+                            {chat.chatRoomInfo.memberCount}명
+                          </div>
                         </div>
                       </div>
-                      <div className="chatMemberCount">
-                        <img src={person} />
-                        {chat.chatRoomInfo.memberCount}명
-                      </div>
-                    </div>
+                    ))}
+                  </>
+                ) : (
+                  <div className="searchResult_none">
+                    검색 결과가 존재하지 않습니다.
                   </div>
                 ))}
-              </>
-            ) : (
-              <div className="searchResult_none">
-                검색 결과가 존재하지 않습니다.
-              </div>
-            ))}
-        </div>
+            </div>
+          </>
+        )}
       </div>
       <BottomNavBar />
     </>
