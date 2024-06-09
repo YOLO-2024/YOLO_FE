@@ -69,9 +69,7 @@ const ChattingPage = () => {
   }, [state?.chatRoom?.chatRoomInfo?.chatRoomId]);
 
   useEffect(() => {
-    if (page > 0) {
-      getData(page);
-    }
+    getData(page);
   }, [page]);
 
   useEffect(() => {

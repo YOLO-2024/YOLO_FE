@@ -1,7 +1,7 @@
 import '../../styles/component/main/MainPostList.scss';
 // import DummyPostImage from '../../assets/images/DummyPostImage.jpg';
 import api from '../../utils/api';
-import NoImage from '../../assets/images/NoImage.webp';
+import NoImage from '../../assets/images/NoImage.jpg';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

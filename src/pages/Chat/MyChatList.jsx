@@ -3,7 +3,7 @@ import chattingPerson from '../../assets/svgs/chattingPerson.svg';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import { useEffect, useState } from 'react';
-import NoImage from '../../assets/images/NoImage.webp';
+import NoImage from '../../assets/images/NoImage.jpg';
 
 const MyChatList = () => {
   const navigate = useNavigate();

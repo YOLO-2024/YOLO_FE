@@ -1,5 +1,5 @@
 import '../../styles/component/main/MainPostList.scss';
-import NoImage from '../../assets/images/NoImage.webp';
+import NoImage from '../../assets/images/NoImage.jpg';
 import { useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';

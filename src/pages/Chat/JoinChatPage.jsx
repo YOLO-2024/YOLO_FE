@@ -2,7 +2,7 @@ import '../../styles/pages/Chat/JoinChatPage.scss';
 import '../../styles/pages/login/AddInfoPage.scss';
 import { PreviousIcon } from '../../assets/svgs/PreviousIcon';
 import { useNavigate, useLocation } from 'react-router-dom';
-import NoImage from '../../assets/images/NoImage.webp';
+import NoImage from '../../assets/images/NoImage.jpg';
 import chattingPerson from '../../assets/svgs/chattingPerson.svg';
 import BottomNavBar from '../../components/Layout/BottomNavBar';
 import { ModeEditIcon } from '../../assets/svgs/ModeEditIcon';

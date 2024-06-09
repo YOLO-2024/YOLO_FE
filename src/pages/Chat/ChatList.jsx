@@ -3,7 +3,7 @@ import chattingPerson from '../../assets/svgs/chattingPerson.svg';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import { useEffect, useRef, useState } from 'react';
-import NoImage from '../../assets/images/NoImage.webp';
+import NoImage from '../../assets/images/NoImage.jpg';
 
 const ChatList = () => {
   const navigate = useNavigate();
@@ -11,18 +11,6 @@ const ChatList = () => {
   const [page, setPage] = useState(0);
 
   const endRef = useRef(null);
-
-  useEffect(() => {
-    api
-      .get('/api/v1/chat/page', {
-        params: { page: page },
-      })
-      .then((response) => {
-        const newChatRoom = response.data.data.map((item) => item);
-        setChatListData((prevChatRoom) => [...prevChatRoom, ...newChatRoom]);
-      });
-  }, [page]);
-
   const observer = useRef();
 
   useEffect(() => {
@@ -49,7 +37,18 @@ const ChatList = () => {
         observer.current.disconnect();
       }
     };
-  }, [endRef]);
+  }, []);
+
+  useEffect(() => {
+    api
+      .get('/api/v1/chat/page', {
+        params: { page: page },
+      })
+      .then((response) => {
+        const newChatRoom = response.data.data.map((item) => item);
+        setChatListData((prevChatRoom) => [...prevChatRoom, ...newChatRoom]);
+      });
+  }, [page]);
 
   useEffect(() => {
     console.log(chatListData);
