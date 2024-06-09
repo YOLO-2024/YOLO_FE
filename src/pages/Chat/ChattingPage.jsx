@@ -176,7 +176,7 @@ const ChattingPage = () => {
 
   const formatTime = (time) => {
     const date = new Date(time);
-    let hours = date.getHours();
+    let hours = date.getHours() + 9;
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const amOrPm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;
