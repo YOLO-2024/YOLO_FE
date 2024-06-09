@@ -47,13 +47,11 @@ export default function EditPost() {
   };
 
   const convertURLtoFile = async (url) => {
-    console.log(url);
     try {
       const response = await fetch(url, {
         // mode: 'cors',
         cache: 'no-cache',
       });
-      console.log(response);
       const data = await response.blob();
       const ext = url.split('.').pop(); // url 구조에 맞게 수정할 것
       const filename = url.split('/').pop(); // url 구조에 맞게 수정할 것
@@ -72,18 +70,30 @@ export default function EditPost() {
     }
   };
 
+  // useEffect(() => {
+  //   const initialFiles = () => {
+  //     setPreview(postData.postImage.map((image) => image.imageUrl));
+  //     postData.postImage.map((image) => {
+  //       convertURLtoFile(image.imageUrl).then((file) => {
+  //         setImgUrl((prevImageUrl) => [...prevImageUrl, file]);
+  //       });
+  //     });
+  //   };
+
+  //   initialFiles();
+  // }, []);
+
   useEffect(() => {
-    const initialFiles = () => {
+    const initialFiles = async () => {
       setPreview(postData.postImage.map((image) => image.imageUrl));
-      postData.postImage.map((image) => {
-        convertURLtoFile(image.imageUrl).then((file) => {
-          setImgUrl((prevImageUrl) => [...prevImageUrl, file]);
-        });
-      });
+      const files = await Promise.all(
+        postData.postImage.map((image) => convertURLtoFile(image.imageUrl)),
+      );
+      setImgUrl(files);
     };
 
     initialFiles();
-  }, []);
+  }, [postData.postImage]);
 
   // console.log('postData', postData.postImage);
   console.log('img', imgUrl);
@@ -166,7 +176,7 @@ export default function EditPost() {
           type="submit"
           onClick={handleSubmit}
           style={{
-            background: isValidForm() ? ' #266ED7 6.68%' : ' #4D8AEB 99.25%',
+            background: isValidForm() ? ' #266ED7 6.68%' : '#c2c2c2',
           }}
         >
           수정

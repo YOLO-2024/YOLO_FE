@@ -20,6 +20,7 @@ export default function CheckPost() {
   const navigate = useNavigate();
   const location = useLocation();
   const postData = { ...location.state };
+  const [data, setData] = useState([]);
 
   const [isPostDeleteActive, setIsPostDeleteActive] = useState(false);
   const [isCommentDeleteActive, setIsCommentDeleteActive] = useState(false);
@@ -31,14 +32,14 @@ export default function CheckPost() {
   const writer = JSON.parse(sessionStorage.getItem('myInfo')).profileInfo
     .nickname;
   // const isWriter = postData.writerInfo.nickname === writer;
-  const [id, setId] = useState(null);
+  const [commentid, setCommentId] = useState(null);
   const [comment, setComment] = useState('');
   const [commentList, setCommentList] = useState([]);
 
   const [imageModal, setImageModal] = useState(false);
   const [selectedImg, setSelectedImg] = useState('');
 
-  console.log(postData);
+  // console.log(postData);
   useEffect(() => {
     api
       .get(`/api/v1/comment/check/${postData.postInfo.postId}`, {
@@ -50,24 +51,20 @@ export default function CheckPost() {
       .catch((error) => {
         console.log('comment', error);
       });
-    api.post(
-      `/api/v1/post/increase/${postData.postInfo.postId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${user}`,
-          'Content-Type': 'application/json',
+    api
+      .post(
+        `/api/v1/post/increase/${postData.postInfo.postId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+            'Content-Type': 'application/json',
+          },
         },
-      },
-    );
+      )
+      .then((res) => setData(res.data));
   }, []);
-
-  // const dateFormatter = (dateTimeString) => {
-  //   const dateTime = new Date(dateTimeString);
-  //   const formattedDateTime = `${dateTime.getFullYear()}.${String(dateTime.getMonth() + 1).padStart(2, '0')}.${String(dateTime.getDate()).padStart(2, '0')} ${String(dateTime.getHours()).padStart(2, '0')}:${String(dateTime.getMinutes()).padStart(2, '0')}`;
-  //   return formattedDateTime;
-  // };
-
+  console.log(data);
   const dateFormatter = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     dateTime.setHours(dateTime.getHours() + 9); // 9시간 추가
@@ -94,14 +91,8 @@ export default function CheckPost() {
       )
       .then((response) => {
         const newComment = response.data.data;
-
-        // 현재 댓글 목록에 새 댓글 추가
         setCommentList((prevCommentList) => [...prevCommentList, newComment]);
-
-        // 댓글 입력창 초기화
         setComment('');
-        console.log('comment post', response);
-        console.log(comment);
       })
       .catch((error) => {
         console.log('comment post', error);
@@ -172,7 +163,7 @@ export default function CheckPost() {
           title="댓글을 삭제하시겠습니까?"
           body="댓글이 삭제되면, 복구되지 않습니다."
           setIsActive={setIsCommentDeleteActive}
-          id={id}
+          id={commentid}
         />
       )}
       {isPostDeclarationActive && (
@@ -192,7 +183,7 @@ export default function CheckPost() {
           title="댓글을 신고 하시겠습니까?"
           body="신고 접수 확인 후, 조치하겠습니다."
           setIsActive={setIsCommentDeclarationActive}
-          id={id}
+          id={commentid}
         />
       )}
 
@@ -284,10 +275,9 @@ export default function CheckPost() {
           {postData.postInfo.reviewCount}
         </div>
       </div>
-
-      <div className="Post_CommentContainer">
-        {commentList.length > 0 &&
-          commentList.map((comment) => (
+      {commentList.length > 0 && (
+        <div className="Post_CommentContainer">
+          {commentList.map((comment) => (
             <div
               key={comment.commentInfo.commentId}
               className="Post_CommentWrapper"
@@ -312,6 +302,7 @@ export default function CheckPost() {
                           : defaultImage
                       }
                       className="Post_CommentImage"
+                      alt="profile"
                     />
                   </div>
                   <div className="Post_MyCommentContent">
@@ -321,7 +312,7 @@ export default function CheckPost() {
                     className="Post_CommentDeleteIcon"
                     onClick={() => {
                       setIsCommentDeleteActive(true);
-                      setId(comment.commentInfo.commentId);
+                      setCommentId(comment.commentInfo.commentId);
                     }}
                   >
                     <DeleteMiniIcon />
@@ -355,7 +346,81 @@ export default function CheckPost() {
               )}
             </div>
           ))}
-      </div>
+        </div>
+      )}
+
+      {/* {commentList.length > 0 && (
+        <div className="Post_CommentContainer">
+          commentList.map((comment) => (
+          <div
+            key={comment.commentInfo.commentId}
+            className="Post_CommentWrapper"
+          >
+            {comment.writerInfo.nickname === writer ? (
+              <div
+                className="Post_MyComment"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                }}
+              >
+                <div className="Post_MyComment_WriterBox">
+                  <div className="Post_MyCommentWriter">
+                    {comment.writerInfo.nickname}
+                  </div>
+                  <img
+                    src={
+                      comment.writerInfo.profileImage
+                        ? comment.writerInfo.profileImage.imageUrl
+                        : defaultImage
+                    }
+                    className="Post_CommentImage"
+                  />
+                </div>
+                <div className="Post_MyCommentContent">
+                  {comment.commentInfo.content}
+                </div>
+                <div
+                  className="Post_CommentDeleteIcon"
+                  onClick={() => {
+                    setIsCommentDeleteActive(true);
+                    setCommentId(comment.commentInfo.commentId);
+                  }}
+                >
+                  <DeleteMiniIcon />
+                </div>
+              </div>
+            ) : (
+              <div className="Post_OtherComment">
+                <div className="Post_OtherComment_WriterBox">
+                  <img
+                    src={
+                      comment.writerInfo.profileImage
+                        ? comment.writerInfo.profileImage.imageUrl
+                        : defaultImage
+                    }
+                    className="Post_CommentImage"
+                  />
+                  <div className="Post_OtherCommentWriter">
+                    {comment.writerInfo.nickname}
+                  </div>
+                </div>
+                <div className="Post_OtherCommentContent">
+                  {comment.commentInfo.content}
+                </div>
+                <div
+                  className="Post_CommentNotificationIcon"
+                  onClick={() => setIsCommentDeclarationActive(true)}
+                >
+                  <NotificationMiniIcon />
+                </div>
+              </div>
+            )}
+          </div>
+          ))
+        </div>
+      )} */}
     </>
   );
 }
