@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as StompJs from '@stomp/stompjs';
 import '../../styles/pages/Chat/ChattingPage.scss';
@@ -13,6 +13,7 @@ import api from '../../utils/api';
 const ChattingPage = () => {
   const navigate = useNavigate();
   const messagesEndRef = useRef(null);
+  const getDataRef = useRef(null);
   const [client, setClient] = useState(null);
   const [chatData, setChatData] = useState({});
   const [chat, setChat] = useState('');
@@ -24,6 +25,7 @@ const ChattingPage = () => {
   const [page, setPage] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const isLoading = useRef(false);
+  const firstRender = useRef(true);
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -56,6 +58,12 @@ const ChattingPage = () => {
         });
         return mergedData;
       });
+
+      // Initial render scroll to bottom
+      if (page === 0 && firstRender.current) {
+        scrollToBottom();
+        firstRender.current = false;
+      }
     } catch (error) {
       console.error('Error fetching chat data:', error);
     }
@@ -69,13 +77,13 @@ const ChattingPage = () => {
   }, [state?.chatRoom?.chatRoomInfo?.chatRoomId]);
 
   useEffect(() => {
-    getData(page);
-  }, [page]);
-
-  useEffect(() => {
     connect();
     return () => disconnect();
   }, [state]);
+
+  useEffect(() => {
+    getData(page);
+  }, [page]);
 
   useEffect(() => {
     const currentDate = getCurrentDate();
@@ -83,7 +91,7 @@ const ChattingPage = () => {
     if (currentChatData && currentChatData.length > 0) {
       const lastMessage = currentChatData[currentChatData.length - 1];
       if (lastMessage.sender === userProfile.profileInfo.nickname) {
-        messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
       }
     }
   }, [chatData]);
@@ -159,17 +167,19 @@ const ChattingPage = () => {
           createdAt: new Date().toISOString(),
         }),
       });
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
       setChat('');
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const formatTime = (time) => {
     const date = new Date(time);
-    let hours = date.getHours() + 9;
+    let hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    hours = hours % 12 || 12;
     const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
     return `${hours}:${minutes} ${amOrPm}`;
   };
 
@@ -198,14 +208,20 @@ const ChattingPage = () => {
       threshold: 0.5,
     });
 
-    if (messagesEndRef.current) {
-      observer.current.observe(messagesEndRef.current);
+    if (getDataRef.current) {
+      observer.current.observe(getDataRef.current);
     }
 
     return () => {
       if (observer.current) observer.current.disconnect();
     };
-  }, []);
+  }, [getDataRef, page]);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
+    }
+  };
 
   const sortedDates = Object.keys(chatData).sort(
     (a, b) => new Date(a) - new Date(b),
@@ -276,10 +292,10 @@ const ChattingPage = () => {
       )}
       <div className="ChatPage_Container">
         <div className="ChatPage_Wrapper">
+          <div ref={getDataRef}></div>
           {Object.entries(sortedChatData).map(([date, chatData]) => (
             <div key={date}>
               <div className="ChatPage_Date">{date}</div>
-
               {chatData.map((msgObject, index) => (
                 <div key={index}>
                   {msgObject.messageType === 'ENTER' ? (
