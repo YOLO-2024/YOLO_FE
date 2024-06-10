@@ -1,5 +1,9 @@
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+importScripts(
+  "https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"
+);
+importScripts(
+  "https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"
+);
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
@@ -10,15 +14,7 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APPID,
   measurementId: process.env.REACT_APP_MEASUREMENTID,
 };
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-const firebaseApp = initializeApp(firebaseConfig);
-const messaging = getMessaging(firebaseApp);
-
-messaging.onBackgroundMessage((payload) => {
-  const title = payload.notification.title;
-  const options = {
-    body: payload.notification.body,
-  };
-
-  ServiceWorkerRegistration.showNotification(title, options);
-});
+const messaging = firebase.messaging();

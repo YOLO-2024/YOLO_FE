@@ -21,32 +21,74 @@ const MainPage = () => {
       }
     }, [])
 
+    // const onMessageFCM = async () => {
+    //   // 브라우저에 알림 권한 요청
+    //   const permission = await Notification.requestPermission();
+    //   if (permission !== 'granted') return;
+
+    //   const firebaseApp = initializeApp({
+    //     apiKey: process.env.REACT_APP_APIKEY,
+    //     authDomain: process.env.REACT_APP_AUTHDOMAIN,
+    //     projectId: process.env.REACT_APP_PROJECTID,
+    //     storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+    //     messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+    //     appId: process.env.REACT_APP_APPID,
+    //     measurementId: process.env.REACT_APP_MEASUREMENTID,
+    //   });
+
+    //   const messaging = getMessaging(firebaseApp);
+
+    //   // 인증서 키 값
+    //   getToken(messaging, {
+    //     vapidKey: process.env.REACT_APP_VAPIDKEY,
+    //   })
+    //     .then((currentToken) => {
+    //       if (currentToken) {
+    //         localStorage.setItem("deviceToken", currentToken);
+    //         // 정상적으로 토큰 발급 시 콘솔 출력
+    //         console.log(currentToken);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log("An error occurred while retrieving token. ", err);
+    //     });
+
+    //   // 브라우저를 보고 있을 때에는 콘솔로 출력
+    //   onMessage(messaging, (payload) => {
+    //     console.log('Message received. ', payload);
+    //   });
+    // };
+
     const onMessageFCM = async () => {
       // 브라우저에 알림 권한 요청
       const permission = await Notification.requestPermission();
-      if (permission !== 'granted') return;
+      if (permission !== "granted") return;
 
-      const firebaseApp = initializeApp({
-        apiKey: process.env.REACT_APP_APIKEY,
-        authDomain: process.env.REACT_APP_AUTHDOMAIN,
-        projectId: process.env.REACT_APP_PROJECTID,
-        storageBucket: process.env.REACT_APP_STORAGEBUCKET,
-        messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
-        appId: process.env.REACT_APP_APPID,
-        measurementId: process.env.REACT_APP_MEASUREMENTID,
-      });
+        const firebaseApp = initializeApp({
+          apiKey: process.env.REACT_APP_APIKEY,
+          authDomain: process.env.REACT_APP_AUTHDOMAIN,
+          projectId: process.env.REACT_APP_PROJECTID,
+          storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+          messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+          appId: process.env.REACT_APP_APPID,
+          measurementId: process.env.REACT_APP_MEASUREMENTID,
+        });
 
       const messaging = getMessaging(firebaseApp);
 
       // 인증서 키 값
       getToken(messaging, {
-        vapidKey: process.env.REACT_APP_VAPIDKEY,
+        vapidKey: process.env.NEXT_PUBLIC_FIREBASE_KEY_PAIR,
       })
         .then((currentToken) => {
           if (currentToken) {
-            localStorage.setItem("deviceToken", currentToken);
             // 정상적으로 토큰 발급 시 콘솔 출력
             console.log(currentToken);
+            localStorage.setItem("deviceToken", currentToken);
+          } else {
+            console.log(
+              "No registration token available. Request permission to generate one."
+            );
           }
         })
         .catch((err) => {
@@ -55,13 +97,12 @@ const MainPage = () => {
 
       // 브라우저를 보고 있을 때에는 콘솔로 출력
       onMessage(messaging, (payload) => {
-        console.log('Message received. ', payload);
+        console.log("Message received. ", payload);
       });
     };
 
     useEffect(() => {
       onMessageFCM();
-      console.log(localStorage.getItem("deviceToken"))
       if(localStorage.getItem("deviceToken")) {
       Apis.post('/api/v1/notification/login', {
         token : localStorage.getItem("deviceToken")
