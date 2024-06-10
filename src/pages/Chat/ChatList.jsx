@@ -64,42 +64,48 @@ const ChatList = () => {
   };
 
   return (
-    <div className="chatList_Container">
-      {chatListData ? (
-        chatListData.map((chat, index) => (
-          <div
-            key={index}
-            className="chatItem_Container"
-            onClick={() => onClickedChat(chat.chatRoomInfo.chatRoomId, chat)}
-          >
-            <div className="chatItem_ProfileImg">
-              <img
-                onError={onErrorImg}
-                src={
-                  chat.chatRoomImage?.imageUrl
-                    ? chat.chatRoomImage?.imageUrl
-                    : NoImage
-                }
-                style={{ width: '53px', height: '53px', borderRadius: '10px' }}
-              />
-            </div>
-            <div className="chatInfo_Container">
-              <div className="chatInfo_Title">{chat.chatRoomInfo.title}</div>
-              <div className="chatInfo_Contents">
-                {chat.chatRoomInfo.content}
+    <>
+      <div className="chatList_Container">
+        {chatListData ? (
+          chatListData.map((chat, index) => (
+            <div
+              key={index}
+              className="chatItem_Container"
+              onClick={() => onClickedChat(chat.chatRoomInfo.chatRoomId, chat)}
+            >
+              <div className="chatItem_ProfileImg">
+                <img
+                  onError={onErrorImg}
+                  src={
+                    chat.chatRoomImage?.imageUrl
+                      ? chat.chatRoomImage?.imageUrl
+                      : NoImage
+                  }
+                  style={{
+                    width: '53px',
+                    height: '53px',
+                    borderRadius: '10px',
+                  }}
+                />
+              </div>
+              <div className="chatInfo_Container">
+                <div className="chatInfo_Title">{chat.chatRoomInfo.title}</div>
+                <div className="chatInfo_Contents">
+                  {chat.chatRoomInfo.content}
+                </div>
+              </div>
+              <div className="chatStats_Container">
+                <img src={chattingPerson} />
+                {chat.chatRoomInfo.memberCount} 명
               </div>
             </div>
-            <div className="chatStats_Container">
-              <img src={chattingPerson} />
-              {chat.chatRoomInfo.memberCount} 명
-            </div>
-          </div>
-        ))
-      ) : (
-        <div>채팅방이 존재하지 않습니다.</div>
-      )}
+          ))
+        ) : (
+          <div>채팅방이 존재하지 않습니다.</div>
+        )}
+      </div>
       <div ref={endRef}></div>
-    </div>
+    </>
   );
 };
 
