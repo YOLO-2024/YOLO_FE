@@ -11,7 +11,7 @@ export default function MyPage() {
   const [isMemberDeleteActive, setIsMemberDeleteActive] = useState(false);
 
   const onLogout = () => {
-    sessionStorage.setItem('accessToken', null);
+    sessionStorage.clear();
     navigate('/login');
   };
   return (
