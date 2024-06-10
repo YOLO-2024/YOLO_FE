@@ -60,11 +60,14 @@ const MainPage = () => {
 
     useEffect(() => {
       onMessageFCM();
+      console.log(localStorage.getItem("deviceToken"))
+      if(localStorage.getItem("deviceToken")) {
       Apis.post('/api/v1/notification/login', {
         token : localStorage.getItem("deviceToken")
       }).then((response) => {
         console.log(response.data)
       })
+    }
     }, []);
 
     useEffect(() => {
