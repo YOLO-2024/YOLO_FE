@@ -27,29 +27,29 @@ const MainPage = () => {
       if (permission !== 'granted') return;
 
       const firebaseApp = initializeApp({
-        authDomain: import.meta.env.VITE_AUTHDOMAIN,
-        projectId: import.meta.env.VITE_PROJECTID,
-        storageBucket: import.meta.env.VITE_STORAGEBUCKET,
-        messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
-        appId: import.meta.env.VITE_APPID,
-        measurementId: import.meta.env.VITE_MEASUREMENTID,
+        authDomain: process.env.REACT_APP_AUTHDOMAIN,
+        projectId: process.env.REACT_APP_PROJECTID,
+        storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+        messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+        appId: process.env.REACT_APP_APPID,
+        measurementId: process.env.REACT_APP_MEASUREMENTID,
       });
 
       const messaging = getMessaging(firebaseApp);
 
       // 인증서 키 값
       getToken(messaging, {
-        vapidKey: import.meta.env.VITE_VAPIDKEY,
+        vapidKey: process.env.REACT_APP_VAPIDKEY,
       })
         .then((currentToken) => {
           if (currentToken) {
-            localStorage.setItem('deviceToken', currentToken);
+            localStorage.setItem("deviceToken", currentToken);
             // 정상적으로 토큰 발급 시 콘솔 출력
             console.log(currentToken);
           }
         })
         .catch((err) => {
-          console.log('An error occurred while retrieving token. ', err);
+          console.log("An error occurred while retrieving token. ", err);
         });
 
       // 브라우저를 보고 있을 때에는 콘솔로 출력

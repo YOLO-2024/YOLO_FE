@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const Apis = axios.create({
-  baseURL: import.meta.env.VITE_ENDPOINT,
+  baseURL: process.env.REACT_APP_ENDPOINT,
 });
 
 //요청시 AccessToken 계속 보내주기
