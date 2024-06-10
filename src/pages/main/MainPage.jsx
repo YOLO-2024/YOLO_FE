@@ -78,7 +78,7 @@ const MainPage = () => {
 
       // 인증서 키 값
       getToken(messaging, {
-        vapidKey: process.env.NEXT_PUBLIC_FIREBASE_KEY_PAIR,
+        vapidKey: process.env.REACT_APP_VAPIDKEY,
       })
         .then((currentToken) => {
           if (currentToken) {
