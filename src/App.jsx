@@ -17,7 +17,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router} basename="https://yolo2024.site"/>
       </QueryClientProvider>
     </>
   );
