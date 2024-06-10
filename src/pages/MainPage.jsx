@@ -29,7 +29,7 @@ export default function MainPage() {
       measurementId: process.env.REACT_APP_MEASUREMENTID,
     });
 
-    const messaging = getMessaging();
+    const messaging = getMessaging(firebaseApp);
 
     getToken(messaging, {
       vapidKey: process.env.REACT_APP_VAPIDKEY,
