@@ -5,6 +5,7 @@ import '../../styles/MyPage.scss';
 import Modal from '../../component/Modal';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Apis from '../../apis/axios';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -12,6 +13,11 @@ const MyPage = () => {
 
   const onLogout = () => {
     sessionStorage.clear();
+    Apis.delete("/api/v1/notification/logout", {
+      token : localStorage.getItem("deviceToken"),
+    }).then((res) => {
+      localStorage.removeItem("deviceToken");
+    })
     navigate('/login');
   };
   return (
