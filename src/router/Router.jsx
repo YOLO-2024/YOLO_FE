@@ -20,7 +20,8 @@ import MyChatRoomListPage from '../pages/chat/MyChatRoomListPage';
 import CreateChatRoomPage from '../pages/chat/CreateChatRoomPage';
 import EnterChatRoomPage from '../pages/chat/EnterChatRoomPage';
 import EditChatRoomPage from '../pages/chat/EditChatRoomPage';
-
+import MyPage from '../pages/mypage/MyPage';
+import EditProfilePage from '../pages/mypage/EditProfilePage';
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,9 @@ const router = createBrowserRouter([
   { path: '/chatroom/enter/:roomId', element: <EnterChatRoomPage /> },
   { path: '/chatroom/create', element: <CreateChatRoomPage /> },
   { path: '/chatroom/edit/:roomId', element: <EditChatRoomPage /> },
+
+  { path: '/mypage', element: <MyPage /> },
+  { path: '/mypage/edit', element: <EditProfilePage /> },
 ]);
 
 export default router;

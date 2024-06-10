@@ -1,11 +1,10 @@
 import Dropdown from '../../component/login/DropDown';
 import '../../styles/login/AddInfoPage.scss';
 import NoProfile from '../../assets/Login/NoProfile.png';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const ImageDropDown = ({imageUrl, setImageUrl}) => {
+const ImageDropDown = ({imageUrl, setImageUrl, preview, setPreview}) => {
     const [view, setView] = useState(false);
-    const [preview, setPreview] = useState(null);
     const imgRef = useRef();
 
     const onChangeImage = (e) => {

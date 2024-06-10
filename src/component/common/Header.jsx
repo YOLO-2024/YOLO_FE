@@ -17,7 +17,7 @@ const Header = () => {
           </div>
           <div className="Icon_Wrapper">
             <img src={Alarm} alt="Alarm" onClick={() => navigate('/')}/>
-            <img src={Profile} alt="Profile" onClick={() => navigate('/')}/>
+            <img src={Profile} alt="Profile" onClick={() => navigate('/mypage')}/>
             <img src={Search} alt="Search" onClick={() => navigate('/search')}/>
           </div>
         </div>

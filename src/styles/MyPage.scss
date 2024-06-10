@@ -1,0 +1,149 @@
+.MyPage {
+    width: 100%;
+}
+
+.My_ProfileEdit {
+    width: 100%;
+    height: 52px;
+    flex-shrink: 0;
+    background: #fff;
+    box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+
+    img {
+        margin: 15px 0px 15px 23px;
+    }
+}
+
+.My_Logout {
+    width: 100%;
+    height: 52px;
+    flex-shrink: 0;
+    background: #fff;
+    box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+
+    img {
+        margin: 15px 0px 15px 23px;
+    }
+}
+
+.My_Memberout {
+    width: 100%;
+    height: 52px;
+    flex-shrink: 0;
+    background: #fff;
+    box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+
+    img {
+        margin: 15px 0px 15px 23px;
+    }
+}
+
+.My_ProfileEdit_Container {
+    margin-top: 40px;
+    width: 100%;
+}
+
+.My_ProfileImage {
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: 150px;
+        height: 150px;
+        flex-shrink: 0;
+        border-radius: 45px;
+        border: 1px solid #000;
+    }
+}
+
+.My_ProfileImage_Wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.My_ProfileImage_button {
+    color: white;
+    border: none;
+    width: 100px;
+    min-height: 25px;
+    height: auto;
+    padding: 5px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    opacity: 0.7671;
+    background: linear-gradient(131deg, #266ed7 6.68%, #4d8aeb 99.25%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.My_ProfileImage_button_selecte {
+    margin-top: 15px;
+}
+
+.My_ProfileImage_button_default {
+    margin-top: 15px;
+}
+
+.dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.My_ProfileInfo_Wrapper {
+    width: 100%;
+}
+
+.My_ProfileInfo_text {
+    color: #171930;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 19px;
+    /* 158.333% */
+    opacity: 0.3991;
+    margin-left: 28px;
+    margin-top: 20px;
+}
+
+.My_ProfileInfo_Name,
+.My_ProfileInfo_Introduce {
+    display: flex;
+    flex-direction: column;
+}
+
+.My_ProfileInfo_input {
+    width: 93%;
+    height: 52px;
+    margin: 0 auto;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: none;
+    background: #fff;
+    box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+}
+
+.My_ProfileInfo_Button {
+    display: flex;
+}
+
+.My_ProfileInfo_editButton {
+    width: 93%;
+    height: 52px;
+    border-radius: 8px;
+    border: none;
+    opacity: 0.7671;
+    color: white;
+    background-color: #266ed7;
+    margin: 40px auto;
+
+    &:disabled {
+        background-color: #c2c2c2;
+    }
+}

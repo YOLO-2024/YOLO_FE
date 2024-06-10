@@ -5,7 +5,7 @@ import ImageDropDown from '../../component/login/ImageDropDown';
 import LoginInput from '../../component/login/LoginInput';
 import SubmitButton from '../../component/login/SubmitButton';
 
-const AddInfoPage = () => {
+const EditProfilePage = () => {
   // 프로필 이미지 등록
   const [imageUrl, setImageUrl] = useState(null);
   // 거주지 등록
@@ -38,10 +38,10 @@ const AddInfoPage = () => {
   };
 
   useEffect(() => {
-    setPreview(member ? member.profileImage.imageUrl : null);
-    setLocation(member ? member.profileInfo.location : null);
-    setNickname(member ? member.profileInfo.nickname : null);
-    setIntroduce(member ? member.profileInfo.content : null);
+    setPreview(member.profileImage ? member.profileImage.imageUrl : null);
+    setLocation(member.profileInfo.location || null);
+    setNickname(member.profileInfo.nickname || null);
+    setIntroduce(member.profileInfo.content || null);
   }, []);
 
   return (
@@ -71,4 +71,4 @@ const AddInfoPage = () => {
   );
 };
 
-export default AddInfoPage;
+export default EditProfilePage;

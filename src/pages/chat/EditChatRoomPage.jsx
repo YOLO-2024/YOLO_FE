@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Apis from '../../apis/axios';
 import { interestList } from '../post/data/data';
 import '../../styles/chat/CreateChatRoomPage.scss';
@@ -9,12 +9,38 @@ import deletePhoto from '../../assets/post/delete.svg';
 
 const CreateChatRoomPage = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const [title, setTitle] = useState(state.chatRoom.chatRoom.chatRoomInfo.title);
-  const [contents, setContents] = useState(
-    state.chatRoom.chatRoom.chatRoomInfo.content
-  );
-  const [list, setlist] = useState(state.chatRoom.chatRoom.chatRoomInfo.interests);
+  const [title, setTitle] = useState();
+  const [contents, setContents] = useState();
+  const [list, setlist] = useState();
+
+  const { roomId } = useParams();
+  const [chatRoom, setChatRoom] = useState();
+
+  useEffect(() => {
+    Apis.get('/api/v1/chat/read/' + roomId).then((response) => {
+      setChatRoom(response.data.data);
+    });
+  }, []);
+  console.log(chatRoom);
+  useEffect(() => {
+    if(chatRoom) {
+        setPreview(
+          chatRoom.chatRoomImage ? chatRoom.chatRoomImage.imageUrl : null,
+        );
+
+        if (chatRoom.chatRoomImage) {
+          convertURLtoFile(chatRoom.chatRoomImage.imageUrl).then((response) => {
+            console.log(response);
+            setImageUrl(response);
+          });
+        } else {
+          setImageUrl(null);
+        }
+      setTitle(chatRoom.chatRoomInfo.title);
+      setContents(chatRoom.chatRoomInfo.content);
+      setlist(chatRoom.chatRoomInfo.interests);
+    }
+  }, [chatRoom]);
 
   const onClickInterest = (value) => {
     let updatedInterest = [];
@@ -65,26 +91,6 @@ const CreateChatRoomPage = () => {
       return new File([data], filename, metadata);
     };
 
-  useEffect(() => {
-        setPreview(
-          state.chatRoom.chatRoom.chatRoomImage ? state.chatRoom.chatRoom
-            .chatRoomImage.imageUrl : null
-        );
-  
-        if (state.chatRoom.chatRoom.chatRoomImage){
-          convertURLtoFile(state.chatRoom.chatRoom.chatRoomImage.imageUrl).then(
-            (response) => {
-              console.log(response);
-              setImageUrl(response);
-            },
-          )
-        } else {
-          setImageUrl(null)
-        }
-    }, []);
-
-    console.log(imageUrl)
-
   const onSubmit = async () => {
     // async 키워드 추가하여 비동기 함수로 선언
     try {
@@ -95,7 +101,7 @@ const CreateChatRoomPage = () => {
         new Blob(
           [
             JSON.stringify({
-              chatRoomId: state.chatRoom.chatRoom.chatRoomInfo.chatRoomId,
+              chatRoomId: roomId,
               title: title,
               content: contents,
               interests: list,
@@ -112,98 +118,102 @@ const CreateChatRoomPage = () => {
   };
 
   return (
-    <div className="CreatePostPage_Container">
-      <div className="CreatePostPage_Wrapper">
-        <div className="CreatePostPage_TopBar">
-          <img
-            src={backButton}
-            onClick={() => navigate(-1)}
-            className="CreatePostPage_TopBar_Back"
-          />
-          <button
-            className={
-              !title || !contents || list.length === 0
-                ? 'CreatePostPage_TopBar_DisablePost'
-                : 'CreatePostPage_TopBar_Post'
-            }
-            onClick={onSubmit}
-            disabled={!title || !contents || list.length === 0 ? true : false}
-          >
-            게시
-          </button>
-        </div>
-        {/* 제목 */}
-        <div className="CreatePostPage_SmallText">채팅방 제목</div>
-        <div className="CreatePostPage_InputBox">
-          <input
-            className="CreatePostPage_Input"
-            placeholder="제목을 입력해주세요."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        {/* 카테고리 */}
-        <div className="CreatePostPage_SmallText">카테고리</div>
-        <div className="CreatePostPage_InterestBox">
-          {interestList.map((item) => (
-            <div
-              key={item.value}
-              className="CreatePostPage_Interest"
-              style={{
-                color: list.includes(item.value) ? '#266ED7' : '#686A8A',
-              }}
-              onClick={() => onClickInterest(item.value)}
-            >
-              {item.value}
-            </div>
-          ))}
-        </div>
-        {/* 텍스트 입력 */}
-        <div className="CreatePostPage_ContentInput_Box">
-          <textarea
-            name="message"
-            rows="5"
-            cols="30"
-            value={contents}
-            className="CreatePostPage_ContentInput"
-            onChange={(e) => setContents(e.target.value)}
-          >
-            작성
-          </textarea>
-          {/* 이미지 렌더링 */}
-          <div className="CreatePostPage_ImageList">
-            {preview && (
-              <div className="CreatePostPage_ImageContainer">
-                <img
-                  src={deletePhoto}
-                  className="CreatePostPage_DeleteImage"
-                  onClick={() => onDeleteImage()}
-                />
-                <img src={preview} className="CreatePostPage_Image" />
-              </div>
-            )}
-          </div>
-        </div>
-        {/* 이미지 추가 */}
-        <div className="CreatePostPage_InputBox" onClick={onClickFileBtn}>
-          <input
-            type="file"
-            ref={imgRef}
-            onChange={onChangeImage}
-            style={{ display: 'none' }}
-          />
-          <div className="CreatePostPage_AddPhoto_Button">
+    <>
+    { chatRoom && list && contents && title &&
+      <div className="CreatePostPage_Container">
+        <div className="CreatePostPage_Wrapper">
+          <div className="CreatePostPage_TopBar">
             <img
-              src={addPhoto}
-              className="CreatePostPage_AddPhoto_Button_Img"
+              src={backButton}
+              onClick={() => navigate(-1)}
+              className="CreatePostPage_TopBar_Back"
             />
-            <div className="CreatePostPage_AddPhoto_Button_Text">
-              채팅방 커버 이미지 추가
+            <button
+              className={
+                !title || !contents || list.length === 0
+                  ? 'CreatePostPage_TopBar_DisablePost'
+                  : 'CreatePostPage_TopBar_Post'
+              }
+              onClick={onSubmit}
+              disabled={!title || !contents || list.length === 0 ? true : false}
+            >
+              게시
+            </button>
+          </div>
+          {/* 제목 */}
+          <div className="CreatePostPage_SmallText">채팅방 제목</div>
+          <div className="CreatePostPage_InputBox">
+            <input
+              className="CreatePostPage_Input"
+              placeholder="제목을 입력해주세요."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          {/* 카테고리 */}
+          <div className="CreatePostPage_SmallText">카테고리</div>
+          <div className="CreatePostPage_InterestBox">
+            {interestList.map((item) => (
+              <div
+                key={item.value}
+                className="CreatePostPage_Interest"
+                style={{
+                  color: list.includes(item.value) ? '#266ED7' : '#686A8A',
+                }}
+                onClick={() => onClickInterest(item.value)}
+              >
+                {item.value}
+              </div>
+            ))}
+          </div>
+          {/* 텍스트 입력 */}
+          <div className="CreatePostPage_ContentInput_Box">
+            <textarea
+              name="message"
+              rows="5"
+              cols="30"
+              value={contents}
+              className="CreatePostPage_ContentInput"
+              onChange={(e) => setContents(e.target.value)}
+            >
+              작성
+            </textarea>
+            {/* 이미지 렌더링 */}
+            <div className="CreatePostPage_ImageList">
+              {preview && (
+                <div className="CreatePostPage_ImageContainer">
+                  <img
+                    src={deletePhoto}
+                    className="CreatePostPage_DeleteImage"
+                    onClick={() => onDeleteImage()}
+                  />
+                  <img src={preview} className="CreatePostPage_Image" />
+                </div>
+              )}
+            </div>
+          </div>
+          {/* 이미지 추가 */}
+          <div className="CreatePostPage_InputBox" onClick={onClickFileBtn}>
+            <input
+              type="file"
+              ref={imgRef}
+              onChange={onChangeImage}
+              style={{ display: 'none' }}
+            />
+            <div className="CreatePostPage_AddPhoto_Button">
+              <img
+                src={addPhoto}
+                className="CreatePostPage_AddPhoto_Button_Img"
+              />
+              <div className="CreatePostPage_AddPhoto_Button_Text">
+                채팅방 커버 이미지 추가
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    }
+    </>
   );
 };
 

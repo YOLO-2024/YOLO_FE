@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Apis from '../../apis/axios';
 import { interestList } from './data/data';
 import '../../styles/post/CreatePostPage.scss';
@@ -9,13 +9,18 @@ import deletePhoto from '../../assets/post/delete.svg';
 import { useEffect } from 'react';
 
 const EditPostPage = () => {
-    const { state } = useLocation();
+    const [post, setPost] = useState();
+    const { postId } = useParams();
     const navigate = useNavigate();
-    const [title, setTitle] = useState(state.postInfo.postInfo.postInfo.title);
-    const [contents, setContents] = useState(
-      state.postInfo.postInfo.postInfo.content,
-    );
-    const [list, setlist] = useState(state.postInfo.postInfo.postInfo.categories);
+    const [title, setTitle] = useState();
+    const [contents, setContents] = useState();
+    const [list, setlist] = useState();
+
+    useEffect(() => {
+      Apis.post('/api/v1/post/increase/' + postId).then((response) => {
+        setPost(response.data.data);
+      });
+    }, []);
 
     const convertURLtoFile = async (url) => {
         const response = await fetch(url);
@@ -40,18 +45,26 @@ const EditPostPage = () => {
 
     const [preview, setPreview] = useState([]);
 
+    console.log(post)
     useEffect(() => {
-        setPreview(
-            state.postInfo.postInfo.postImage.map((image) => image.imageUrl),
-        )
-          state.postInfo.postInfo.postImage.map(
-            (image) => {
-            convertURLtoFile(image.imageUrl)
-            .then((file) => {
-                setImageUrl((prevImageUrl) => [...prevImageUrl, file]);
+        if(post) {
+            setTitle(post.postInfo.title)
+            setContents(post.postInfo.content)
+            setlist(post.postInfo.categories);
+            setPreview(
+                post.postImage ?
+                post.postImage.map((image) => image.imageUrl) :
+                null
+            )
+            post.postImage.map(
+                (image) => {
+                convertURLtoFile(image.imageUrl)
+                .then((file) => {
+                    setImageUrl((prevImageUrl) => [...prevImageUrl, file]);
+                })
             })
-        })
-    }, [])
+        }
+    }, [post])
     
     const imgRef = useRef();
     console.log(imageUrl);
@@ -99,7 +112,7 @@ const EditPostPage = () => {
           new Blob(
             [
               JSON.stringify({
-                postId: state.postInfo.postInfo.postInfo.postId,
+                postId: postId,
                 title: title,
                 content: contents,
                 categories: list,
@@ -116,99 +129,105 @@ const EditPostPage = () => {
     };
 
     return (
+      <>
+      {post && title && contents && list &&
         <div className="CreatePostPage_Container">
-        <div className="CreatePostPage_Wrapper">
+          <div className="CreatePostPage_Wrapper">
             <div className="CreatePostPage_TopBar">
-            <img
+              <img
                 src={backButton}
                 onClick={() => navigate(-1)}
                 className="CreatePostPage_TopBar_Back"
-            />
-            <button
+              />
+              <button
                 className={
-                !title || !contents || list.length === 0
+                  !title || !contents || list.length === 0
                     ? 'CreatePostPage_TopBar_DisablePost'
                     : 'CreatePostPage_TopBar_Post'
                 }
                 onClick={onSubmit}
-                disabled={!title || !contents || list.length === 0 ? true : false}
-            >
+                disabled={
+                  !title || !contents || list.length === 0 ? true : false
+                }
+              >
                 게시
-            </button>
+              </button>
             </div>
             {/* 제목 */}
             <div className="CreatePostPage_SmallText">제목</div>
             <div className="CreatePostPage_InputBox">
-            <input
+              <input
                 className="CreatePostPage_Input"
                 placeholder="제목을 입력해주세요."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-            />
+              />
             </div>
             {/* 카테고리 */}
             <div className="CreatePostPage_SmallText">카테고리</div>
             <div className="CreatePostPage_InterestBox">
-            {interestList.map((item) => (
+              {interestList.map((item) => (
                 <div
-                key={item.value}
-                className="CreatePostPage_Interest"
-                style={{
+                  key={item.value}
+                  className="CreatePostPage_Interest"
+                  style={{
                     color: list.includes(item.value) ? '#266ED7' : '#686A8A',
-                }}
-                onClick={() => onClickInterest(item.value)}
+                  }}
+                  onClick={() => onClickInterest(item.value)}
                 >
-                {item.value}
+                  {item.value}
                 </div>
-            ))}
+              ))}
             </div>
             {/* 텍스트 입력 */}
             <div className="CreatePostPage_ContentInput_Box">
-            <textarea
+              <textarea
                 name="message"
                 rows="5"
                 cols="30"
                 value={contents}
                 className="CreatePostPage_ContentInput"
                 onChange={(e) => setContents(e.target.value)}
-            >
+              >
                 작성
-            </textarea>
-            {/* 이미지 렌더링 */}
-            <div className="CreatePostPage_ImageList">
+              </textarea>
+              {/* 이미지 렌더링 */}
+              <div className="CreatePostPage_ImageList">
                 {preview &&
-                preview.map((image, index) => (
+                  preview.map((image, index) => (
                     <div key={index} className="CreatePostPage_ImageContainer">
-                    <img
+                      <img
                         src={deletePhoto}
                         className="CreatePostPage_DeleteImage"
                         onClick={() => onDeleteImage(index)}
-                    />
-                    <img src={image} className="CreatePostPage_Image" />
+                      />
+                      <img src={image} className="CreatePostPage_Image" />
                     </div>
-                ))}
-            </div>
+                  ))}
+              </div>
             </div>
             {/* 이미지 추가 */}
             <div className="CreatePostPage_InputBox" onClick={onClickFileBtn}>
-            <input
+              <input
                 type="file"
                 ref={imgRef}
                 onChange={onChangeImage}
                 style={{ display: 'none' }}
-            />
-            <div className="CreatePostPage_AddPhoto_Button">
+              />
+              <div className="CreatePostPage_AddPhoto_Button">
                 <img
-                src={addPhoto}
-                className="CreatePostPage_AddPhoto_Button_Img"
+                  src={addPhoto}
+                  className="CreatePostPage_AddPhoto_Button_Img"
                 />
                 <div className="CreatePostPage_AddPhoto_Button_Text">
-                이미지 추가
+                  이미지 추가
                 </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
-        </div>
+        }
+      </>
     );
 };
 

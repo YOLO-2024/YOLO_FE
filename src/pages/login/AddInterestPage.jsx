@@ -10,7 +10,7 @@ import movie from '../../assets/Login/interest/movie.svg';
 import music from '../../assets/Login/interest/music.svg';
 import sport from '../../assets/Login/interest/sport.svg';
 import tech from '../../assets/Login/interest/tech.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Apis from '../../apis/axios';
 
 
@@ -56,6 +56,13 @@ const interestList = [
 const AddInterestPage = () => {
     const navigate = useNavigate();
     const [list, setlist] = useState([]);
+    const member = JSON.parse(sessionStorage.getItem('memberState'));
+
+    useEffect(() => {
+      if(member) {
+        setlist(member.profileInfo.interestList);
+      }
+    }, []);
 
     const onClickBackButton = () => {
         navigate(-1);

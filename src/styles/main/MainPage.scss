@@ -2,7 +2,13 @@
 .MainPage_Wrapper {
     display: flex;
     flex-direction: column;
+    position: relative;
     width: 100%;
+
+    height: calc(100vh - 124px);
+    overflow-y: scroll;
+
+    z-index: 0;
 }
 
 .MainPage_Container {
@@ -14,17 +20,26 @@
     flex-direction: row;
 
     width: 100%;
+    overflow : scroll;
+
+
+    background-color: #FFF;
 }
 
 .MainPage_ChatRoom_List_Box {
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 
     width: 358px;
-    height: 112px;
+    height: 132px;
 
-    margin : 0 auto;
-    background: white;
+    min-width: 358px;
+
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left : 17px;
+    background: #FFF;
     box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.08);
     border : none;
     border-radius: 16px;
@@ -33,6 +48,116 @@
 .MainPage_PostLike_List {
     display: flex;
     flex-direction: row;
+}
 
+.MainPage_ChatRoom_List_Box_image {
+    width: 32px;
+    height: 32px;
+    margin-left : 17px;
+    margin-top: 7px;
+}
+
+.MainPage_ChatRoom_List_Box_title {
+    color: #2176FF;
+    text-shadow: 0px 3px 30px rgba(0, 0, 0, 0.16);
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19.2px;
     
+    margin-top : 7px;
+    margin-left: 17px;
+}
+
+.MainPage_ChatRoom_List_Box_content {
+    color: #0A0C0B;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 19.2px;
+    text-transform: lowercase;
+    margin-left: 17px;
+
+    max-width: 250px;
+}
+
+.MainPage_Post_Text {
+    margin-top : 27px;
+    margin-bottom: 17px;
+    margin-left : 17px;
+    color: #303030;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0.56px;
+}
+
+.MainPage_Post_List {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    overflow : scroll;
+
+
+    background-color: #FFF;
+}
+
+.MainPage_Post_List_Box {
+    width : 150px;
+    display: flex;
+    flex-direction: column;
+
+    flex-shrink: 0;
+    margin-left : 17px;
+}
+
+.MainPage_Post_List_Box_Image {
+    width: 150px;
+    height: 108px;
+    flex-shrink: 0;
+
+    border-radius: 11px;
+}
+
+.MainPage_Post_List_Box_Text {
+    margin-top :5px;
+    color: #303030;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0.392px;
+}
+
+.MainPage_Post_List_Box_Category_List {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.MainPage_Post_List_Box_Category_List_Item {
+    display: flex;
+    width: fit-content;
+
+    margin-right : 10px;
+    padding-left : 5px;
+    padding-right: 5px;
+
+    height: 22px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    background-color: #EFECFE;
+
+    color: #686A8A;
+    font-family: Inter;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.336px;
+    align-items: center;
+    justify-content: center;
 }

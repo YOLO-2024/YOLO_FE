@@ -30,6 +30,7 @@ const PostListPage = () => {
       params: { page: page },
     })
       .then((response) => {
+        console.log(response.data.data)
         const newPosts = response.data.data.map((item) => item);
         setPostList((prevPosts) => [...prevPosts, ...newPosts]);
 
