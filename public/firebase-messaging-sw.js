@@ -14,21 +14,11 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const messaging = getMessaging(firebaseApp);
 
-getToken(messaging, { vapidKey: process.env.REACT_APP_VAPIDKEY })
-  .then((currentToken) => {
-    if (currentToken) {
-      console.log("currentToken:", currentToken);
-      localStorage.setItem("deviceToken", currentToken);
-    } else {
-      console.log(
-        "No registration token available. Request permission to generate one."
-      );
-    }
-  })
-  .catch((err) => {
-    console.log("An error occurred while retrieving token:", err);
-  });
+messaging.onBackgroundMessage((payload) => {
+  const title = payload.notification.title;
+  const options = {
+    body: payload.notification.body,
+  };
 
-onMessage(messaging, (payload) => {
-  console.log("Message received. ", payload);
+  ServiceWorkerRegistration.showNotification(title, options);
 });
