@@ -277,7 +277,7 @@ const ChattingPage = () => {
       {isChatRoomExit && (
         <Modal
           actionType="Delete"
-          type="CHAT"
+          type="CHATE"
           title="채팅방을 퇴장 하시겠습니까?"
           body={
             <span>

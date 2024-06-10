@@ -9,49 +9,47 @@ const ChatList = () => {
   const navigate = useNavigate();
   const [chatListData, setChatListData] = useState([]);
   const [page, setPage] = useState(0);
-
-  const endRef = useRef(null);
-  const observer = useRef();
+  const obsRef = useRef(null);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
-    const handleIntersection = (entries) => {
-      const target = entries[0];
-      if (target.isIntersecting) {
-        console.log('등장');
-        console.log(chatListData);
-        setPage((prevPage) => prevPage + 1); // 페이지 수 증가
-      }
-    };
+    if (!isLastPage) {
+      const fetchChats = async () => {
+        await api
+          .get('/api/v1/chat/page', {
+            params: { page: page },
+          })
+          .then((response) => {
+            const newChatRooms = response.data.data;
+            if (newChatRooms.length === 0) {
+              setIsLastPage(true);
+            }
+            setChatListData((prevChats) => [...prevChats, ...newChatRooms]);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      };
+      fetchChats();
+    }
+  }, [page, isLastPage]);
 
-    // Intersection Observer 생성
-    observer.current = new IntersectionObserver(handleIntersection, {
-      threshold: 0.5,
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !isLastPage) {
+        setPage((prev) => prev + 1);
+      }
     });
 
-    if (endRef.current) {
-      observer.current.observe(endRef.current);
+    if (chatListData.length && obsRef.current) {
+      observer.observe(obsRef.current);
     }
 
     return () => {
-      if (observer.current) {
-        observer.current.disconnect();
+      if (obsRef.current) {
+        observer.unobserve(obsRef.current);
       }
     };
-  }, []);
-
-  useEffect(() => {
-    api
-      .get('/api/v1/chat/page', {
-        params: { page: page },
-      })
-      .then((response) => {
-        const newChatRoom = response.data.data.map((item) => item);
-        setChatListData((prevChatRoom) => [...prevChatRoom, ...newChatRoom]);
-      });
-  }, [page]);
-
-  useEffect(() => {
-    console.log(chatListData);
   }, [chatListData]);
 
   const onClickedChat = (chatRoomId, chatRoomData) => {
@@ -64,48 +62,48 @@ const ChatList = () => {
   };
 
   return (
-    <>
-      <div className="chatList_Container">
-        {chatListData ? (
-          chatListData.map((chat, index) => (
-            <div
-              key={index}
-              className="chatItem_Container"
-              onClick={() => onClickedChat(chat.chatRoomInfo.chatRoomId, chat)}
-            >
-              <div className="chatItem_ProfileImg">
-                <img
-                  onError={onErrorImg}
-                  src={
-                    chat.chatRoomImage?.imageUrl
-                      ? chat.chatRoomImage?.imageUrl
-                      : NoImage
-                  }
-                  style={{
-                    width: '53px',
-                    height: '53px',
-                    borderRadius: '10px',
-                  }}
-                />
-              </div>
-              <div className="chatInfo_Container">
-                <div className="chatInfo_Title">{chat.chatRoomInfo.title}</div>
-                <div className="chatInfo_Contents">
-                  {chat.chatRoomInfo.content}
-                </div>
-              </div>
-              <div className="chatStats_Container">
-                <img src={chattingPerson} />
-                {chat.chatRoomInfo.memberCount} 명
+    <div className="chatList_Container">
+      {chatListData.length > 0 ? (
+        chatListData.map((chat, index) => (
+          <div
+            className="chatItem_Container"
+            key={chat.chatRoomInfo.chatRoomId}
+            onClick={() => onClickedChat(chat.chatRoomInfo.chatRoomId, chat)}
+            ref={index === chatListData.length - 1 ? obsRef : null}
+          >
+            <div className="chatItem_ProfileImg">
+              <img
+                onError={onErrorImg}
+                src={
+                  chat.chatRoomImage?.imageUrl
+                    ? chat.chatRoomImage?.imageUrl
+                    : NoImage
+                }
+                alt="채팅방 사진"
+                style={{
+                  width: '53px',
+                  height: '53px',
+                  borderRadius: '10px',
+                }}
+              />
+            </div>
+            <div className="chatInfo_Container">
+              <div className="chatInfo_Title">{chat.chatRoomInfo.title}</div>
+              <div className="chatInfo_Contents">
+                {chat.chatRoomInfo.content}
               </div>
             </div>
-          ))
-        ) : (
-          <div>채팅방이 존재하지 않습니다.</div>
-        )}
-      </div>
-      <div ref={endRef}></div>
-    </>
+            <div className="chatStats_Container">
+              <img src={chattingPerson} alt="채팅 인원 아이콘" />
+              {chat.chatRoomInfo.memberCount} 명
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="chatList_none">채팅방이 존재하지 않습니다.</div>
+      )}
+      <div ref={obsRef}></div>
+    </div>
   );
 };
 

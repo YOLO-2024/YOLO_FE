@@ -71,10 +71,9 @@
   background: #2176ff;
   display: flex;
   margin-left: 83%;
-  // position: fixed;
-  // bottom: 15%;
-  // right: calc(var(--vh, 1vh)*20);
-  // right: 20%;
+  position: fixed;
+  bottom: 13%;
+  right: 5.5%;
   filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
   svg {
     width: 42.353px;
