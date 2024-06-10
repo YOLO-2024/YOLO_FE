@@ -99,9 +99,9 @@ const ChatPage = () => {
       // 소켓 연결
       try {
         const clientdata = new StompJs.Client({
-          brokerURL: import.meta.env.VITE_WEBSOCKET_URL,
+          brokerURL: process.env.REACT_APP_WEBSOCKET_URL,
           connectHeaders: {
-            Authorization: `Bearer ` + sessionStorage.getItem('accessToken'),
+            Authorization: `Bearer ` + sessionStorage.getItem("accessToken"),
           },
           debug: function (str) {
             console.log(str);
@@ -113,13 +113,16 @@ const ChatPage = () => {
 
         // 구독
         clientdata.onConnect = function () {
-          clientdata.subscribe(import.meta.env.VITE_SUB + roomId, (message) => {
-            if (message.body) {
-              let msgObject = JSON.parse(message.body);
-              let msg = msgObject.data;
-              addNewMessage(msg);
+          clientdata.subscribe(
+            process.env.REACT_APP_SUB + roomId,
+            (message) => {
+              if (message.body) {
+                let msgObject = JSON.parse(message.body);
+                let msg = msgObject.data;
+                addNewMessage(msg);
+              }
             }
-          });
+          );
         };
         clientdata.activate(); // 클라이언트 활성화
         changeClient(clientdata); // 클라이언트 갱신
@@ -166,7 +169,7 @@ const ChatPage = () => {
       }
 
       client.publish({
-        destination: import.meta.env.VITE_PUB + roomId,
+        destination: process.env.REACT_APP_PUB + roomId,
         body: JSON.stringify({
           roomId: roomId,
           sender: userProfile.profileInfo.nickname,
