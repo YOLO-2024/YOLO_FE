@@ -16,11 +16,11 @@ const MainPage = () => {
     const [postInterestList, setPostInterestList] = useState([]);
     
     useEffect(() => {
-      if(sessionStorage.getItem('accessToken') || sessionStorage.getItem('refreshToken')) {
+      if(!sessionStorage.getItem('accessToken') || !sessionStorage.getItem('refreshToken')) {
         navigate('/login');
       }
     }, [])
-    
+
     const onMessageFCM = async () => {
       // 브라우저에 알림 권한 요청
       const permission = await Notification.requestPermission();
