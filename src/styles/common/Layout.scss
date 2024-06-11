@@ -9,6 +9,7 @@
     width: 100%;
     max-width: 450px !important;
     position: absolute;
+    background-color: #FFF;
     backdrop-filter: blur(10px);
 }
 
@@ -26,5 +27,6 @@
     max-width: 450px !important;
     position: absolute;
     bottom: 0;
+    background-color: #FFF;
     box-shadow: 0px -4px 20px rgba(63.04, 75.65, 94.56, 0.12)
 }
