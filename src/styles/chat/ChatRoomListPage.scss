@@ -23,6 +23,14 @@
     overflow-y: scroll;
 }
 
+.ChatRoomListPage_Container::-webkit-scrollbar {
+    display: none;
+}
+
+.ChatRoomListPage_Wrapper::-webkit-scrollbar {
+    display: none;
+}
+
 .ChatRoomPage_ChatRoom_Wrapper {
     display: flex;
     flex-direction: row;

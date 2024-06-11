@@ -11,6 +11,10 @@
     font-family: Inter;
 }
 
+.PostList_Container::-webkit-scrollbar {
+    display: none;
+}
+
 .PostList_Wrapper {
     display: flex;
     flex-direction: column;
@@ -21,6 +25,10 @@
     width: 100%;
     max-width: 450px;
     overflow-y: scroll;
+}
+
+.PostList_Wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .PostList_Post_Wrapper {
