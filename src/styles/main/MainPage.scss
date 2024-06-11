@@ -11,6 +11,13 @@
     z-index: 0;
 }
 
+.MainPage_Container::-webkit-scrollbar {
+    display: none;
+}
+
+.MainPage_Wrapper::-webkit-scrollbar {
+    display: none;
+}
 .MainPage_Container {
     margin-top : 50px;
 }
@@ -112,6 +119,7 @@
 .MainPage_Post_List::-webkit-scrollbar{
     display: none;
 }
+
 .MainPage_Post_List_Box {
     width : 150px;
     display: flex;
@@ -119,6 +127,10 @@
 
     flex-shrink: 0;
     margin-left : 17px;
+}
+
+.MainPage_Post_List_Box::-webkit-scrollbar {
+    display: none;
 }
 
 .MainPage_Post_List_Box_Image {
